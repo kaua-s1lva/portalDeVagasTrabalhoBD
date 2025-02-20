@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../styles/css_reset.css" />
+    <link rel="stylesheet" href="../styles/login_screen.css" />
+    <title>Página de Login</title>
+  </head>
+  <body>
+    <main>
+      <section class="login-section">
+        <div class="login-logo">
+          <img src="../assets/ufes-logo.png" alt="login-page-logo" />
+        </div>
+        <div class="login-form">
+          <h1>Portal de Estágios UFES</h1>
+          <form id="loginForm">
+            <label for="username">E-mail:</label>
+            <input type="text" id="username" name="username" required />
+            <label for="password">Senha:</label>
+            <input type="password" id="password" name="password" required />
+            <button type="submit">Acessar</button>
+          </form>
+        </div>
+        <!-- Usar  ::before e ::after ??-->
+        <span class="line"></span>
+        <div>
+          <p></p>
+          <button>Registrar-se</button>
+        </div>
+      </section>
+      <section class="op-art">
+        <img src="../assets/login_screen_image.png" alt="login-page-art" />
+      </section>
+    </main>
+  </body>
+</html>
