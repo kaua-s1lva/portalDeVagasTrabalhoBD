@@ -6,8 +6,8 @@ abstract class Usuario {
     private string $email;
     private string $senha;
     private DateTime $created_at;
-    private ?DateTime $updated_at;  
-    private ?DateTime $deleted_at;  
+    private DateTime $updated_at;  
+    private DateTime $deleted_at;  
 
     // Construtor
 

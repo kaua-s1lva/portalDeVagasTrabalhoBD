@@ -2,57 +2,57 @@
 
 class Indicacao
 {
-    private int $aluno_idAluno;
-    private int $egresso_idEgresso;
-    private int $vaga_idVaga;
+    private int $idAluno;
+    private int $idEgresso;
+    private int $idVaga;
     private DateTime $created_at;
-    private ?DateTime $updated_at;
-    private ?DateTime $deleted_at;
-    private int $status_idStatus;
+    private DateTime $updated_at;
+    private DateTime $deleted_at;
+    private int $idStatus;
 
     // Construtor
 
-    public function __construct($aluno_idAluno, $egresso_idEgresso, $vaga_idVaga, $status_idStatus)
+    public function __construct($idAluno, $idEgresso, $idVaga, $idStatus)
     {
-        $this->aluno_idAluno = $aluno_idAluno;
-        $this->egresso_idEgresso = $egresso_idEgresso;
-        $this->vaga_idVaga = $vaga_idVaga;
+        $this->idAluno = $idAluno;
+        $this->idEgresso = $idEgresso;
+        $this->idVaga = $idVaga;
         $this->created_at = new DateTime();
         $this->updated_at = null;
         $this->deleted_at = null;
-        $this->status_idStatus = $status_idStatus;
+        $this->idStatus = $idStatus;
     }
 
     // Getters e Setters
 
     public function getAlunoIdAluno() : int
     {
-        return $this->aluno_idAluno;
+        return $this->idAluno;
     }
 
-    public function setAlunoIdAluno($aluno_idAluno) : void
+    public function setAlunoIdAluno($idAluno) : void
     {
-        $this->aluno_idAluno = $aluno_idAluno;
+        $this->idAluno = $idAluno;
     }
 
     public function getEgressoIdEgresso() : int
     {
-        return $this->egresso_idEgresso;
+        return $this->idEgresso;
     }
 
-    public function setEgressoIdEgresso($egresso_idEgresso) : void
+    public function setEgressoIdEgresso($idEgresso) : void
     {
-        $this->egresso_idEgresso = $egresso_idEgresso;
+        $this->idEgresso = $idEgresso;
     }
 
     public function getVagaIdVaga() : int
     {
-        return $this->vaga_idVaga;
+        return $this->idVaga;
     }
 
-    public function setVagaIdVaga($vaga_idVaga) : void
+    public function setVagaIdVaga($idVaga) : void
     {
-        $this->vaga_idVaga = $vaga_idVaga;
+        $this->idVaga = $idVaga;
     }
 
     public function getCreatedAt(): DateTime
@@ -87,11 +87,11 @@ class Indicacao
 
     public function getStatusIdStatus() : int
     {
-        return $this->status_idStatus;
+        return $this->idStatus;
     }
 
-    public function setStatusIdStatus($status_idStatus) : void
+    public function setStatusIdStatus($idStatus) : void
     {
-        $this->status_idStatus = $status_idStatus;
+        $this->idStatus = $idStatus;
     }
 }

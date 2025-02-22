@@ -16,6 +16,8 @@ class Empresa extends Usuario {
     ) {
         parent::__construct($idUsuario, $nome, $email, $senha);
         $this->cnpj = $cnpj;
+        $this->usuarios = new ArrayObject();
+        $this->vagas = new ArrayObject();
     }
 
     // Getters e Setters

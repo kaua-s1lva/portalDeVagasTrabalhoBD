@@ -7,11 +7,10 @@ class Vaga
     private string $cargo;
     private int $empresaId;
     private DateTime $createdAt;
-    private ?DateTime $updatedAt;
-    private ?DateTime $deletedAt;
+    private DateTime $updatedAt;
+    private DateTime $deletedAt;
     private $requisitos;  // Lista de requisitos para essa vaga
     private $candidaturas;  // Lista de candidaturas feitas para essa vaga
-
 
     // Construtor
 

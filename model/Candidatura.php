@@ -2,32 +2,28 @@
 class Candidatura
 {
     private int $idVaga;
-    private int $alunoId;
+    private int $idAluno;
     private $curriculo;
     private DateTime $createdAt;
-    private ?DateTime $updatedAt;
-    private ?DateTime $deletedAt;
-    private int $situacaoId;
-    private $situacao;  // Status da candidatura (pode ser um Map associando status a detalhes)
+    private DateTime $updatedAt;
+    private DateTime $deletedAt;
+    private int $idSituacao;  
 
     // Construtor
     
     public function __construct(
         int $idVaga,
-        int $alunoId,
+        int $idAluno,
         $curriculo,
-        DateTime   $createdAt,
-        ?DateTime  $updatedAt = null,
-        ?DateTime  $deletedAt = null,
-        int $situacaoId
+        int $idSituacao
     ) {
         $this->idVaga = $idVaga;
-        $this->alunoId = $alunoId;
+        $this->idAluno = $idAluno;
         $this->curriculo = $curriculo;
-        $this->createdAt = $createdAt;
-        $this->updatedAt = $updatedAt;
-        $this->deletedAt = $deletedAt;
-        $this->situacaoId = $situacaoId;
+        $this->createdAt = new DateTime();
+        $this->updatedAt = null;
+        $this->deletedAt = null;
+        $this->idSituacao = $idSituacao;
     }
 
     // Getters e Setters
@@ -42,14 +38,14 @@ class Candidatura
         $this->idVaga = $idVaga;
     }
 
-    public function getAlunoId(): int
+    public function getidAluno(): int
     {
-        return $this->alunoId;
+        return $this->idAluno;
     }
 
-    public function setAlunoId(int $alunoId): void
+    public function setidAluno(int $idAluno): void
     {
-        $this->alunoId = $alunoId;
+        $this->idAluno = $idAluno;
     }
 
     public function getCurriculo()
@@ -62,33 +58,33 @@ class Candidatura
         return $this->createdAt;
     }
 
-    public function getUpdatedAt(): ?DateTime
+    public function getUpdatedAt(): DateTime
     {
         return $this->updatedAt;
     }
 
-    public function setUpdatedAt(?DateTime $updatedAt): void
+    public function setUpdatedAt(DateTime $updatedAt): void
     {
         $this->updatedAt = $updatedAt;
     }
 
-    public function getDeletedAt(): ?DateTime
+    public function getDeletedAt(): DateTime
     {
         return $this->deletedAt;
     }
 
-    public function setDeletedAt(?DateTime $deletedAt): void
+    public function setDeletedAt(DateTime $deletedAt): void
     {
         $this->deletedAt = $deletedAt;
     }
 
-    public function getSituacaoId(): int
+    public function getidSituacao(): int
     {
-        return $this->situacaoId;
+        return $this->idSituacao;
     }
 
-    public function setSituacaoId(int $situacaoId): void
+    public function setidSituacao(int $idSituacao): void
     {
-        $this->situacaoId = $situacaoId;
+        $this->idSituacao = $idSituacao;
     }
 }

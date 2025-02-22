@@ -6,7 +6,6 @@ class Egresso extends Usuario
     private int $idEmpresa;
     private $indicacoes;  // Lista de indicações feitas por este egresso
 
-
     // Construtor
 
     public function __construct(
@@ -28,11 +27,6 @@ class Egresso extends Usuario
     public function getCpf(): string
     {
         return $this->cpf;
-    }
-
-    public function setCpf(string $cpf): void
-    {
-        $this->cpf = $cpf;
     }
 
     public function getIdEmpresa(): int
