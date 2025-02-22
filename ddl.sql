@@ -4,7 +4,7 @@ SET SCHEMA 'bdportalvagas';
 
 -- Tabela usuario
 CREATE TABLE IF NOT EXISTS bdportalvagas.usuario (
-  idUsuario SERIAL PRIMARY KEY,
+  idUsuario INT PRIMARY KEY,
   nome VARCHAR(1000) NOT NULL,
   email VARCHAR(1000) NOT NULL,
   senha VARCHAR(1000) NOT NULL,
@@ -15,7 +15,7 @@ CREATE TABLE IF NOT EXISTS bdportalvagas.usuario (
 
 -- Tabela etapa
 CREATE TABLE IF NOT EXISTS bdportalvagas.etapa (
-  idEtapa SERIAL PRIMARY KEY,
+  idEtapa INT PRIMARY KEY,
   nome VARCHAR(100) NOT NULL,
   descricao TEXT NOT NULL,
   created_at TIMESTAMP NOT NULL,
@@ -24,7 +24,7 @@ CREATE TABLE IF NOT EXISTS bdportalvagas.etapa (
 
 -- Tabela empresa
 CREATE TABLE IF NOT EXISTS bdportalvagas.empresa (
-  idEmpresa SERIAL PRIMARY KEY,
+  idEmpresa INT PRIMARY KEY,
   cnpj CHAR(14) NOT NULL,
   CONSTRAINT fk_empresa_usuario1 FOREIGN KEY (idEmpresa)
     REFERENCES bdportalvagas.usuario (idUsuario) ON DELETE NO ACTION ON UPDATE NO ACTION
@@ -32,7 +32,7 @@ CREATE TABLE IF NOT EXISTS bdportalvagas.empresa (
 
 -- Tabela vaga
 CREATE TABLE IF NOT EXISTS bdportalvagas.vaga (
-  idVaga SERIAL PRIMARY KEY,
+  idVaga INT PRIMARY KEY,
   etapa_idEtapa INT NOT NULL,
   created_at TIMESTAMP NOT NULL,
   updated_at TIMESTAMP,
@@ -47,14 +47,14 @@ CREATE TABLE IF NOT EXISTS bdportalvagas.vaga (
 
 -- Tabela situacao
 CREATE TABLE IF NOT EXISTS bdportalvagas.situacao (
-  idSituacao SERIAL PRIMARY KEY,
+  idSituacao INT PRIMARY KEY,
   nome VARCHAR(100) NOT NULL,
   descricao TEXT NOT NULL
 );
 
 -- Tabela aluno
 CREATE TABLE IF NOT EXISTS bdportalvagas.aluno (
-  idAluno SERIAL PRIMARY KEY,
+  idAluno INT PRIMARY KEY,
   cpf CHAR(11) NOT NULL,
   CONSTRAINT fk_aluno_usuario1 FOREIGN KEY (idAluno)
     REFERENCES bdportalvagas.usuario (idUsuario) ON DELETE NO ACTION ON UPDATE NO ACTION
@@ -80,7 +80,7 @@ CREATE TABLE IF NOT EXISTS bdportalvagas.candidatura (
 
 -- Tabela egresso
 CREATE TABLE IF NOT EXISTS bdportalvagas.egresso (
-  idEgresso SERIAL PRIMARY KEY,
+  idEgresso INT PRIMARY KEY,
   idEmpresa INT NOT NULL,
   cpf CHAR(11) NOT NULL,
   CONSTRAINT fk_egresso_usuario1 FOREIGN KEY (idEgresso)
@@ -91,7 +91,7 @@ CREATE TABLE IF NOT EXISTS bdportalvagas.egresso (
 
 -- Tabela status
 CREATE TABLE IF NOT EXISTS bdportalvagas.status (
-  idstatus SERIAL PRIMARY KEY,
+  idstatus INT PRIMARY KEY,
   nome VARCHAR(100) NOT NULL,
   descricao TEXT NOT NULL
 );
@@ -118,7 +118,7 @@ CREATE TABLE IF NOT EXISTS bdportalvagas.indicacao (
 
 -- Tabela requisito
 CREATE TABLE IF NOT EXISTS bdportalvagas.requisito (
-  idRequisito SERIAL PRIMARY KEY,
+  idRequisito INT PRIMARY KEY,
   nome VARCHAR(1000) NOT NULL,
   duracao VARCHAR(1000)
 );
