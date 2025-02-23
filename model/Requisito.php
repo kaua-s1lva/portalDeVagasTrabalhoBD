@@ -24,11 +24,6 @@ class Requisito
         return $this->idRequisito;
     }
 
-    public function setIdRequisito(int $idRequisito): void
-    {
-        $this->idRequisito = $idRequisito;
-    }
-
     public function getNome(): string
     {
         return $this->nome;
@@ -49,3 +44,5 @@ class Requisito
     }
 
 }
+
+?>

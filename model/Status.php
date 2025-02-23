@@ -32,3 +32,5 @@ class Status
         return $this->descricao;
     }
 }
+
+?>

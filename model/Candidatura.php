@@ -4,9 +4,6 @@ class Candidatura
     private int $idVaga;
     private int $idAluno;
     private $curriculo;
-    private DateTime $createdAt;
-    private DateTime $updatedAt;
-    private DateTime $deletedAt;
     private int $idSituacao;  
 
     // Construtor
@@ -20,9 +17,6 @@ class Candidatura
         $this->idVaga = $idVaga;
         $this->idAluno = $idAluno;
         $this->curriculo = $curriculo;
-        $this->createdAt = new DateTime();
-        $this->updatedAt = null;
-        $this->deletedAt = null;
         $this->idSituacao = $idSituacao;
     }
 
@@ -51,30 +45,6 @@ class Candidatura
     public function getCurriculo()
     {
         return $this->curriculo;
-    }
-
-    public function getCreatedAt(): DateTime {
-        return $this->createdAt;
-    }
-
-    public function setCreatedAt(DateTime $createdAt): void {
-        $this->createdAt = $createdAt;
-    }
-
-    public function getUpdatedAt(): DateTime {
-        return $this->updatedAt;
-    }
-
-    public function setUpdatedAt(DateTime $updatedAt): void {
-        $this->updatedAt = $updatedAt;
-    }
-
-    public function getDeletedAt(): ?DateTime {
-        return $this->deletedAt;
-    }
-
-    public function setDeletedAt(DateTime $deletedAt): void {
-        $this->deletedAt = $deletedAt;
     }
 
     public function getidSituacao(): int
