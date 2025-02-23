@@ -30,29 +30,14 @@ class Indicacao
         return $this->idAluno;
     }
 
-    public function setAlunoIdAluno($idAluno) : void
-    {
-        $this->idAluno = $idAluno;
-    }
-
     public function getEgressoIdEgresso() : int
     {
         return $this->idEgresso;
     }
 
-    public function setEgressoIdEgresso($idEgresso) : void
-    {
-        $this->idEgresso = $idEgresso;
-    }
-
     public function getVagaIdVaga() : int
     {
         return $this->idVaga;
-    }
-
-    public function setVagaIdVaga($idVaga) : void
-    {
-        $this->idVaga = $idVaga;
     }
 
     public function getCreatedAt(): DateTime
@@ -90,8 +75,6 @@ class Indicacao
         return $this->idStatus;
     }
 
-    public function setStatusIdStatus($idStatus) : void
-    {
-        $this->idStatus = $idStatus;
-    }
 }
+
+?>

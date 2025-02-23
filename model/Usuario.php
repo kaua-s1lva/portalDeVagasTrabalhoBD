@@ -52,11 +52,11 @@ abstract class Usuario {
         $this->created_at = $created_at;
     }
 
-    public function getUpdatedAt(): ?DateTime {
+    public function getUpdatedAt(): DateTime {
         return $this->updated_at;
     }
 
-    public function setUpdatedAt(?DateTime $updated_at): void {
+    public function setUpdatedAt(DateTime $updated_at): void {
         $this->updated_at = $updated_at;
     }
 
@@ -64,9 +64,10 @@ abstract class Usuario {
         return $this->deleted_at;
     }
 
-    public function setDeletedAt(?DateTime $deleted_at): void {
+    public function setDeletedAt(DateTime $deleted_at): void {
         $this->deleted_at = $deleted_at;
     }
     
 }
 
+?>

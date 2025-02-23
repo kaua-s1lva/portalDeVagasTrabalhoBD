@@ -22,11 +22,6 @@ class Status
         return $this->idStatus;
     }
 
-    public function setIdStatus(int $idStatus): void
-    {
-        $this->idStatus = $idStatus;
-    }
-
     public function getNome(): string
     {
         return $this->nome;

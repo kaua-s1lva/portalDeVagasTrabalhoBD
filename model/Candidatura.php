@@ -53,28 +53,27 @@ class Candidatura
         return $this->curriculo;
     }
 
-    public function getCreatedAt(): DateTime
-    {
+    public function getCreatedAt(): DateTime {
         return $this->createdAt;
     }
 
-    public function getUpdatedAt(): DateTime
-    {
+    public function setCreatedAt(DateTime $createdAt): void {
+        $this->createdAt = $createdAt;
+    }
+
+    public function getUpdatedAt(): DateTime {
         return $this->updatedAt;
     }
 
-    public function setUpdatedAt(DateTime $updatedAt): void
-    {
+    public function setUpdatedAt(DateTime $updatedAt): void {
         $this->updatedAt = $updatedAt;
     }
 
-    public function getDeletedAt(): DateTime
-    {
+    public function getDeletedAt(): ?DateTime {
         return $this->deletedAt;
     }
 
-    public function setDeletedAt(DateTime $deletedAt): void
-    {
+    public function setDeletedAt(DateTime $deletedAt): void {
         $this->deletedAt = $deletedAt;
     }
 
@@ -88,3 +87,5 @@ class Candidatura
         $this->idSituacao = $idSituacao;
     }
 }
+
+?>
