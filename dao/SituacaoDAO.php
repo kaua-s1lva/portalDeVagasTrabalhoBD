@@ -4,9 +4,9 @@
     {
         private $conexao;
 
-        public function __construct(PDO $conexao)
+        public function __construct()
         {
-            $this->conexao = $conexao;
+            $this->conexao = ConexaoSingleton::getInstancia()->getConexao();
         }
 
         public function insert($situacao)

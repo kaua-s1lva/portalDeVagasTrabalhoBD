@@ -3,8 +3,8 @@
 class StatusDAO implements IDAO {
     private $conexao;
     
-    public function __construct(PDO $conexao) {
-        $this->conexao = $conexao;
+    public function __construct() {
+        $this->conexao = ConexaoSingleton::getInstancia()->getConexao();
     }
     
     public function insert($status) {

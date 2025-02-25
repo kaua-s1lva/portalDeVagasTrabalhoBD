@@ -4,26 +4,26 @@ class CandidaturaDAO implements IDAO
 {
     private $conexao;
 
-    public function __construct(PDO $conexao)
+    public function __construct()
     {
-        $this->conexao = $conexao;
+        $this->conexao = ConexaoSingleton::getInstancia()->getConexao();
     }
 
     public function insert($candidatura)
     {
-        $stmt = $this->conexao->prepare("INSERT INTO candidatura (idVaga, idAluno, curriculo, created_at, situacao) VALUES (?, ?, ?, ?, ?)");
-        $stmt->execute([$candidatura->idVaga, $candidatura->idAluno, $candidatura->curriculo, $candidatura->created_at->format('Y-m-d H:i:s'), $candidatura->situacao]);
+        $stmt = $this->conexao->prepare("INSERT INTO candidatura (idVaga, idAluno, curriculo, created_at, situacao) VALUES (?, ?, ?, NOW(), ?)");
+        $stmt->execute([$candidatura->idVaga, $candidatura->idAluno, $candidatura->curriculo, $candidatura->situacao]);
     }
 
     public function update($candidatura)
     {
-        $stmt = $this->conexao->prepare("UPDATE candidatura SET situacao=?, updated_at=? WHERE idVaga=? AND idAluno=?");
-        $stmt->execute([$candidatura->situacao, date('Y-m-d H:i:s'), $candidatura->idVaga, $candidatura->idAluno]);
+        $stmt = $this->conexao->prepare("UPDATE candidatura SET situacao=?, updated_at=NOW() WHERE idVaga=? AND idAluno=?");
+        $stmt->execute([$candidatura->situacao, $candidatura->idVaga, $candidatura->idAluno]);
     }
 
     public function delete($id)
     {
-        $stmt = $this->conexao->prepare("DELETE FROM candidatura WHERE idVaga=?");
+        $stmt = $this->conexao->prepare("DELETE FROM candidatura SET deletedAt=NOW() WHERE idVaga=?");
         $stmt->execute([$id]);
     }
 

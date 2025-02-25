@@ -3,8 +3,8 @@
 class UsuarioDAO implements IDAO {
     protected $conexao;
     
-    public function __construct(PDO $conexao) {
-        $this->conexao = $conexao;
+    public function __construct() {
+        $this->conexao = ConexaoSingleton::getInstancia()->getConexao();
     }
     
     public function insert($usuario) {
@@ -19,7 +19,7 @@ class UsuarioDAO implements IDAO {
     }
     
     public function delete($id) {
-        $stmt = $this->conexao->prepare("UPDATE usuario SET deletedAt=NOW() WHERE idUsuario=?");
+        $stmt = $this->conexao->prepare("DELETE usuario SET deletedAt=NOW() WHERE idUsuario=?");
         $stmt->execute([$id]);
     }
     
