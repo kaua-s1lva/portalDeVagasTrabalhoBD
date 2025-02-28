@@ -49,3 +49,5 @@ class Egresso extends Usuario
         return $this->indicacoes;
     }
 }
+
+?>
