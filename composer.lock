@@ -1,0 +1,56 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "This file is @generated automatically"
+    ],
+    "content-hash": "9b3bb376c3ecacee7a9e8836a9808d77",
+    "packages": [
+        {
+            "name": "awesome-packages/awesome-routes",
+            "version": "v2.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/awesome-packages/awesome-routes.git",
+                "reference": "512349594b6d9ee9b11bb81fc9767a0f54b307fa"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/awesome-packages/awesome-routes/zipball/512349594b6d9ee9b11bb81fc9767a0f54b307fa",
+                "reference": "512349594b6d9ee9b11bb81fc9767a0f54b307fa",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^8"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "AwesomePackages\\AwesomeRoutes\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "A awesome library for handling routes",
+            "support": {
+                "issues": "https://github.com/awesome-packages/awesome-routes/issues",
+                "source": "https://github.com/awesome-packages/awesome-routes/tree/v2.0.1"
+            },
+            "time": "2021-06-08T14:57:20+00:00"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": [],
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": [],
+    "platform-dev": [],
+    "plugin-api-version": "2.6.0"
+}
