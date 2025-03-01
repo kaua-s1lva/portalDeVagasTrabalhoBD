@@ -1,9 +1,6 @@
 <?php
-namespace dao;
-
-
-use IDAO;
-use singleton\ConexaoSingleton;
+    require_once('../singleton/ConexaoSingleton.php');
+    require_once('IDAO.php');
 
 abstract class UsuarioDAO implements IDAO {
     protected $conexao;
@@ -13,8 +10,8 @@ abstract class UsuarioDAO implements IDAO {
     }
     
     public function insert($usuario) {
-        $stmt = $this->conexao->prepare("INSERT INTO usuario (nome, email, senha, tipo, createdAt) VALUES (?, ?, ?, ?, NOW())");
-        $stmt->execute([$usuario->nome, $usuario->email, $usuario->senha, $usuario->tipo]);
+        $stmt = $this->conexao->prepare("INSERT INTO usuario (nome, email, senha, created_At) VALUES (?, ?, ?, NOW())");
+        $stmt->execute([$usuario->getNome(), $usuario->getEmail(), $usuario->getSenha()]);
         return $this->conexao->lastInsertId();
     }
     

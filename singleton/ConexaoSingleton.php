@@ -1,9 +1,4 @@
 <?php
-namespace singleton;
-
-use Exception;
-use PDO;
-use PDOException;
 
 class ConexaoSingleton
 {

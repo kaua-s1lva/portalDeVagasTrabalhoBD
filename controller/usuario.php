@@ -1,7 +1,8 @@
 <?php
-
-use dao\AlunoDAO;
-use model\Aluno;
+require_once('../model/Usuario.php');
+require_once('../model/Aluno.php');
+require_once('../dao/UsuarioDAO.php');
+require_once('../dao/AlunoDAO.php');
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     // Resgata os dados enviados pelo formulário

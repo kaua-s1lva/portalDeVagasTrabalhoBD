@@ -1,9 +1,4 @@
 <?php
-namespace dao;
-
-use dao\UsuarioDAO;
-use model\Aluno;
-use PDO;
 
     class AlunoDAO extends UsuarioDAO {
         public function insert($aluno) {

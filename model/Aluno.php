@@ -1,7 +1,4 @@
 <?php
-namespace model;
-
-use ArrayObject;
 
 class Aluno extends Usuario {
     private string $cpf;

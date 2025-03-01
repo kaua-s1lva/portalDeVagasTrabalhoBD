@@ -1,5 +1,4 @@
 <?php
-namespace model;
 abstract class Usuario {
     private int $idUsuario;
     private string $nome;
@@ -9,12 +8,10 @@ abstract class Usuario {
     // Construtor
 
     public function __construct(
-        int $idUsuario,
         string $nome,
         string $email,
         string $senha,
     ) {
-        $this->idUsuario = $idUsuario;
         $this->nome = $nome;
         $this->email = $email;
         $this->senha = $senha;
@@ -36,6 +33,10 @@ abstract class Usuario {
 
     public function getSenha(): string {
         return $this->senha;
+    }
+
+    public function setId($id): void {
+        $this->idUsuario = $id;
     }
     
 }
