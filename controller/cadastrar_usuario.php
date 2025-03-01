@@ -24,17 +24,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     }
 
     header("Location: ../view/components/sucesso_modal.php");
-
-    
-/*
-    // Exemplo de como utilizar os dados: exibindo-os
-    echo "<h2>Dados Recebidos:</h2>";
-    echo "<p>Nome: " . htmlspecialchars($nome) . "</p>";
-    echo "<p>E-mail: " . htmlspecialchars($email) . "</p>";
-    echo "<p>Senha: " . htmlspecialchars($senha) . "</p>";
-    echo "<p>CPF / CNPJ: " . htmlspecialchars($cpf_cnpj) . "</p>";
-*/
-    // Aqui você pode incluir a lógica para validar, processar e armazenar os dados em um banco de dados
 } else {
     echo "Método de requisição inválido.";
 }
