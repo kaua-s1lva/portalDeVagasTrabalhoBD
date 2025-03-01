@@ -1,5 +1,7 @@
 <?php
-// public/processar_cadastro.php
+
+use dao\AlunoDAO;
+use model\Aluno;
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     // Resgata os dados enviados pelo formulário
@@ -7,6 +9,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $email     = isset($_POST['email']) ? $_POST['email'] : '';
     $senha     = isset($_POST['senha']) ? $_POST['senha'] : '';
     $cpf_cnpj  = isset($_POST['cpf_cnpj']) ? $_POST['cpf_cnpj'] : '';
+
+    $aluno = new Aluno($nome, $email, $senha, $cpf_cnpj);
+    $dao = new AlunoDAO();
+    $dao->insert($aluno);
 
     // Exemplo de como utilizar os dados: exibindo-os
     echo "<h2>Dados Recebidos:</h2>";

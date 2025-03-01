@@ -1,5 +1,5 @@
 <?php
-
+namespace model;
 abstract class Usuario {
     private int $idUsuario;
     private string $nome;
