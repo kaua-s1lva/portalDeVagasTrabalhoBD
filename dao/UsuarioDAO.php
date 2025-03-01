@@ -1,6 +1,6 @@
 <?php
 
-class UsuarioDAO implements IDAO {
+abstract class UsuarioDAO implements IDAO {
     protected $conexao;
     
     public function __construct() {
