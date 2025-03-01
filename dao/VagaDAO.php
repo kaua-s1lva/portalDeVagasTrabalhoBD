@@ -1,8 +1,6 @@
 <?php
-namespace dao;
 
-use IDAO;
-use singleton\ConexaoSingleton;
+require_once('../singleton/ConexaoSingleton.php');
 
 class VagaDAO implements IDAO
 {
@@ -43,13 +41,34 @@ class VagaDAO implements IDAO
 
     public function findAll()
     {
-        $stmt = $this->conexao->query("SELECT * FROM vagas WHERE deleted_at IS NULL");
+        $stmt = $this->conexao->query(" SELECT * FROM vaga 
+                                        INNER JOIN empresa ON empresa.idempresa = vaga.empresa_idempresa
+                                        INNER JOIN usuario ON usuario.idusuario = empresa.idempresa
+                                        WHERE vaga.deleted_at IS NULL
+                                    ");
         $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-        $vagas = [];
+        $dados = [];
         foreach ($result as $row) {
-            $vagas[] = new Vaga($row['id_vaga'], $row['etapa_id'], $row['cargo'], $row['empresa_id']);
+            $dados[] = [
+                'vaga' => [
+                    'idvaga' => $row['idvaga'],
+                    'etapa_idetapa' => $row['etapa_idetapa'],
+                    'cargo' => $row['cargo'],
+                    'empresa_idempresa' => $row['empresa_idempresa']
+                ],
+                'empresa' => [
+                    'idempresa' => $row['idempresa'],
+                    'cnpj' => $row['cnpj']
+                ],
+                'usuario' => [
+                    'idusuario' => $row['idusuario'],
+                    'nome' => $row['nome'],
+                    'email' => $row['email'],
+                    'senha' => $row['senha']
+                ]
+            ];
         }
-        return $vagas;
+        return $dados;
     }
 }
