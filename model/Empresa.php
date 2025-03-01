@@ -1,6 +1,7 @@
 <?php
 
 class Empresa extends Usuario {
+    private int $idEmpresa;
     private string $cnpj;
     private $usuarios;
     private $vagas;
@@ -19,6 +20,10 @@ class Empresa extends Usuario {
         $this->vagas = new ArrayObject();
     }
 
+    public function getIdEmpresa(): int {
+        return $this->idEmpresa;
+    }
+
     // Getters e Setters
 
     public function getCnpj(): string {
@@ -31,6 +36,10 @@ class Empresa extends Usuario {
 
     public function getVagas() {
         return $this->vagas;
+    }
+
+    public function setIdEmpresa($idEmpresa){
+        $this->idEmpresa = $idEmpresa;
     }
 
     public function addUsuario($usuario) {

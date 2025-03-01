@@ -20,8 +20,10 @@
         public function findByEmail($email) {
             $stmt = $this->conexao->prepare("SELECT u.*, e.cnpj FROM usuario u JOIN empresa e ON u.idUsuario = e.idEmpresa WHERE u.email = ?");
             $stmt->execute([$email]);
-            $result = $stmt->fetch(PDO::FETCH_ASSOC);
-            return $result ? new Empresa($result['idUsuario'], $result['nome'], $result['email'], $result['senha'], $result['cnpj']) : null;
+            $result = $stmt->fetch(PDO::FETCH_ASSOC); $result['idEmpresa'], 
+            $empresa = new Empresa($result['nome'], $result['email'], $result['senha'], $result['cnpj']);
+            $empresa::setE
+            return $result ?  : null;
         }        
 
         public function findAll()

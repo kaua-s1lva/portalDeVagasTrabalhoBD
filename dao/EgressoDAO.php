@@ -36,10 +36,10 @@ class EgressoDAO extends UsuarioDAO
 
     public function findByEmail($email)
     {
-        $stmt = $this->conexao->prepare("SELECT u.*, eg.registro FROM usuario u JOIN egresso eg ON u.idUsuario = eg.idEgresso WHERE u.email = ?");
+        $stmt = $this->conexao->prepare("SELECT u.*, eg.cpf FROM usuario u JOIN egresso eg ON u.idUsuario = eg.idEgresso WHERE u.email = ?");
         $stmt->execute([$email]);
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
-        return $result ? new Egresso($result['idUsuario'], $result['nome'], $result['email'], $result['senha'], $result['cpf'], $result['idEmpresa']) : null;
+        return $result ? new Egresso($result['idEgresso'], $result['nome'], $result['email'], $result['senha'], $result['cpf'], $result['idEmpresa']) : null;
     }
 
     public function findAll()

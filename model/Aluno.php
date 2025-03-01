@@ -1,5 +1,5 @@
 <?php
-
+require_once('../dao/UsuarioDAO.php');
 class Aluno extends Usuario {
     private string $cpf;
     private $candidaturas;

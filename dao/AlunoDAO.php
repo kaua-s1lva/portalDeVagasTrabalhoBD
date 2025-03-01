@@ -36,7 +36,7 @@ class AlunoDAO extends UsuarioDAO
         $stmt = $this->conexao->prepare("SELECT u.*, a.cpf FROM usuario u JOIN aluno a ON u.idUsuario = a.idAluno WHERE u.email = ?");
         $stmt->execute([$email]);
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
-        return $result ? new Aluno($result['idUsuario'], $result['nome'], $result['email'], $result['senha'], $result['cpf']) : null;
+        return $result ? new Aluno($result['idAluno'], $result['nome'], $result['email'], $result['senha'], $result['cpf']) : null;
     }
 
     public function findAll()
