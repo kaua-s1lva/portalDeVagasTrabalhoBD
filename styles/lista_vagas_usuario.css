@@ -10,21 +10,93 @@ body {
   height: 100vh;
 }
 
+.header h1 {
+  font-weight: 500;
+}
+
+.header button {
+  color: white;
+  padding: 0.6rem;
+  border-radius: 1rem;
+  text-decoration: none;
+  background-color: #595959;
+  border-style: none;
+}
+
+main {
+  width: 100vw;
+  height: 100vh;
+  padding: 4rem;
+}
+
 aside {
   width: 15%;
   background-color: #303030;
   color: white;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  justify-content: space-between;
+  align-items: space;
   padding: 2rem;
+}
+
+aside .links {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  gap: 1rem;
+}
+
+aside a {
+  text-decoration: none;
+  color: white;
 }
 
 aside img {
   max-width: 100%;
 }
 
-section {
-  border: 1px solid red
+.header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.container {
+  margin-top: 2rem;
+  padding: 2rem;
+  border-radius: 1rem;
+  background-color: #D9D9D9;
+  border-top: solid #144575;
+  border-bottom: solid #144575;
+}
+
+.container table{
+  width: 100%;
+}
+
+.container table thead {
+  text-align: left;
+}
+
+.container table thead tr th{
+  color: #303030;
+  font-weight: 500;
+}
+
+.container table tbody{
+  background-color: white;
+}
+
+.container table tbody tr td{
+  color: #303030;
+  text-align: center;
+  padding: 1rem;
+}
+
+.buttons button {
+  color: white;
+  background-color: #595959;
+  padding: 0.5rem 1rem;
+  border-style: none;
+  border-radius: 1rem;
 }
