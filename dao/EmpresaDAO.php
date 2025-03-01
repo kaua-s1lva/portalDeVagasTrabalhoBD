@@ -5,8 +5,8 @@
         public function insert($empresa)
         {
             $idUsuario = parent::insert($empresa);
-            $stmt = $this->conexao->prepare("INSERT INTO empresa (idUsuario, cnpj) VALUES (?, ?)");
-            $stmt->execute([$idUsuario, $empresa->cnpj]);
+            $stmt = $this->conexao->prepare("INSERT INTO empresa (idEmpresa, cnpj) VALUES (?, ?)");
+            $stmt->execute([$idUsuario, $empresa->getCnpj()]);
         }
 
         public function findById($id)

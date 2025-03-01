@@ -8,13 +8,12 @@ class Empresa extends Usuario {
     // Construtor
     
     public function __construct(
-        int $idUsuario,
         string $nome,
         string $email,
         string $senha,
         string $cnpj,
     ) {
-        parent::__construct($idUsuario, $nome, $email, $senha);
+        parent::__construct($nome, $email, $senha);
         $this->cnpj = $cnpj;
         $this->usuarios = new ArrayObject();
         $this->vagas = new ArrayObject();
