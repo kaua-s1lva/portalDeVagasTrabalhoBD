@@ -20,7 +20,6 @@ class ConexaoSingleton
             $dsn = "pgsql:host={$_ENV['HOST']};port={$_ENV['PORT']};dbname={$_ENV['DBNAME']}";
             $this->conexao = new PDO($dsn, $_ENV['USER'], $_ENV['PASSWORD']);
             $this->conexao->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-            echo "Conexão com PostgreSQL estabelecida!\n";
         } catch (PDOException $e) {
             die("Erro na conexão: " . $e->getMessage());
         }

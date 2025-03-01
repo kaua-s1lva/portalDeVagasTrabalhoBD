@@ -13,23 +13,24 @@ require_once('../dao/EmpresaDAO.php');
 require_once('../dao/EgressoDAO.php');
 require_once('../singleton/SessaoUsuarioSingleton.php');
 
-class AutenticacaoService {
+class AutenticacaoService
+{
     private $autenticadores = [];
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->autenticadores[] = new AutenticadorAluno();
         $this->autenticadores[] = new AutenticadorEgresso();
         $this->autenticadores[] = new AutenticadorEmpresa();
     }
 
-    public function autenticar($username, $password) {
+    public function autenticar($username, $password)
+    {
         foreach ($this->autenticadores as $autenticador) {
             $usuario = $autenticador->autenticar($username, $password);
-            if ($usuario) {
-                $sessaoUsuario = SessaoUsuarioSingleton::getInstance();
 
+            if ($usuario) {
                 // Salva o tipo de usuário na sessão
-                $_SESSION['usuario_tipo'] = $sessaoUsuario->getTipoUsuario();  // Aluno, Egresso, Empresa
                 $_SESSION['usuario_id'] = $usuario->getIdUsuario();
                 $_SESSION['usuario_nome'] = $usuario->getNome();
                 return $usuario; // Retorna o usuário autenticado
@@ -38,4 +39,3 @@ class AutenticacaoService {
         return null; // Se não autenticar
     }
 }
-?>

@@ -22,8 +22,10 @@ class EmpresaDAO extends UsuarioDAO
             if ($empresaData) {
                 $empresa = new Empresa($usuarioData->nome, $usuarioData->email, $usuarioData->senha, $empresaData->cnpj);
                 $empresa->setIdEmpresa($empresaData->idempresa);
-                $empresa->setIdUsuario($empresaData->idempresa);
+                $empresa->setIdUsuario($usuarioData->idusuario);
             }
+
+            return $empresa;
         }
         
         return null;

@@ -13,8 +13,7 @@ class AutenticadorAluno implements IAutenticador
         // Verifica se o usuário existe e se a senha corresponde
         if ($usuario && $usuario->getSenha() == $password) {
             // Usando o UsuarioLogadoSingleton para gerenciar a sessão
-            $usuarioLogado = SessaoUsuarioSingleton::getInstance();
-            $usuarioLogado->setUsuario($usuario, 'aluno');
+            $_SESSION['usuario_tipo'] = 'aluno';  
             return $usuario;
         }
         return null; // Se não autenticar
