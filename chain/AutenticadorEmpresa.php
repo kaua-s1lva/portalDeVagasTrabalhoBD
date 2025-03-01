@@ -10,8 +10,6 @@ class AutenticadorEmpresa implements IAutenticador
         $daoEmpresa = new EmpresaDAO();
         $usuario = $daoEmpresa->findByEmail($email);
 
-        var_dump($usuario->getSenha());  // Verifique o que está sendo retornado do findByEmail
-
         // Verifica se o usuário existe e se a senha corresponde
         if ($usuario && $usuario->getSenha() == $password) {
             // Usando o UsuarioLogadoSingleton para gerenciar a sessão
