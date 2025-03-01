@@ -4,7 +4,7 @@
         public function insert($aluno) {
             $idUsuario = parent::insert($aluno);
             $stmt = $this->conexao->prepare("INSERT INTO aluno (idAluno, cpf) VALUES (?, ?)");
-            $stmt->execute([$idUsuario, $aluno->cpf]);
+            $stmt->execute([$idUsuario, $aluno->getCpf()]);
         }
         
         public function update($aluno) {
