@@ -18,8 +18,18 @@
         }
 
         public function findByEmail($email) {
+            // Prepara a query SQL com junção (JOIN) para buscar a empresa pelo e-mail
+            $stmt = $this->conexao->prepare("SELECT u.*, e.cnpj FROM usuario u JOIN empresa e ON u.idUsuario = e.idEmpresa WHERE u.email = ?");
             
-        }
+            // Executa a consulta passando o e-mail como parâmetro
+            $stmt->execute([$email]);
+            
+            // Obtém o resultado
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            
+            // Se encontrar a empresa, retorna um objeto Empresa com os dados
+            return $result ? new Empresa($result['idUsuario'], $result['nome'], $result['email'], $result['senha'], $result['cnpj']) : null;
+        }        
 
         public function findAll()
         {

@@ -27,7 +27,17 @@
         }
 
         public function findByEmail($email) {
+            // Prepara a query SQL com junção (JOIN) para buscar o aluno pelo e-mail
+            $stmt = $this->conexao->prepare("SELECT u.*, a.cpf FROM usuario u JOIN aluno a ON u.idUsuario = a.idAluno WHERE u.email = ?");
             
+            // Executa a consulta passando o e-mail como parâmetro
+            $stmt->execute([$email]);
+            
+            // Obtém o resultado
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            
+            // Se encontrar o usuário, retorna um objeto Aluno com os dados
+            return $result ? new Aluno($result['idUsuario'], $result['nome'], $result['email'], $result['senha'], $result['cpf']) : null;
         }
         
         public function findAll() {

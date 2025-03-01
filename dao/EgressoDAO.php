@@ -29,6 +29,20 @@
             return [];
         }
 
+        public function findByEmail($email) {
+            // Prepara a query SQL com junção (JOIN) para buscar o egresso pelo e-mail
+            $stmt = $this->conexao->prepare("SELECT u.*, eg.registro FROM usuario u JOIN egresso eg ON u.idUsuario = eg.idEgresso WHERE u.email = ?");
+            
+            // Executa a consulta passando o e-mail como parâmetro
+            $stmt->execute([$email]);
+            
+            // Obtém o resultado
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            
+            // Se encontrar o egresso, retorna um objeto Egresso com os dados
+            return $result ? new Egresso($result['idUsuario'], $result['nome'], $result['email'], $result['senha'], $result['cpf'], $result['idEmpresa']) : null;
+        }        
+
         public function findAll() {
             $stmt = $this->conexao->query("SELECT u.*, a.cpf FROM usuario u JOIN aluno a ON u.idUsuario = a.idUsuario");
             $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
