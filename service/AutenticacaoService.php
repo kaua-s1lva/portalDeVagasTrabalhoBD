@@ -26,9 +26,11 @@ class AutenticacaoService {
         foreach ($this->autenticadores as $autenticador) {
             $usuario = $autenticador->autenticar($username, $password);
             if ($usuario) {
+                $sessaoUsuario = SessaoUsuarioSingleton::getInstance();
+
                 // Salva o tipo de usuário na sessão
-                $_SESSION['usuario_tipo'] = $usuario->getTipo();  // Aluno, Egresso, Empresa
-                $_SESSION['usuario_id'] = $usuario->getId();
+                $_SESSION['usuario_tipo'] = $sessaoUsuario->getTipoUsuario();  // Aluno, Egresso, Empresa
+                $_SESSION['usuario_id'] = $usuario->getIdUsuario();
                 $_SESSION['usuario_nome'] = $usuario->getNome();
                 return $usuario; // Retorna o usuário autenticado
             }

@@ -23,31 +23,49 @@ class AlunoDAO extends UsuarioDAO
         parent::delete($id);
     }
 
-    public function findById($id)
-    {
-        $stmt = $this->conexao->prepare("SELECT u.*, a.cpf FROM usuario u JOIN aluno a ON u.idUsuario = a.idAluno WHERE u.idUsuario=?");
+    public function findById($id) {
+        $stmt = $this->conexao->prepare("SELECT * FROM usuario WHERE idUsuario = ?");
         $stmt->execute([$id]);
-        $result = $stmt->fetch(PDO::FETCH_ASSOC);
-        return $result ? new Aluno($result['idUsuario'], $result['nome'], $result['email'], $result['senha'], $result['cpf']) : null;
-    }
+        $usuarioData = $stmt->fetch(PDO::FETCH_OBJ);
 
-    public function findByEmail($email)
-    {
-        $stmt = $this->conexao->prepare("SELECT u.*, a.cpf FROM usuario u JOIN aluno a ON u.idUsuario = a.idAluno WHERE u.email = ?");
-        $stmt->execute([$email]);
-        $result = $stmt->fetch(PDO::FETCH_ASSOC);
-        return $result ? new Aluno($result['idAluno'], $result['nome'], $result['email'], $result['senha'], $result['cpf']) : null;
-    }
+        if ($usuarioData) {
 
-    public function findAll()
-    {
-        $stmt = $this->conexao->query("SELECT u.*, a.cpf FROM usuario u JOIN aluno a ON u.idUsuario = a.idAluno");
-        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $stmt = $this->conexao->prepare("SELECT * FROM aluno WHERE idAluno = ?");
+            $stmt->execute([$id]);
+            $alunoData = $stmt->fetch(PDO::FETCH_OBJ);
 
-        $alunos = [];
-        foreach ($result as $row) {
-            $alunos[] = new Aluno($row['idUsuario'], $row['nome'], $row['email'], $row['senha'], $row['cpf']);
+            if ($alunoData) {
+       
+                $aluno = new Aluno($usuarioData->nome, $usuarioData->email, $usuarioData->senha, $alunoData->cpf);
+                $aluno->setIdAluno($alunoData->idaluno);
+                $aluno->setIdUsuario($usuarioData->idusuario);
+
+                return $aluno;
+            }
         }
-        return $alunos;
+
+        return null;
+    }
+
+    public function findByEmail($email) {
+        $stmt = $this->conexao->prepare("SELECT u.*, a.idAluno, a.cpf FROM usuario u JOIN aluno a ON u.idUsuario = a.idAluno WHERE u.email = ?");
+        $stmt->execute([$email]);
+        $result = $stmt->fetch(PDO::FETCH_OBJ);
+
+        if ($result) {
+
+            $aluno = new Aluno($result->nome, $result->email, $result->senha, $result->cpf);
+            $aluno->setIdAluno($result->idaluno);
+            $aluno->setIdUsuario($result->idaluno);
+            return $aluno;
+        }
+
+        return null;
+    }
+
+    public function findAll() {
+        $stmt = $this->conexao->prepare("SELECT u.*, a.idAluno FROM usuario u JOIN aluno a ON u.idUsuario = a.idAluno");
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_OBJ);
     }
 }

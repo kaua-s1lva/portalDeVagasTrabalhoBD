@@ -21,7 +21,7 @@ function verificarLogin($username, $password) {
 
     // Verifica se a autenticação foi bem-sucedida
     $usuario = $autenticacaoService->autenticar($username, $password);
-    
+   // echo $usuario->getNome();
     if ($usuario) {
         return true;
     }
@@ -39,11 +39,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     if ($resultado === true) {
         // Redireciona o usuário baseado no tipo de usuário
         if ($_SESSION['usuario_tipo'] == 'aluno') {
-            header("Location: lista_vagas_usuario.html");  // Página para Aluno
+            header("Location: ../view/lista_vagas_usuario.html");  // Página para Aluno
         } elseif ($_SESSION['usuario_tipo'] == 'egresso') {
-            header("Location: lista_indicacoes_egresso.html");  // Página para Egresso
+            header("Location: ../view/lista_indicacoes_egresso.html");  // Página para Egresso
         } elseif ($_SESSION['usuario_tipo'] == 'empresa') {
-            header("Location: lista_vagas_empresa.html");  // Página para Empresa
+            header("Location: ../view/lista_vagas_empresa.html");  // Página para Empresa
         }
         exit;
     } else {

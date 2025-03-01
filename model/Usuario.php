@@ -35,8 +35,8 @@ abstract class Usuario {
         return $this->senha;
     }
 
-    public function setId($id): void {
-        $this->idUsuario = $id;
+    public function setIdUsuario($idUsuario): void {
+        $this->idUsuario = $idUsuario;
     }
     
 }

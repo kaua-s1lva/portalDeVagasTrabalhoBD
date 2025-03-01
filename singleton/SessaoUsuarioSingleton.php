@@ -6,6 +6,7 @@ require_once('../dao/EmpresaDAO.php');
 class SessaoUsuarioSingleton {
     private static $instance = null;
     private $usuario = null;
+    private $tipoUsuario;
 
     // Construtor privado para evitar instâncias externas
     private function __construct() {
@@ -42,12 +43,19 @@ class SessaoUsuarioSingleton {
         return $this->usuario;
     }
 
+    // Retorna o tipo de usuário logado
+    public function getTipoUsuario() {
+        return $this->tipoUsuario;
+    }
+
     // Define o usuário logado manualmente (útil para quando o login é feito)
     public function setUsuario($usuario, $tipoUsuario) {
         $this->usuario = $usuario;
-        $_SESSION['usuario_id'] = $usuario->getId();
+        $this->tipoUsuario = $tipoUsuario;
+        $_SESSION['usuario_id'] = $usuario->getIdUsuario();
         $_SESSION['usuario_nome'] = $usuario->getNome();
         $_SESSION['tipo_usuario'] = $tipoUsuario;
+        
     }
 
     // Destrói a sessão e o usuário logado

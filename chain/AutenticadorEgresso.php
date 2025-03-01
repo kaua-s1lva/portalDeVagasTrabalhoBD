@@ -10,12 +10,13 @@ class AutenticadorEgresso implements IAutenticador
         $daoEgresso = new EgressoDAO();
         $usuario = $daoEgresso->findByEmail($email);
 
-        if ($usuario && password_verify($password, $usuario->getSenha())) {
+        // Verifica se o usuário existe e se a senha corresponde
+        if ($usuario && $usuario->getSenha() == $password) {
             // Usando o UsuarioLogadoSingleton para gerenciar a sessão
             $usuarioLogado = SessaoUsuarioSingleton::getInstance();
             $usuarioLogado->setUsuario($usuario, 'egresso');
-            return true;
+            return $usuario;
         }
-        return false;
+        return null; // Se não autenticar
     }
 }
