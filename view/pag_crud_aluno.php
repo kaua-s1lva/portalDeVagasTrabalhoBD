@@ -1,3 +1,19 @@
+<?php
+  session_start();
+  if (!isset($_SESSION['usuario_id']) == true && !isset($_SESSION['tipo_usuario']) == 'aluno') {
+      header('Location: login_screen.html');
+  }
+
+  require_once('../model/Usuario.php');
+  require_once('../dao/UsuarioDAO.php');
+  require_once('../dao/AlunoDAO.php');
+  require_once('../model/Aluno.php');
+      
+  require_once('../singleton/SessaoUsuarioSingleton.php');
+
+  $usuario_logado = SessaoUsuarioSingleton::getInstance()->getUsuario();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -10,7 +26,7 @@
       href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
       rel="stylesheet"
     />
-    <title>Manter Usuário</title>
+    <title>Manter Aluno</title>
   </head>
   <body>
     <aside>
@@ -28,23 +44,23 @@
         <h1>Atualizar Dados Pessoais</h1>
       </section>
       <section class="container">
-        <form id="loginForm">
+        <form id="loginForm" action="../controller/editar_aluno.php" method="POST">
           <div class="crud-form-input">
             <div class="inplbl">
-              <label for="username">Nome:</label>
-              <input type="text" id="username" name="username" required />
+              <label for="nome">Nome:</label>
+              <input type="text" id="nome" name="nome" value="<?= $usuario_logado->getNome() ?>" required />
             </div>
             <div class="inplbl">
-              <label for="password">E-mail:</label>
-              <input type="password" id="password" name="password" required />
+              <label for="email">E-mail:</label>
+              <input type="text" id="email" name="email" value="<?= $usuario_logado->getEmail() ?>" required />
             </div>
             <div class="inplbl">
-              <label for="username">Senha:</label>
-              <input type="text" id="username" name="username" required />
+              <label for="senha">Senha:</label>
+              <input type="text" id="senha" name="senha" value="<?= $usuario_logado->getSenha() ?>" required />
             </div>
             <div class="inplbl">
-              <label for="username">CPF:</label>
-              <input type="text" id="username" name="username" required />
+              <label for="cpf">CPF:</label>
+              <input type="text" id="cpf" name="cpf" value="<?= $usuario_logado->getCpf() ?>" required />
             </div>
           </div>
           <div class="crud-form-buttons">
