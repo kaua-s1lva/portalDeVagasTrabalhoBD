@@ -1,3 +1,10 @@
+<?php
+  session_start();
+  if (!isset($_SESSION['usuario_id']) == true && !isset($_SESSION['tipo_usuario']) == 'aluno') {
+    header('Location: login_screen.html');
+  }
+?>
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -11,6 +18,19 @@
       <img src="../assets/ufes-logo.png" alt="" />
       <a href="">Perfil</a>
       <span></span>
+      <?php
+        require_once('../model/Usuario.php');
+        require_once('../dao/UsuarioDAO.php');
+        require_once('../dao/AlunoDAO.php');
+        require_once('../model/Aluno.php');
+        
+        require_once('../singleton/SessaoUsuarioSingleton.php');
+
+        $usuario_logado = SessaoUsuarioSingleton::getInstance()->getUsuario();
+        print_r($usuario_logado->getNome());
+        
+
+      ?>
       <a href="">Gerência de Vagas</a>
     </aside>
     <main>
