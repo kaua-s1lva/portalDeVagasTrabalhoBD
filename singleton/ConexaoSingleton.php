@@ -7,7 +7,7 @@ class ConexaoSingleton
 
     private $host = 'localhost';
     private $port = '5432';
-    private $dbname = 'bdportalvagasestagio';
+    private $dbname = 'dbportalvagasestagio';
     private $user = 'postgres';
     private $password = 'root';
 

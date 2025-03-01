@@ -1,6 +1,7 @@
 <?php
-
+require_once('../dao/UsuarioDAO.php');
 class Aluno extends Usuario {
+    private int $idAluno;
     private string $cpf;
     private $candidaturas;
 
@@ -19,6 +20,11 @@ class Aluno extends Usuario {
 
     // Getters
 
+
+  public function getIdAluno(): int {
+        return $this->idAluno;
+    }
+
     public function getCpf(): string {
         return $this->cpf;
     }
@@ -29,6 +35,12 @@ class Aluno extends Usuario {
 
     public function addCandidatura($candidatura) {
         $this->candidaturas->append($candidatura);
+    }
+
+    // setters
+  
+    public function setIdAluno($idAluno){
+        $this->idAluno = $idAluno;
     }
 }
 
