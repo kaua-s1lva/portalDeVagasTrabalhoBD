@@ -11,7 +11,8 @@ require_once('../dao/AlunoDAO.php');
 require_once('../dao/EmpresaDAO.php');
 require_once('../dao/EgressoDAO.php');
 
-function verificarLogin($username, $password) {
+function verificarLogin($username, $password)
+{
     if (empty($username) || empty($password)) {
         return "Preencha todos os campos.";
     }
@@ -21,7 +22,6 @@ function verificarLogin($username, $password) {
 
     // Verifica se a autenticação foi bem-sucedida
     $usuario = $autenticacaoService->autenticar($username, $password);
-   // echo $usuario->getNome();
     if ($usuario) {
         return true;
     }
@@ -47,9 +47,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         }
         exit;
     } else {
-        echo "<p style='color: red;'>$resultado</p>";  // Exibe erro
+        echo "<script>alert('$resultado'); window.location.href = '../index.php';</script>";
+        exit;
     }
+    header("Location: index.php");
 } else {
     echo "Método de requisição inválido.";
 }
-?>

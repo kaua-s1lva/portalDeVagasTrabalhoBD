@@ -3,8 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="../styles/css_reset.css" />
-    <link rel="stylesheet" href="../styles/login_screen.css" />
+    <link rel="stylesheet" href="styles/css_reset.css" />
+    <link rel="stylesheet" href="styles/login_screen.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -17,11 +17,11 @@
     <main>
       <section class="login-section">
         <div class="login-logo">
-          <img src="../assets/ufes-logo.png" alt="login-page-logo" />
+          <img src="assets/ufes-logo.png" alt="login-page-logo" />
         </div>
         <div class="login-form">
           <h1>Portal de Estágios UFES</h1>
-          <form id="loginForm" action="../controller/login.php" method="POST">
+          <form id="loginForm" action="controller/login.php" method="POST">
             <!-- <label for="username">E-mail:</label> -->
             <input
               type="text"
@@ -45,11 +45,11 @@
         <span class="line"></span>
         <div class="registration">
           <p>Ainda não possui um cadastro?</p>
-          <button>Registrar-se</button>
+          <button action="view/cadastro_usuario_screen.php">Registrar-se</button>
         </div>
       </section>
       <section class="op-art">
-        <img src="../assets/login_screen_image.png" alt="login-page-art" />
+        <img src="assets/login_screen_image.png" alt="login-page-art" />
       </section>
     </main>
   </body>
