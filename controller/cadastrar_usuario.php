@@ -13,17 +13,20 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $senha     = isset($_POST['senha']) ? $_POST['senha'] : '';
     $cpf_cnpj  = isset($_POST['cpf_cnpj']) ? $_POST['cpf_cnpj'] : '';
 
-    if (strpos($email, "@edu.ufes.br") !== false) {
+    if (strpos($email, "@edu.ufes.br") !== false && strlen($cpf_cnpj) == 11) {
         $aluno = new Aluno($nome, $email, $senha, $cpf_cnpj);
         $dao = new AlunoDAO();
         $dao->insert($aluno);
-    } else {
+        header("Location: ../view/components/sucesso_modal.php");
+    } else if (strlen($cpf_cnpj == 14)) {
         $empresa = new Empresa($nome, $email, $senha, $cpf_cnpj);
         $dao = new EmpresaDAO();
         $dao->insert($empresa);
+        header("Location: ../view/components/sucesso_modal.php");
+    } else {
+        echo "CPF ou CNPJ inválido";
     }
-
-    header("Location: ../view/components/sucesso_modal.php");
+    
 } else {
     echo "Método de requisição inválido.";
 }
