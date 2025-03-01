@@ -1,6 +1,6 @@
 <?php
 abstract class Usuario {
-    private int $idUsuario;
+    private ?int $idUsuario = null;
     private string $nome;
     private string $email;
     private string $senha;
@@ -19,7 +19,7 @@ abstract class Usuario {
 
     // Getters e Setters
     
-    public function getIdUsuario(): int {
+    public function getIdUsuario(): ?int {
         return $this->idUsuario;
     }
 
@@ -35,7 +35,7 @@ abstract class Usuario {
         return $this->senha;
     }
 
-    public function setIdUsuario($idUsuario): void {
+    public function setIdUsuario(int $idUsuario): void {
         $this->idUsuario = $idUsuario;
     }
     

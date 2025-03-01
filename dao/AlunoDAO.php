@@ -13,7 +13,7 @@ class AlunoDAO extends UsuarioDAO
     {
         parent::update($aluno);
         $stmt = $this->conexao->prepare("UPDATE aluno SET cpf=? WHERE idAluno=?");
-        $stmt->execute([$aluno->cpf, $aluno->idUsuario]);
+        $stmt->execute([$aluno->getCpf(), $aluno->getIdUsuario()]);
     }
 
     public function delete($id)

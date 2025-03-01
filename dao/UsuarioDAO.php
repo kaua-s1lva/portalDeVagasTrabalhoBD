@@ -16,8 +16,8 @@ abstract class UsuarioDAO implements IDAO {
     }
     
     public function update($usuario) {
-        $stmt = $this->conexao->prepare("UPDATE usuario SET nome=?, email=?, senha=?, updatedAt=NOW() WHERE idUsuario=?");
-        $stmt->execute([$usuario->nome, $usuario->email, $usuario->senha, $usuario->idUsuario]);
+        $stmt = $this->conexao->prepare("UPDATE usuario SET nome=?, email=?, senha=?, updated_At=NOW() WHERE idUsuario=?");
+        $stmt->execute([$usuario->getNome(), $usuario->getEmail(), $usuario->getSenha(), $usuario->getIdUsuario()]);
     }
     
     public function delete($id) {

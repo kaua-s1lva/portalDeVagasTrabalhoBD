@@ -1,3 +1,16 @@
+<?php
+    session_start();
+    if (!isset($_SESSION['usuario_id']) == true && !isset($_SESSION['tipo_usuario']) == 'aluno') {
+        header('Location: login_screen.html');
+    }
+
+    require_once('../dao/IDAO.php');
+    require_once('../dao/VagaDAO.php');
+    require_once('../model/Vaga.php');
+    $vagaDAO = new VagaDAO();
+    $dados = $vagaDAO->findAll();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -14,12 +27,14 @@
   </head>
   <body>
     <aside>
-      <div class="vagas-usu-img">
-        <img src="../assets/ufes-logo.png" alt="" />
-      </div>
+
+      <img src="../assets/ufes-logo.png" alt="" />
+      <span></span>
+
       <div class="links">
-        <a href="">Perfil</a>
+        <a href="pag_crud_aluno.php">Perfil</a>
         <a href="">Visualizar Vagas</a>
+        <a href="">Log Off</a>
       </div>
     </aside>
     <main>
@@ -37,20 +52,19 @@
             </tr>
           </thead>
           <tbody>
+
+            <?php foreach($dados as $dado) { ?>
+
             <tr>
-              <td>Desenvolvedor Web Júnior</td>
-              <td>Stacks LTDA</td>
+              <td><?= $dado['vaga']['cargo'] ?></td>
+              <td><?= $dado['usuario']['nome'] ?></td>
               <td class="buttons">
                 <button>Candidatar-se</button>
               </td>
             </tr>
-            <tr>
-              <td>Analista De Dados Junior</td>
-              <td>Unreal Data</td>
-              <td class="buttons">
-                <button>Candidatar-se</button>
-              </td>
-            </tr>
+            
+            <?php } ?>
+            
           </tbody>
         </table>
       </section>
