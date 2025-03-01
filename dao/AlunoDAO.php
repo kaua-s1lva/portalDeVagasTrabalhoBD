@@ -25,6 +25,10 @@
             $result = $stmt->fetch(PDO::FETCH_ASSOC);
             return $result ? new Aluno($result['idUsuario'], $result['nome'], $result['email'], $result['senha'], $result['cpf']) : null;
         }
+
+        public function findByEmail($email) {
+            
+        }
         
         public function findAll() {
             $stmt = $this->conexao->query("SELECT u.*, a.cpf FROM usuario u JOIN aluno a ON u.idUsuario = a.idAluno");
