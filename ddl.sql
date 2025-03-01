@@ -1,6 +1,6 @@
 -- Tabela usuario
 CREATE TABLE IF NOT EXISTS usuario (
-  idUsuario INT PRIMARY KEY,
+  idUsuario SERIAL PRIMARY KEY,
   nome VARCHAR(1000) NOT NULL,
   email VARCHAR(1000) NOT NULL,
   senha VARCHAR(1000) NOT NULL,
@@ -36,10 +36,9 @@ CREATE TABLE IF NOT EXISTS egresso (
     REFERENCES empresa (idEmpresa) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
-
 -- Tabela etapa
 CREATE TABLE IF NOT EXISTS etapa (
-  idEtapa INT PRIMARY KEY,
+  idEtapa SERIAL PRIMARY KEY,
   nome VARCHAR(100) NOT NULL,
   descricao TEXT NOT NULL,
   created_at TIMESTAMP NOT NULL,
@@ -48,7 +47,7 @@ CREATE TABLE IF NOT EXISTS etapa (
 
 -- Tabela vaga
 CREATE TABLE IF NOT EXISTS vaga (
-  idVaga INT PRIMARY KEY,
+  idVaga SERIAL PRIMARY KEY,
   etapa_idEtapa INT NOT NULL,
   created_at TIMESTAMP NOT NULL,
   updated_at TIMESTAMP,
@@ -63,7 +62,7 @@ CREATE TABLE IF NOT EXISTS vaga (
 
 -- Tabela situacao
 CREATE TABLE IF NOT EXISTS situacao (
-  idSituacao INT PRIMARY KEY,
+  idSituacao SERIAL PRIMARY KEY,
   nome VARCHAR(100) NOT NULL,
   descricao TEXT NOT NULL
 );
@@ -88,7 +87,7 @@ CREATE TABLE IF NOT EXISTS candidatura (
 
 -- Tabela status
 CREATE TABLE IF NOT EXISTS status (
-  idstatus INT PRIMARY KEY,
+  idstatus SERIAL PRIMARY KEY,
   nome VARCHAR(100) NOT NULL,
   descricao TEXT NOT NULL
 );
@@ -115,7 +114,7 @@ CREATE TABLE IF NOT EXISTS indicacao (
 
 -- Tabela requisito
 CREATE TABLE IF NOT EXISTS requisito (
-  idRequisito INT PRIMARY KEY,
+  idRequisito SERIAL PRIMARY KEY,
   nome VARCHAR(1000) NOT NULL,
   duracao VARCHAR(1000)
 );
