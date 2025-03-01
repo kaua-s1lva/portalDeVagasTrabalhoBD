@@ -4,15 +4,6 @@
         header('Location: login_screen.html');
     }
 
-    require_once('../model/Usuario.php');
-    require_once('../dao/UsuarioDAO.php');
-    require_once('../dao/AlunoDAO.php');
-    require_once('../model/Aluno.php');
-        
-    require_once('../singleton/SessaoUsuarioSingleton.php');
-
-    $usuario_logado = SessaoUsuarioSingleton::getInstance()->getUsuario();
-
     require_once('../dao/IDAO.php');
     require_once('../dao/VagaDAO.php');
     require_once('../model/Vaga.php');
@@ -41,8 +32,9 @@
       <span></span>
 
       <div class="links">
-        <a href="">Perfil</a>
+        <a href="pag_crud_aluno.php">Perfil</a>
         <a href="">Visualizar Vagas</a>
+        <a href="">Log Off</a>
       </div>
     </aside>
     <main>

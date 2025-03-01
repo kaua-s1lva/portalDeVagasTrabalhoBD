@@ -33,11 +33,13 @@ class SessaoUsuarioSingleton
         if ($tipoUsuario == 'aluno') {
             $dao = new AlunoDAO();
             $this->usuario = $dao->findById($usuarioId);
+            $this->usuario->setIdAluno($usuarioId);
             $this->tipoUsuario = 'aluno';
         }
         if ($tipoUsuario == 'egresso') {
             $dao = new EgressoDAO();
             $this->usuario = $dao->findById($usuarioId);
+            $this->usuario->setIdEgresso($usuarioId);
             $this->tipoUsuario = 'egresso';
         }
         if ($tipoUsuario == 'empresa') {

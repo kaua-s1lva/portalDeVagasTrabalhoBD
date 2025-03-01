@@ -39,7 +39,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     if ($resultado === true) {
         // Redireciona o usuário baseado no tipo de usuário
         if ($_SESSION['usuario_tipo'] == 'aluno') {
-            header("Location: ../view/lista_vagas_usuario.php");  // Página para Aluno
+            header("Location: ../view/lista_vagas_aluno.php");  // Página para Aluno
         } elseif ($_SESSION['usuario_tipo'] == 'egresso') {
             header("Location: ../view/lista_indicacoes_egresso.php");  // Página para Egresso
         } elseif ($_SESSION['usuario_tipo'] == 'empresa') {
