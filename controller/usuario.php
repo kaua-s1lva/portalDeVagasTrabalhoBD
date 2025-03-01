@@ -23,7 +23,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $dao->insert($empresa);
     }
 
-    header("Location: ../view/login_screen.html");
+    header("Location: ../view/components/sucesso_modal.php");
 
     
 /*
