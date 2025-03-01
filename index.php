@@ -30,7 +30,6 @@
               required
               placeholder="E-mail"
             />
-            <!-- <label for="password">Senha:</label> -->
             <input
               type="password"
               id="password"
@@ -41,11 +40,10 @@
             <button type="submit">Acessar</button>
           </form>
         </div>
-        <!-- Usar  ::before e ::after ??-->
         <span class="line"></span>
         <div class="registration">
           <p>Ainda não possui um cadastro?</p>
-          <button action="view/cadastro_usuario_screen.php">Registrar-se</button>
+          <a href="./view/cadastro_usuario_screen.php">Registrar-se</a>
         </div>
       </section>
       <section class="op-art">
