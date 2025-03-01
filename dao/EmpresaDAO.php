@@ -17,6 +17,10 @@
             return $stmt->fetchAll(PDO::FETCH_OBJ);
         }
 
+        public function findByEmail($email) {
+            
+        }
+
         public function findAll()
         {
             $stmt = $this->conexao->query("SELECT u.*, e.cnpj FROM usuario u JOIN empresa e ON u.idUsuario = e.idUsuario");

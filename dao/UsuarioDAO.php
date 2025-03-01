@@ -26,6 +26,8 @@ abstract class UsuarioDAO implements IDAO {
     }
     
     public abstract function findById($id);
+
+    public abstract function findByEmail($email);
     
     public abstract function findAll();
 }
