@@ -7,13 +7,12 @@ class Aluno extends Usuario {
     // Construtor
     
     public function __construct(
-        int $idUsuario,
         string $nome,
         string $email,
         string $senha,
         string $cpf,
     ) {
-        parent::__construct($idUsuario, $nome, $email, $senha);
+        parent::__construct($nome, $email, $senha);
         $this->cpf = $cpf;
         $this->candidaturas = new ArrayObject();
     }

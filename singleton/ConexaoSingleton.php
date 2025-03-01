@@ -7,9 +7,9 @@ class ConexaoSingleton
 
     private $host = 'localhost';
     private $port = '5432';
-    private $dbname = 'seu_banco';
-    private $user = 'seu_usuario';
-    private $password = 'sua_senha';
+    private $dbname = 'bdportalvagasestagio';
+    private $user = 'postgres';
+    private $password = 'root';
 
     private function __construct()
     {

@@ -1,4 +1,8 @@
 <?php
+namespace dao;
+
+use IDAO;
+use singleton\ConexaoSingleton;
 
 class VagaDAO implements IDAO
 {
