@@ -22,11 +22,12 @@ function verificarLogin($username, $password)
 
     // Verifica se a autenticação foi bem-sucedida
     $usuario = $autenticacaoService->autenticar($username, $password);
+
     if ($usuario) {
         return true;
     }
 
-    return "Usuário ou senha inválidos.";
+    return "Usuário não encontrado, e-mail ou senha inválidos.";
 }
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
