@@ -21,7 +21,6 @@ abstract class UsuarioDAO implements IDAO {
     }
     
     public function delete($id) {
-        print_r($id);
         $stmt = $this->conexao->prepare("DELETE FROM usuario WHERE idUsuario=?");
         $stmt->execute([$id]);
     }

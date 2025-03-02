@@ -29,23 +29,23 @@
         <h1>Dados Pessoais</h1>
       </section>
       <section class="container">
-        <form id="loginForm">
+        <form id="loginForm" method="POST" action="../controller/crud_egresso.php">
           <div class="crud-form-input">
             <div class="inplbl">
               <label for="username">Nome:</label>
               <input type="text" id="username" name="username" required />
             </div>
             <div class="inplbl">
-              <label for="password">E-mail:</label>
+              <label for="email">E-mail:</label>
+              <input type="text" id="email" name="email" required />
+            </div>
+            <div class="inplbl">
+              <label for="password">Senha:</label>
               <input type="password" id="password" name="password" required />
             </div>
             <div class="inplbl">
-              <label for="username">Senha:</label>
-              <input type="text" id="username" name="username" required />
-            </div>
-            <div class="inplbl">
-              <label for="username">CPF:</label>
-              <input type="text" id="username" name="username" required />
+              <label for="senha">CPF:</label>
+              <input type="text" id="cpf" name="cpf" required />
             </div>
           </div>
           <div class="crud-form-buttons">

@@ -27,6 +27,7 @@ class Egresso extends Usuario
     public function getIdEgresso(): int {
         return $this->idEgresso;
     }
+    
     public function setIdEgresso($idEgresso){
         $this->idEgresso = $idEgresso;
     }

@@ -16,8 +16,6 @@ require_once('../singleton/SessaoUsuarioSingleton.php');
 
 $usuario_logado = SessaoUsuarioSingleton::getInstance()->getUsuario();
 
-//echo "Usuário logado: " . htmlspecialchars($usuario_logado->getNome()) . "<br>";
-
 // Verifica se o usuário é uma empresa
 if (SessaoUsuarioSingleton::getInstance()->getTipoUsuario() !== 'empresa') {
   die("Acesso negado.");
@@ -56,10 +54,10 @@ try {
       <img src="../assets/ufes-logo.png" alt="" />
     </div>
     <div class="links">
-      <a href="">Perfil</a>
-      <a href="">Egressos</a>
-      <a href="">Vagas</a>
-      <a href="">Log Off</a>
+      <a href="pag_crud_empresa.php">Perfil</a>
+      <a href="lista_edicao_perfil_egresso.php">Egressos</a>
+      <a href="lista_vagas_empresa.php">Vagas</a>
+      <a href="logout.php">Log Off</a>
     </div>
   </aside>
   <main>
@@ -80,22 +78,22 @@ try {
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>Desenvolvedor Web Júnior</td>
-            <td>Stacks LTDA</td>
-            <td class="buttons">
-              <button>Editar vaga</button>
-              <button>Remover vaga</button>
-            </td>
-          </tr>
-          <tr>
-            <td>Analista De Dados Junior</td>
-            <td>Unreal Data</td>
-            <td class="buttons">
-              <button>Editar vaga</button>
-              <button>Remover vaga</button>
-            </td>
-          </tr>
+        <?php if (!empty($vagas)) : ?>
+            <?php foreach ($vagas as $vaga) : ?>
+              <tr>
+                <td><?php echo htmlspecialchars($vaga['cargo']); ?></td>
+                <td><?php echo htmlspecialchars($usuario_logado->getNome()); ?></td>
+                <td class="buttons">
+                  <button>Editar vaga</button>
+                  <button>Remover vaga</button>
+                </td>
+              </tr>
+            <?php endforeach; ?>
+          <?php else : ?>
+            <tr>
+              <td colspan="3">Nenhuma vaga disponível.</td>
+            </tr>
+          <?php endif; ?>
         </tbody>
       </table>
     </section>
