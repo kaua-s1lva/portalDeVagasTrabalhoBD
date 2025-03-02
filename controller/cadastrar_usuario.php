@@ -17,14 +17,26 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $aluno = new Aluno($nome, $email, $senha, $cpf_cnpj);
         $dao = new AlunoDAO();
         $dao->insert($aluno);
-        header("Location: ../view/components/sucesso_modal.php");
+
+        echo "<script>
+                alert('Cadastro realizado com sucesso!');
+                window.location.href = '../index.php';
+            </script>";
     } else if (strlen($cpf_cnpj == 14)) {
         $empresa = new Empresa($nome, $email, $senha, $cpf_cnpj);
         $dao = new EmpresaDAO();
         $dao->insert($empresa);
-        header("Location: ../view/components/sucesso_modal.php");
+
+        echo "<script>
+                alert('Cadastro realizado com sucesso!');
+                window.location.href = '../index.php';
+            </script>";
     } else {
-        echo "CPF ou CNPJ inválido";
+        echo "<script>
+                alert('CPF ou CNPJ inválido!');
+                window.history.back();
+            </script>";
+
     }
     
 } else {
