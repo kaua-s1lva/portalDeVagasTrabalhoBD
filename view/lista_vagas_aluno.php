@@ -8,8 +8,7 @@
     require_once('../dao/VagaDAO.php');
     require_once('../model/Vaga.php');
     $vagaDAO = new VagaDAO();
-    $dados = $vagaDAO->findAll();
-?>
+    $dados = $vagaDAO->findAll(); ?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -17,6 +16,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="../styles/lista_vagas_usuario.css" />
+    <link rel="stylesheet" href="../styles/modal.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -26,11 +26,29 @@
     <title>Vagas disponíveis</title>
   </head>
   <body>
+    <div id="modal" class="modal">
+      <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Adicione seu currículo</h2>
+        <p>Clique no botão abaixo para enviar seu currículo em formato PDF.</p>
+          <form id="uploadForm" enctype="multipart/form-data">
+            <div class="option-container">
+              <p>Adicionar currículo:</p>
+              <input
+                type="file"
+                id="curriculo"
+                name="curriculo"
+                accept=".pdf"
+                required
+              />
+              <button type="submit" id="confirmar">Enviar Arquivo</button>
+          </form>
+        </div>
+      </div>
+    </div>
     <aside>
-
       <img src="../assets/ufes-logo.png" alt="" />
       <span></span>
-
       <div class="links">
         <a href="pag_crud_aluno.php">Perfil</a>
         <a href="">Visualizar Vagas</a>
@@ -52,7 +70,6 @@
             </tr>
           </thead>
           <tbody>
-
             <?php foreach($dados as $dado) { ?>
 
             <tr>
@@ -64,10 +81,10 @@
             </tr>
             
             <?php } ?>
-            
           </tbody>
         </table>
       </section>
     </main>
+    <script src="../js/openModal.js"></script>
   </body>
 </html>
