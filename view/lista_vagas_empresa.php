@@ -25,7 +25,7 @@ $empresa_id = $usuario_logado->getIdUsuario();
 
 try {
   $conexao = ConexaoSingleton::getInstancia()->getConexao();
-  $stmt = $conexao->prepare("SELECT idvaga, cargo FROM vaga WHERE empresa_idempresa = ?");
+  $stmt = $conexao->prepare("SELECT idvaga, cargo FROM vaga WHERE idempresa = ?");
   $stmt->execute([$empresa_id]);
   $vagas = $stmt->fetchAll(PDO::FETCH_ASSOC);
 } catch (PDOException $e) {

@@ -7,29 +7,31 @@ class EmpresaDAO extends UsuarioDAO
         $idUsuario = parent::insert($empresa);
         $stmt = $this->conexao->prepare("INSERT INTO empresa (idEmpresa, cnpj) VALUES (?, ?)");
         $stmt->execute([$idUsuario, $empresa->getCnpj()]);
+        return $stmt->rowCount() > 0; 
     }
 
     public function delete($idUsuario) {
-        $stmt = $this->conexao->prepare("UPDATE usuario SET deleted_at = NOW() WHERE idUsuario = ?");
+        $stmt = $this->conexao->prepare("UPDATE usuario WHERE idUsuario = ?");
         return $stmt->execute([$idUsuario]);
+        return $stmt->rowCount() > 0; 
     }
 
      // Método para atualizar os dados da empresa
      public function update($empresa)
      {
          // Atualizar dados da tabela 'usuario'
-         $stmt = $this->conexao->prepare("UPDATE usuario SET nome = ?, email = ?, senha = ? WHERE idUsuario = ?");
+         $stmt = $this->conexao->prepare("UPDATE usuario SET nomeUsuario = ?, emailUsuario  = ?, senhaUsuario  = ? WHERE idUsuario = ?");
          $stmt->execute([$empresa->getNome(), $empresa->getEmail(), $empresa->getSenha(), $empresa->getIdUsuario()]);
  
          // Atualizar dados da tabela 'empresa'
          $stmt = $this->conexao->prepare("UPDATE empresa SET cnpj = ? WHERE idEmpresa = ?");
          $stmt->execute([$empresa->getCnpj(), $empresa->getIdEmpresa()]);
  
-         return $stmt->rowCount() > 0; // Retorna true se a atualização foi bem-sucedida
+         return $stmt->rowCount() > 0; 
      }
 
     public function findById($id) {
-        $stmt = $this->conexao->prepare("SELECT * FROM usuario WHERE idUsuario = ? and deleted_at IS NULL");
+        $stmt = $this->conexao->prepare("SELECT * FROM usuario WHERE idUsuario = ?");
         $stmt->execute([$id]);
         $usuarioData = $stmt->fetch(PDO::FETCH_OBJ);
 
@@ -39,7 +41,7 @@ class EmpresaDAO extends UsuarioDAO
             $empresaData = $stmt->fetch(PDO::FETCH_OBJ);
 
             if ($empresaData) {
-                $empresa = new Empresa($usuarioData->nome, $usuarioData->email, $usuarioData->senha, $empresaData->cnpj);
+                $empresa = new Empresa($usuarioData->nomeusuario, $usuarioData->emailusuario, $usuarioData->senhausuario, $empresaData->cnpj);
                 $empresa->setIdEmpresa($empresaData->idempresa);
                 $empresa->setIdUsuario($usuarioData->idusuario);
             }
@@ -51,12 +53,12 @@ class EmpresaDAO extends UsuarioDAO
     }
 
     public function findByEmail($email) {
-        $stmt = $this->conexao->prepare("SELECT u.*, e.idEmpresa, e.cnpj FROM usuario u JOIN empresa e ON u.idUsuario = e.idEmpresa WHERE u.email = ? and u.deleted_at IS NULL");
+        $stmt = $this->conexao->prepare("SELECT u.*, e.idEmpresa, e.cnpj FROM usuario u JOIN empresa e ON u.idUsuario = e.idEmpresa WHERE u.emailUsuario = ?");
         $stmt->execute([$email]);
         $result = $stmt->fetch(PDO::FETCH_OBJ);
 
         if ($result) {
-            $empresa = new Empresa($result->nome, $result->email, $result->senha, $result->cnpj);
+            $empresa = new Empresa($result->nomeusuario, $result->emailusuario, $result->senhausuario, $result->cnpj);
             $empresa->setIdEmpresa($result->idempresa);
             $empresa->setIdUsuario($result->idempresa);
             return $empresa;

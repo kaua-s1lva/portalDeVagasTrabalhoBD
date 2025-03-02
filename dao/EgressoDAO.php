@@ -22,6 +22,7 @@ class EgressoDAO extends UsuarioDAO
         $stmt = $this->conexao->prepare("DELETE FROM egresso WHERE idEgresso=?");
         $stmt->execute([$id]);
         parent::delete($id);
+        return $stmt->rowCount() > 0; 
     }
 
     public function findById($id) {
@@ -53,7 +54,8 @@ class EgressoDAO extends UsuarioDAO
         $result = $stmt->fetch(PDO::FETCH_OBJ);
 
         if ($result) {
-            $egresso = new Egresso($result->nome, $result->email, $result->senha, $result->cpf, $id);
+            $egresso = new Egresso($result->nomeusuario, $result->emailusuario, $result->senhausuario, $result->cpf, $id);
+            $egresso->setIdEgresso($result->idegresso);
             $egresso->setIdUsuario($result->idegresso);
             return $egresso;
         }
@@ -62,12 +64,12 @@ class EgressoDAO extends UsuarioDAO
     }
 
     public function findByEmail($email) {
-        $stmt = $this->conexao->prepare("SELECT u.*, e.idEgresso, e.cpf, e.idEmpresa FROM usuario u JOIN egresso e ON u.idUsuario = e.idEgresso WHERE u.email = ?");
+        $stmt = $this->conexao->prepare("SELECT u.*, e.idEgresso, e.cpf, e.idEmpresa FROM usuario u JOIN egresso e ON u.idUsuario = e.idEgresso WHERE u.emailUsuario = ?");
         $stmt->execute([$email]);
         $result = $stmt->fetch(PDO::FETCH_OBJ);
 
         if ($result) {
-            $egresso = new Egresso($result->nome, $result->email, $result->senha, $result->cpf, $result->idempresa);
+            $egresso = new Egresso($result->nomeusuario, $result->emailusuario, $result->senhausuario, $result->cpf, $result->idempresa);
             $egresso->setIdEgresso($result->idegresso);
             $egresso->setIdUsuario($result->idegresso);
             return $egresso;

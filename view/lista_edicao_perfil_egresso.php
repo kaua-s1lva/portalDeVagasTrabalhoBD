@@ -78,7 +78,7 @@ try {
           <?php if (!empty($egressos)) : ?>
             <?php foreach ($egressos as $egresso) : ?>
               <tr>
-                <td><?php echo htmlspecialchars($egresso->nome); ?></td>
+                <td><?php echo htmlspecialchars($egresso->nomeusuario); ?></td>
                 <td><?= date("d/m/Y", strtotime($egresso->created_at)) ?></td>
                 <td class="buttons">
                   <button onclick="editarEgresso()">Editar</button>

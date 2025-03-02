@@ -1,7 +1,7 @@
 <?php
     session_start();
     if (!isset($_SESSION['usuario_id']) == true && !isset($_SESSION['tipo_usuario']) == 'aluno') {
-        header('Location: login_screen.html');
+        header('Location: ../index.php');
     }
 
     require_once('../dao/IDAO.php');
@@ -57,7 +57,7 @@
 
             <tr>
               <td><?= $dado['vaga']['cargo'] ?></td>
-              <td><?= $dado['usuario']['nome'] ?></td>
+              <td><?= $dado['usuario']['nomeusuario'] ?></td>
               <td class="buttons">
                 <button>Candidatar-se</button>
               </td>
