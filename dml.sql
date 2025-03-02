@@ -134,7 +134,7 @@ INSERT INTO REQUISITO (nomeRequisito) VALUES
 ('Arquitetura de Software');
 
 -- Inserir vaga_requisito
-INSERT INTO VAGA_REQUISITO (idVaga, idRequisito) VALUES
+INSERT INTO VAGA_REQUISITO (idVaga, idRequisito, duracaoVagaRequisito) VALUES
 (1, 1, '2 anos'),
 (2, 2, '1 ano'),
 (3, 3, '1,5 anos'),
