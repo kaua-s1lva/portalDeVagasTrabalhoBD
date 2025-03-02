@@ -32,7 +32,7 @@ class VagaDAO implements IDAO
 
     public function findById($id)
     {
-        $stmt = $this->conexao->prepare("SELECT * FROM vagas WHERE id_vaga=? AND deleted_at IS NULL");
+        $stmt = $this->conexao->prepare("SELECT * FROM vagas WHERE id_vaga=?");
         $stmt->execute([$id]);
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
@@ -44,7 +44,6 @@ class VagaDAO implements IDAO
         $stmt = $this->conexao->query(" SELECT * FROM vaga 
                                         INNER JOIN empresa ON empresa.idempresa = vaga.idempresa
                                         INNER JOIN usuario ON usuario.idusuario = empresa.idempresa
-                                        WHERE vaga.deleted_at IS NULL
                                     ");
         $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 

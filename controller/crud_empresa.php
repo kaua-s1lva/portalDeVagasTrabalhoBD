@@ -46,7 +46,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     } else {
         // Excluir a empresa
         if ($empresaDAO->delete($empresa->getIdEmpresa())) {
-            echo "<script>alert('Empresa excluída com sucesso!'); window.location.href = 'login_screen.html';</script>";
+            echo "<script>alert('Empresa excluída com sucesso!'); window.location.href = '../index.php';</script>";
             SessaoUsuarioSingleton::getInstance()->logout();
         } else {
             echo "<script>alert('Erro ao excluir a empresa.');</script>";
