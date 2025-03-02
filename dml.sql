@@ -125,23 +125,23 @@ INSERT INTO INDICACAO (idEgresso, idAluno, idVaga, idStatus, created_at) VALUES
 (25, 15, 10, 5, NOW());
 
 -- Inserir requisitos
-INSERT INTO REQUISITO (nomeRequisito, duracaoRequisito) VALUES
-('Experiência com Java', '2 anos'),
-('SQL Avançado', '1 ano'),
-('Desenvolvimento Frontend', '1,5 anos'),
-('Gerenciamento de Projetos', '3 anos'),
-('Metodologias Ágeis', '2 anos'),
-('Arquitetura de Software', '4 anos');
+INSERT INTO REQUISITO (nomeRequisito) VALUES
+('Experiência com Java'),
+('SQL Avançado'),
+('Desenvolvimento Frontend'),
+('Gerenciamento de Projetos'),
+('Metodologias Ágeis'),
+('Arquitetura de Software');
 
 -- Inserir vaga_requisito
 INSERT INTO VAGA_REQUISITO (idVaga, idRequisito) VALUES
-(1, 1),
-(2, 2),
-(3, 3),
-(4, 4),
-(5, 5),
-(6, 6),
-(7, 1),
-(8, 3),
-(9, 5),
-(10, 4);
+(1, 1, '2 anos'),
+(2, 2, '1 ano'),
+(3, 3, '1,5 anos'),
+(4, 4, '3 anos'),
+(5, 5, '2 anos'),
+(6, 6, '4 anos'),
+(7, 1, '5 anos'),
+(8, 3, '3,5 anos'),
+(9, 5, '2,5 anos'),
+(10, 4, '3,5 anos');
