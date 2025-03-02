@@ -5,14 +5,16 @@ class EgressoDAO extends UsuarioDAO
     {
         $idUsuario = parent::insert($egresso);
         $stmt = $this->conexao->prepare("INSERT INTO egresso (idEgresso, idEmpresa, cpf) VALUES (?, ?, ?)");
-        $stmt->execute([$idUsuario, $egresso->idEmpresa, $egresso->cpf]);
+        $stmt->execute([$idUsuario, $egresso->getIdEmpresa(), $egresso->getCpf()]);
+        return $stmt->rowCount() > 0; 
     }
 
     public function update($egresso)
     {
         parent::update($egresso);
         $stmt = $this->conexao->prepare("UPDATE egresso SET cpf=? WHERE idEgresso=?");
-        $stmt->execute([$egresso->cpf, $egresso->idUsuario]);
+        $stmt->execute([$egresso->getCpf(), $egresso->getIdUsuario()]);
+        return $stmt->rowCount() > 0; 
     }
 
     public function delete($id)
@@ -45,6 +47,20 @@ class EgressoDAO extends UsuarioDAO
         return null;
     }
 
+    public function findByIdEmpresa($id) {
+        $stmt = $this->conexao->prepare("SELECT u.*, e.idEgresso, e.cpf FROM usuario u JOIN egresso e ON u.idUsuario = e.idEgresso WHERE idEmpresa = ?");
+        $stmt->execute([$id]);
+        $result = $stmt->fetch(PDO::FETCH_OBJ);
+
+        if ($result) {
+            $egresso = new Egresso($result->nome, $result->email, $result->senha, $result->cpf, $id);
+            $egresso->setIdUsuario($result->idegresso);
+            return $egresso;
+        }
+
+        return null;
+    }
+
     public function findByEmail($email) {
         $stmt = $this->conexao->prepare("SELECT u.*, e.idEgresso, e.cpf, e.idEmpresa FROM usuario u JOIN egresso e ON u.idUsuario = e.idEgresso WHERE u.email = ?");
         $stmt->execute([$email]);
@@ -63,6 +79,12 @@ class EgressoDAO extends UsuarioDAO
     public function findAll() {
         $stmt = $this->conexao->prepare("SELECT u.*, e.idEgresso FROM usuario u JOIN egresso e ON u.idUsuario = e.idEgresso");
         $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_OBJ);
+    }
+
+    public function findAllByIdEmpresa($idEmpresa) {
+        $stmt = $this->conexao->prepare("SELECT u.*, e.idEgresso FROM usuario u JOIN egresso e ON u.idUsuario = e.idEgresso WHERE idEmpresa = ?");
+        $stmt->execute([$idEmpresa]);
         return $stmt->fetchAll(PDO::FETCH_OBJ);
     }
 }
