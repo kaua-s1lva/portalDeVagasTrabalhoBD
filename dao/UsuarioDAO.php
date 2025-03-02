@@ -10,13 +10,13 @@ abstract class UsuarioDAO implements IDAO {
     }
     
     public function insert($usuario) {
-        $stmt = $this->conexao->prepare("INSERT INTO usuario (nome, email, senha, created_At) VALUES (?, ?, ?, NOW())");
+        $stmt = $this->conexao->prepare("INSERT INTO usuario (nomeUsuario, emailUsuario, senhaUsuario, created_at) VALUES (?, ?, ?, NOW())");
         $stmt->execute([$usuario->getNome(), $usuario->getEmail(), $usuario->getSenha()]);
         return $this->conexao->lastInsertId();
     }
     
     public function update($usuario) {
-        $stmt = $this->conexao->prepare("UPDATE usuario SET nome=?, email=?, senha=?, updated_At=NOW() WHERE idUsuario=?");
+        $stmt = $this->conexao->prepare("UPDATE usuario SET nomeUsuario=?, emailUsuario=?, senhaUsuario=?, updated_At=NOW() WHERE idUsuario=?");
         $stmt->execute([$usuario->getNome(), $usuario->getEmail(), $usuario->getSenha(), $usuario->getIdUsuario()]);
     }
     

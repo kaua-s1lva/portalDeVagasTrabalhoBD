@@ -42,7 +42,7 @@ class VagaDAO implements IDAO
     public function findAll()
     {
         $stmt = $this->conexao->query(" SELECT * FROM vaga 
-                                        INNER JOIN empresa ON empresa.idempresa = vaga.empresa_idempresa
+                                        INNER JOIN empresa ON empresa.idempresa = vaga.idempresa
                                         INNER JOIN usuario ON usuario.idusuario = empresa.idempresa
                                         WHERE vaga.deleted_at IS NULL
                                     ");
@@ -53,9 +53,9 @@ class VagaDAO implements IDAO
             $dados[] = [
                 'vaga' => [
                     'idvaga' => $row['idvaga'],
-                    'etapa_idetapa' => $row['etapa_idetapa'],
+                    'idetapa' => $row['idetapa'],
                     'cargo' => $row['cargo'],
-                    'empresa_idempresa' => $row['empresa_idempresa']
+                    'idempresa' => $row['idempresa']
                 ],
                 'empresa' => [
                     'idempresa' => $row['idempresa'],
@@ -63,9 +63,9 @@ class VagaDAO implements IDAO
                 ],
                 'usuario' => [
                     'idusuario' => $row['idusuario'],
-                    'nome' => $row['nome'],
-                    'email' => $row['email'],
-                    'senha' => $row['senha']
+                    'nomeusuario' => $row['nomeusuario'],
+                    'emailusuario' => $row['emailusuario'],
+                    'senhausuario' => $row['senhausuario']
                 ]
             ];
         }

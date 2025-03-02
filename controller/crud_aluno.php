@@ -12,7 +12,7 @@ require_once('../singleton/SessaoUsuarioSingleton.php');
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $instancia = SessaoUsuarioSingleton::getInstance();
     $usuario_logado = $instancia->getUsuario();
-
+    $dao = new AlunoDAO();
     if (isset($_POST['salvar'])) {
         // Resgata os dados enviados pelo formulário
         $nome      = isset($_POST['nome']) ? $_POST['nome'] : '';
@@ -25,9 +25,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $aluno->setIdAluno($usuario_logado->getIdAluno());
             $aluno->setIdUsuario($usuario_logado->getIdUsuario());
 
-            $dao = new AlunoDAO();
-            $dao->update($aluno);
-            header("Location: ../view/pag_crud_aluno.php");
+            if ($dao->update($aluno)) {
+                echo "<script> alert('Dados do aluno atualizados com sucesso!'); window.location.href = '../view/pag_crud_aluno.php'; </script>";
+                exit();
+            }
         } else {
             echo "CPF inválido";
         }
@@ -38,7 +39,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
         $instancia->logout();
     }
-    
 } else {
     echo "Método de requisição inválido.";
 }
