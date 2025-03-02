@@ -1,131 +1,140 @@
--- Tabela usuario
-CREATE TABLE IF NOT EXISTS usuario (
-  idUsuario SERIAL PRIMARY KEY,
-  nome VARCHAR(255) NOT NULL,
-  email VARCHAR(255) NOT NULL UNIQUE,
-  senha VARCHAR(255) NOT NULL,
+-- Tabela USUARIO
+CREATE TABLE IF NOT EXISTS USUARIO (
+  idUsuario SERIAL,
+  nomeUsuario VARCHAR(255) NOT NULL,
+  emailUsuario VARCHAR(255) NOT NULL,
+  senhaUsuario VARCHAR(255) NOT NULL,
   created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP DEFAULT NULL,
-  deleted_at TIMESTAMP DEFAULT NULL
+  CONSTRAINT pkUsuario PRIMARY KEY (idUsuario),
+  CONSTRAINT ukUsuarioEmail UNIQUE (emailUsuario)
 );
 
--- Tabela empresa
-CREATE TABLE IF NOT EXISTS empresa (
-  idEmpresa INT PRIMARY KEY,
-  cnpj CHAR(14) NOT NULL UNIQUE,
-  CONSTRAINT fk_empresa_usuario FOREIGN KEY (idEmpresa)
-    REFERENCES usuario (idUsuario) ON DELETE CASCADE ON UPDATE CASCADE
+-- Tabela EMPRESA
+CREATE TABLE IF NOT EXISTS EMPRESA (
+  idEmpresa INT,
+  cnpj CHAR(14) NOT NULL,
+  CONSTRAINT pkEmpresa PRIMARY KEY (idEmpresa),
+  CONSTRAINT ukEmpresaCNPJ UNIQUE (cnpj),
+  CONSTRAINT fkEmpresaUsuario FOREIGN KEY (idEmpresa)
+    REFERENCES USUARIO (idUsuario) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
--- Tabela aluno
-CREATE TABLE IF NOT EXISTS aluno (
-  idAluno INT PRIMARY KEY,
-  cpf CHAR(11) NOT NULL UNIQUE,
-  CONSTRAINT fk_aluno_usuario FOREIGN KEY (idAluno)
-    REFERENCES usuario (idUsuario) ON DELETE CASCADE ON UPDATE CASCADE
+-- Tabela ALUNO
+CREATE TABLE IF NOT EXISTS ALUNO (
+  idAluno INT,
+  cpf CHAR(11) NOT NULL,
+  CONSTRAINT pkAluno PRIMARY KEY (idAluno),
+  CONSTRAINT ukAlunoCPF UNIQUE (cpf),
+  CONSTRAINT fkAlunoUsuario FOREIGN KEY (idAluno)
+    REFERENCES USUARIO (idUsuario) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
--- Tabela egresso
-CREATE TABLE IF NOT EXISTS egresso (
-  idEgresso INT PRIMARY KEY,
+-- Tabela EGRESSO
+CREATE TABLE IF NOT EXISTS EGRESSO (
+  idEgresso INT,
   idEmpresa INT NOT NULL,
-  cpf CHAR(11) NOT NULL UNIQUE,
-  CONSTRAINT fk_egresso_usuario FOREIGN KEY (idEgresso)
-    REFERENCES usuario (idUsuario) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT fk_egresso_empresa FOREIGN KEY (idEmpresa)
-    REFERENCES empresa (idEmpresa) ON DELETE CASCADE ON UPDATE CASCADE
+  cpf CHAR(11) NOT NULL,
+  CONSTRAINT pkEgresso PRIMARY KEY (idEgresso),
+  CONSTRAINT ukEgressoCPF UNIQUE (cpf),
+  CONSTRAINT fkEgressoUsuario FOREIGN KEY (idEgresso)
+    REFERENCES USUARIO (idUsuario) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT fkEgressoEmpresa FOREIGN KEY (idEmpresa)
+    REFERENCES EMPRESA (idEmpresa) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
--- Tabela etapa
-CREATE TABLE IF NOT EXISTS etapa (
-  idEtapa SERIAL PRIMARY KEY,
-  nome VARCHAR(100) NOT NULL,
-  descricao TEXT NOT NULL,
+-- Tabela ETAPA
+CREATE TABLE IF NOT EXISTS ETAPA (
+  idEtapa SERIAL,
+  nomeEtapa VARCHAR(100) NOT NULL,
+  descricaoEtapa TEXT NOT NULL,
   created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  updated_at TIMESTAMP DEFAULT NULL
+  updated_at TIMESTAMP DEFAULT NULL,
+  CONSTRAINT pkEtapa PRIMARY KEY (idEtapa)
 );
 
--- Tabela vaga
-CREATE TABLE IF NOT EXISTS vaga (
-  idVaga SERIAL PRIMARY KEY,
-  etapa_idEtapa INT NOT NULL,
-  empresa_idEmpresa INT NOT NULL,
+-- Tabela VAGA
+CREATE TABLE IF NOT EXISTS VAGA (
+  idVaga SERIAL,
+  idEtapa INT NOT NULL,
+  idEmpresa INT NOT NULL,
   cargo VARCHAR(255) NOT NULL,
   created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP DEFAULT NULL,
-  deleted_at TIMESTAMP DEFAULT NULL,
-  CONSTRAINT fk_vaga_etapa FOREIGN KEY (etapa_idEtapa)
-    REFERENCES etapa (idEtapa) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT fk_vaga_empresa FOREIGN KEY (empresa_idEmpresa)
-    REFERENCES empresa (idEmpresa) ON DELETE CASCADE ON UPDATE CASCADE
+  CONSTRAINT pkVaga PRIMARY KEY (idVaga),
+  CONSTRAINT fkVagaEtapa FOREIGN KEY (idEtapa)
+    REFERENCES ETAPA (idEtapa) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT fkVagaEmpresa FOREIGN KEY (idEmpresa)
+    REFERENCES EMPRESA (idEmpresa) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
--- Tabela situacao
-CREATE TABLE IF NOT EXISTS situacao (
-  idSituacao SERIAL PRIMARY KEY,
-  nome VARCHAR(100) NOT NULL,
-  descricao TEXT NOT NULL
+-- Tabela SITUACAO
+CREATE TABLE IF NOT EXISTS SITUACAO (
+  idSituacao SERIAL,
+  nomeSituacao VARCHAR(100) NOT NULL,
+  descricaoSituacao TEXT NOT NULL,
+  CONSTRAINT pkSituacao PRIMARY KEY (idSituacao)
 );
 
--- Tabela candidatura
-CREATE TABLE IF NOT EXISTS candidatura (
+-- Tabela CANDIDATURA
+CREATE TABLE IF NOT EXISTS CANDIDATURA (
   idVaga INT NOT NULL,
-  aluno_idAluno INT NOT NULL,
+  idAluno INT NOT NULL,
   curriculo BYTEA NOT NULL,
-  situacao_idSituacao INT NOT NULL,
+  idSituacao INT NOT NULL,
   created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP DEFAULT NULL,
-  deleted_at TIMESTAMP DEFAULT NULL,
-  PRIMARY KEY (idVaga, aluno_idAluno),
-  CONSTRAINT fk_candidatura_vaga FOREIGN KEY (idVaga)
-    REFERENCES vaga (idVaga) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT fk_candidatura_situacao FOREIGN KEY (situacao_idSituacao)
-    REFERENCES situacao (idSituacao) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT fk_candidatura_aluno FOREIGN KEY (aluno_idAluno)
-    REFERENCES aluno (idAluno) ON DELETE CASCADE ON UPDATE CASCADE
+  CONSTRAINT pkCandidatura PRIMARY KEY (idVaga, idAluno),
+  CONSTRAINT fkCandidaturaVaga FOREIGN KEY (idVaga)
+    REFERENCES VAGA (idVaga) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT fkCandidaturaSituacao FOREIGN KEY (idSituacao)
+    REFERENCES SITUACAO (idSituacao) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT fkCandidaturaAluno FOREIGN KEY (idAluno)
+    REFERENCES ALUNO (idAluno) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
--- Tabela status
-CREATE TABLE IF NOT EXISTS status (
-  idStatus SERIAL PRIMARY KEY,
-  nome VARCHAR(100) NOT NULL,
-  descricao TEXT NOT NULL
+-- Tabela STATUS
+CREATE TABLE IF NOT EXISTS STATUS (
+  idStatus SERIAL,
+  nomeStatus VARCHAR(100) NOT NULL,
+  descricaoStatus TEXT NOT NULL,
+  CONSTRAINT pkStatus PRIMARY KEY (idStatus)
 );
 
--- Tabela indicacao
-CREATE TABLE IF NOT EXISTS indicacao (
-  egresso_idEgresso INT NOT NULL,
-  aluno_idAluno INT NOT NULL,
-  vaga_idVaga INT NOT NULL,
-  status_idStatus INT NOT NULL,
+-- Tabela INDICACAO
+CREATE TABLE IF NOT EXISTS INDICACAO (
+  idEgresso INT NOT NULL,
+  idAluno INT NOT NULL,
+  idVaga INT NOT NULL,
+  idStatus INT NOT NULL,
   created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP DEFAULT NULL,
-  deleted_at TIMESTAMP DEFAULT NULL,
-  PRIMARY KEY (egresso_idEgresso, aluno_idAluno, vaga_idVaga),
-  CONSTRAINT fk_indicacao_egresso FOREIGN KEY (egresso_idEgresso)
-    REFERENCES egresso (idEgresso) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT fk_indicacao_aluno FOREIGN KEY (aluno_idAluno)
-    REFERENCES aluno (idAluno) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT fk_indicacao_vaga FOREIGN KEY (vaga_idVaga)
-    REFERENCES vaga (idVaga) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT fk_indicacao_status FOREIGN KEY (status_idStatus)
-    REFERENCES status (idStatus) ON DELETE CASCADE ON UPDATE CASCADE
+  CONSTRAINT pkIndicacao PRIMARY KEY (idEgresso, idAluno, idVaga),
+  CONSTRAINT fkIndicacaoEgresso FOREIGN KEY (idEgresso)
+    REFERENCES EGRESSO (idEgresso) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT fkIndicacaoAluno FOREIGN KEY (idAluno)
+    REFERENCES ALUNO (idAluno) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT fkIndicacaoVaga FOREIGN KEY (idVaga)
+    REFERENCES VAGA (idVaga) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT fkIndicacaoStatus FOREIGN KEY (idStatus)
+    REFERENCES STATUS (idStatus) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
--- Tabela requisito
-CREATE TABLE IF NOT EXISTS requisito (
-  idRequisito SERIAL PRIMARY KEY,
-  nome VARCHAR(255) NOT NULL,
-  duracao VARCHAR(255)
+-- Tabela REQUISITO
+CREATE TABLE IF NOT EXISTS REQUISITO (
+  idRequisito SERIAL,
+  nomeRequisito VARCHAR(255) NOT NULL,
+  duracaoRequisito VARCHAR(255),
+  CONSTRAINT pkRequisito PRIMARY KEY (idRequisito)
 );
 
--- Tabela vaga_requisito
-CREATE TABLE IF NOT EXISTS vaga_requisito (
-  vaga_idVaga INT NOT NULL,
-  requisito_idRequisito INT NOT NULL,
-  PRIMARY KEY (vaga_idVaga, requisito_idRequisito),
-  CONSTRAINT fk_vaga_requisito_vaga FOREIGN KEY (vaga_idVaga)
-    REFERENCES vaga (idVaga) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT fk_vaga_requisito_requisito FOREIGN KEY (requisito_idRequisito)
-    REFERENCES requisito (idRequisito) ON DELETE CASCADE ON UPDATE CASCADE
+-- Tabela VAGA_REQUISITO
+CREATE TABLE IF NOT EXISTS VAGA_REQUISITO (
+  idVaga INT NOT NULL,
+  idRequisito INT NOT NULL,
+  CONSTRAINT pkVagaRequisito PRIMARY KEY (idVaga, idRequisito),
+  CONSTRAINT fkVagaRequisitoVaga FOREIGN KEY (idVaga)
+    REFERENCES VAGA (idVaga) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT fkVagaRequisitoRequisito FOREIGN KEY (idRequisito)
+    REFERENCES REQUISITO (idRequisito) ON DELETE CASCADE ON UPDATE CASCADE
 );

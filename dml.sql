@@ -1,71 +1,147 @@
--- Inserir usuarios (auto incremento)
-INSERT INTO usuario (nome, email, senha, created_at) VALUES
+-- Inserir usuarios (25 ao todo, incluindo empresas, alunos e egressos)
+INSERT INTO USUARIO (nomeUsuario, emailUsuario, senhaUsuario, created_at) VALUES
 ('Empresa 1', 'empresa1@email.com', 'senha123', NOW()),
 ('Empresa 2', 'empresa2@email.com', 'senha123', NOW()),
 ('Empresa 3', 'empresa3@email.com', 'senha123', NOW()),
+('Empresa 4', 'empresa4@email.com', 'senha123', NOW()),
+('Empresa 5', 'empresa5@email.com', 'senha123', NOW()),
 ('Carlos Souza', 'carlos@email.com', 'senha123', NOW()),
-('Lucas Mendes', 'lucas@email.com', 'senha123', NOW());
+('Lucas Mendes', 'lucas@email.com', 'senha123', NOW()),
+('Maria Oliveira', 'maria@email.com', 'senha123', NOW()),
+('João Silva', 'joao@email.com', 'senha123', NOW()),
+('Fernanda Costa', 'fernanda@email.com', 'senha123', NOW()),
+('Ricardo Lima', 'ricardo@email.com', 'senha123', NOW()),
+('Ana Santos', 'ana@email.com', 'senha123', NOW()),
+('Paulo Rocha', 'paulo@email.com', 'senha123', NOW()),
+('Juliana Almeida', 'juliana@email.com', 'senha123', NOW()),
+('Rafael Souza', 'rafael@email.com', 'senha123', NOW()),
+('Daniela Lima', 'daniela@email.com', 'senha123', NOW()),
+('Carlos Henrique', 'carloshenrique@email.com', 'senha123', NOW()),
+('Tatiane Santos', 'tatiane@email.com', 'senha123', NOW()),
+('Vitor Costa', 'vitor@email.com', 'senha123', NOW()),
+('Fabiana Oliveira', 'fabiana@email.com', 'senha123', NOW()),
+('Renato Costa', 'renato@email.com', 'senha123', NOW()),
+('Beatriz Pereira', 'beatriz@email.com', 'senha123', NOW()),
+('Leandro Costa', 'leandro@email.com', 'senha123', NOW()),
+('Gabriela Martins', 'gabriela@email.com', 'senha123', NOW()),
+('Marcos Silva', 'marcos@email.com', 'senha123', NOW()); -- Adicionando o 25º usuário
 
 -- Inserir empresas associadas aos usuarios (usando idUsuario)
--- Assumindo que o idUsuario auto-incrementado começa de 1.
-INSERT INTO empresa (idEmpresa, cnpj) VALUES
+-- Os idUsuarios começam de 1 para empresas
+INSERT INTO EMPRESA (idEmpresa, cnpj) VALUES
 (1, '12345678000195'),
 (2, '98765432000110'),
-(3, '56789012000122');
+(3, '56789012000122'),
+(4, '23456789000133'),
+(5, '34567890100144');
 
--- Inserir alunos (idAluno é igual ao idUsuario)
-INSERT INTO aluno (idAluno, cpf) VALUES
-(4, '11122233344');
+-- Inserir alunos (idAluno é igual ao idUsuario, começando de 6 até 15)
+INSERT INTO ALUNO (idAluno, cpf) VALUES
+(6, '11122233344'),
+(7, '22334455666'),
+(8, '33445566777'),
+(9, '44556677888'),
+(10, '55667788999'),
+(11, '66778899000'),
+(12, '77889900111'),
+(13, '88990011222'),
+(14, '99001122333'),
+(15, '10111223344');
 
--- Inserir egressos (idEgresso é igual ao idUsuario)
-INSERT INTO egresso (idEgresso, idEmpresa, cpf) VALUES
-(5, 1, '99988877766');
+-- Inserir egressos (idEgresso é igual ao idUsuario, começando de 16 até 25)
+INSERT INTO EGRESSO (idEgresso, idEmpresa, cpf) VALUES
+(16, 1, '99988877766'),
+(17, 2, '88877766655'),
+(18, 3, '77766655544'),
+(19, 4, '66655544433'),
+(20, 5, '55544433322'),
+(21, 1, '44433322211'),
+(22, 2, '33322211100'),
+(23, 3, '22211100099'),
+(24, 4, '11100099988'),
+(25, 5, '00099988877');
 
 -- Inserir etapas
-INSERT INTO etapa (nome, descricao, created_at) VALUES
+INSERT INTO ETAPA (nomeEtapa, descricaoEtapa, created_at) VALUES
 ('Abertura', 'Vaga aberta para candidaturas', NOW()),
 ('Entrevista', 'Entrevistas em andamento', NOW()),
-('Finalizada', 'Vaga preenchida', NOW());
+('Finalizada', 'Vaga preenchida', NOW()),
+('Aprovada', 'Vaga com candidato aprovado', NOW()),
+('Em andamento', 'Vaga em processo de preenchimento', NOW());
 
 -- Inserir vagas
-INSERT INTO vaga (etapa_idEtapa, created_at, cargo, empresa_idEmpresa) VALUES
-(1, NOW(), 'Desenvolvedor Backend', 1),
-(2, NOW(), 'Analista de Dados', 2),
-(1, NOW(), 'Engenheiro de Software', 3),
-(3, NOW(), 'Designer UX/UI', 1);
+INSERT INTO VAGA (idEtapa, idEmpresa, cargo, created_at) VALUES
+(1, 1, 'Desenvolvedor Backend', NOW()),
+(2, 2, 'Analista de Dados', NOW()),
+(3, 3, 'Engenheiro de Software', NOW()),
+(4, 1, 'Designer UX/UI', NOW()),
+(5, 2, 'Gerente de Projetos', NOW()),
+(1, 3, 'Desenvolvedor Frontend', NOW()),
+(3, 1, 'Analista de Sistemas', NOW()),
+(2, 3, 'Arquiteto de Software', NOW()),
+(4, 2, 'Product Owner', NOW()),
+(5, 1, 'Desenvolvedor Full Stack', NOW());
 
 -- Inserir situacoes
-INSERT INTO situacao (nome, descricao) VALUES
+INSERT INTO SITUACAO (nomeSituacao, descricaoSituacao) VALUES
 ('Em análise', 'Candidatura em análise'),
 ('Aprovado', 'Candidato aprovado para a vaga'),
-('Rejeitado', 'Candidatura não aceita');
-
+('Rejeitado', 'Candidatura não aceita'),
+('Entrevista agendada', 'Entrevista agendada com o candidato'),
+('Em processo', 'Candidatura em andamento');
 
 -- Inserir candidaturas
-INSERT INTO candidatura (idVaga, aluno_idAluno, curriculo, created_at, situacao_idSituacao) VALUES
-(1, 4, '\xDEADBEEF', NOW(), 1),
-(2, 4, '\xBEEFDEAD', NOW(), 2),
-(3, 4, '\xCAFEBABE', NOW(), 3);
+INSERT INTO CANDIDATURA (idVaga, idAluno, curriculo, idSituacao, created_at) VALUES
+(1, 6, '\xDEADBEEF', 1, NOW()),
+(2, 7, '\xBEEFDEAD', 2, NOW()),
+(3, 8, '\xCAFEBABE', 3, NOW()),
+(4, 9, '\xDECAF000', 4, NOW()),
+(5, 10, '\xFEEDC0FFEE', 2, NOW()),
+(6, 11, '\xBAADF00D', 1, NOW()),
+(7, 12, '\x12345678', 5, NOW()),
+(8, 13, '\xABCD1234', 2, NOW()),
+(9, 14, '\x56789ABC', 3, NOW()),
+(10, 15, '\x9ABCDEF0', 4, NOW());
 
 -- Inserir status
-INSERT INTO status (nome, descricao) VALUES
+INSERT INTO STATUS (nomeStatus, descricaoStatus) VALUES
 ('Pendente', 'Indicação pendente'),
 ('Finalizado', 'Indicação concluída'),
-('Cancelado', 'Indicação cancelada');
+('Cancelado', 'Indicação cancelada'),
+('Em progresso', 'Indicação em processo'),
+('Rejeitado', 'Indicação não aceita');
 
 -- Inserir indicacoes
-INSERT INTO indicacao (egresso_idEgresso, aluno_idAluno, vaga_idVaga, created_at, status_idStatus) VALUES
-(5, 4, 1, NOW(), 1),
-(5, 4, 2, NOW(), 2);
+INSERT INTO INDICACAO (idEgresso, idAluno, idVaga, idStatus, created_at) VALUES
+(16, 6, 1, 1, NOW()),
+(17, 7, 2, 2, NOW()),
+(18, 8, 3, 3, NOW()),
+(19, 9, 4, 4, NOW()),
+(20, 10, 5, 5, NOW()),
+(21, 11, 6, 1, NOW()),
+(22, 12, 7, 2, NOW()),
+(23, 13, 8, 3, NOW()),
+(24, 14, 9, 4, NOW()),
+(25, 15, 10, 5, NOW());
 
 -- Inserir requisitos
-INSERT INTO requisito (nome, duracao) VALUES
+INSERT INTO REQUISITO (nomeRequisito, duracaoRequisito) VALUES
 ('Experiência com Java', '2 anos'),
 ('SQL Avançado', '1 ano'),
-('Desenvolvimento Frontend', '1,5 anos');
+('Desenvolvimento Frontend', '1,5 anos'),
+('Gerenciamento de Projetos', '3 anos'),
+('Metodologias Ágeis', '2 anos'),
+('Arquitetura de Software', '4 anos');
 
 -- Inserir vaga_requisito
-INSERT INTO vaga_requisito (vaga_idVaga, requisito_idRequisito) VALUES
+INSERT INTO VAGA_REQUISITO (idVaga, idRequisito) VALUES
 (1, 1),
 (2, 2),
-(3, 3);
+(3, 3),
+(4, 4),
+(5, 5),
+(6, 6),
+(7, 1),
+(8, 3),
+(9, 5),
+(10, 4);
