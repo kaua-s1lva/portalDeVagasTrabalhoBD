@@ -44,7 +44,7 @@
         <h1>Atualizar Dados Pessoais</h1>
       </section>
       <section class="container">
-        <form id="loginForm" action="../controller/editar_aluno.php" method="POST">
+        <form id="loginForm" action="../controller/crud_aluno.php" method="POST">
           <div class="crud-form-input">
             <div class="inplbl">
               <label for="nome">Nome:</label>
@@ -60,12 +60,12 @@
             </div>
             <div class="inplbl">
               <label for="cpf">CPF:</label>
-              <input type="text" id="cpf" name="cpf" value="<?= $usuario_logado->getCpf() ?>" required />
+              <input type="text" id="cpf" name="cpf" value="<?= $usuario_logado->getCpf() ?>" required readonly />
             </div>
           </div>
           <div class="crud-form-buttons">
-            <button type="submit">Salvar</button>
-            <button type="submit">Excluir</button>
+            <button type="submit" id="salvar" name="salvar">Salvar</button>
+            <button type="submit" id="excluir" name="excluir" onclick="return confirm('Tem certeza que deseja excluir seu perfil?');">Excluir</button>
           </div>
         </form>
       </section>
