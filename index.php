@@ -1,3 +1,7 @@
+<?php
+  require 'vendor/autoload.php';
+?>
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -21,7 +25,7 @@
         </div>
         <div class="login-form">
           <h1>Portal de Estágios UFES</h1>
-          <form id="loginForm" action="controller/login.php" method="POST">
+          <form id="loginForm" action="app/controller/login.php" method="POST">
             <!-- <label for="username">E-mail:</label> -->
             <input
               type="text"

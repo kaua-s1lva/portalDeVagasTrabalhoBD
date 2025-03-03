@@ -7,6 +7,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
   document.querySelectorAll(".buttons button").forEach((button) => {
     button.addEventListener("click", function () {
+      const idVaga = this.dataset.idVaga;
+
+      document.getElementById("idvaga").value = idVaga;
+
       modal.style.display = "flex";
     });
   });
@@ -20,7 +24,7 @@ document.addEventListener("DOMContentLoaded", function () {
       modal.style.display = "none";
     }
   });
-
+/*
   uploadForm.addEventListener("submit", function (event) {
     event.preventDefault();
     const file = fileInput.files[0];
@@ -44,4 +48,5 @@ document.addEventListener("DOMContentLoaded", function () {
       })
       .catch((error) => console.error("Erro ao enviar arquivo:", error));
   });
+  */
 });

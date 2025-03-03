@@ -1,15 +1,9 @@
 <?php
+  use app\singleton\SessaoUsuarioSingleton;
   session_start();
   if (!isset($_SESSION['usuario_id']) == true && !isset($_SESSION['usuario_tipo']) == 'aluno') {
       header('Location: ../index.php');
   }
-
-  require_once('../model/Usuario.php');
-  require_once('../dao/UsuarioDAO.php');
-  require_once('../dao/AlunoDAO.php');
-  require_once('../model/Aluno.php');
-      
-  require_once('../singleton/SessaoUsuarioSingleton.php');
 
   $usuario_logado = SessaoUsuarioSingleton::getInstance()->getUsuario();
 ?>
@@ -34,8 +28,8 @@
         <img src="../assets/ufes-logo.png" alt="ufes-logo" />
       </div>
       <div class="links">
-        <a href="">Perfil</a>
-        <a href="">Visualizar Vagas</a>
+        <a href="pag_crud_aluno.php">Perfil</a>
+        <a href="lista_vagas_aluno.php">Visualizar Vagas</a>
         <a href="../controller/logout.php">Log Off</a>
       </div>
     </aside>

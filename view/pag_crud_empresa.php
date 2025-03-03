@@ -1,11 +1,6 @@
 <?php
-require_once('../model/Usuario.php');
-require_once('../dao/UsuarioDAO.php');
-require_once('../dao/EmpresaDAO.php');
 
-require_once('../model/Empresa.php');
-
-require_once('../singleton/SessaoUsuarioSingleton.php');
+use app\singleton\SessaoUsuarioSingleton;
 
 session_start();
 
