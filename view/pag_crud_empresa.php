@@ -11,7 +11,7 @@ session_start();
 
 // Verificar se o usuário está logado como empresa
 if (!isset($_SESSION['usuario_id']) || $_SESSION['usuario_tipo'] !== 'empresa') {
-  header('Location: login_screen.html'); // Redireciona se não estiver logado
+  header('Location: ../index.php');
   exit();
 }
 

@@ -1,7 +1,7 @@
 <?php
   session_start();
   if (!isset($_SESSION['usuario_id']) == true && !isset($_SESSION['usuario_tipo']) == 'empresa') {
-    header('Location: login_screen.html');
+    header('Location: ../index.php');
   }
 ?>
 
