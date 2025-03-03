@@ -1,12 +1,17 @@
 <?php
+use app\dao\VagaDAO;
+
     session_start();
     if (!isset($_SESSION['usuario_id']) == true && !isset($_SESSION['usuario_tipo']) == 'aluno') {
         header('Location: ../index.php');
     }
 
-    require_once('../dao/IDAO.php');
-    require_once('../dao/VagaDAO.php');
-    require_once('../model/Vaga.php');
+    //require_once('../dao/IDAO.php');
+    //use app\dao\IDAO;
+    //require_once('../app/dao/VagaDAO.php');
+    //require_once('../model/Vaga.php');
+    //use app\dao\VagaDAO;
+
     $vagaDAO = new VagaDAO();
     $dados = $vagaDAO->findAll(); 
 ?>
@@ -32,9 +37,10 @@
         <span class="close">&times;</span>
         <h2>Adicione seu currículo</h2>
         <p>Clique no botão abaixo para enviar seu currículo em formato PDF.</p>
-          <form id="uploadForm" enctype="multipart/form-data">
+          <form id="uploadForm" action="../controller/crud_candidatura.php" enctype="multipart/form-data" method="POST">
             <div class="option-container">
               <p>Adicionar currículo:</p>
+              <input type="hidden" name="idvaga" id="idvaga">
               <input
                 type="file"
                 id="curriculo"
@@ -42,7 +48,7 @@
                 accept=".pdf"
                 required
               />
-              <button type="submit" id="confirmar">Enviar Arquivo</button>
+              <button type="submit" id="confirmar" onclick="">Enviar Arquivo</button>
           </form>
         </div>
       </div>
@@ -52,7 +58,7 @@
       <span></span>
       <div class="links">
         <a href="pag_crud_aluno.php">Perfil</a>
-        <a href="">Visualizar Vagas</a>
+        <a href="lista_vagas_aluno.php">Visualizar Vagas</a>
         <a href="../controller/logout.php">Log Off</a>
       </div>
     </aside>
@@ -77,7 +83,7 @@
               <td><?= $dado['vaga']['cargo'] ?></td>
               <td><?= $dado['usuario']['nomeusuario'] ?></td>
               <td class="buttons">
-                <button>Candidatar-se</button>
+                <button data-id-vaga="<?= $dado['vaga']['idvaga'] ?>">Candidatar-se</button>
               </td>
             </tr>
             

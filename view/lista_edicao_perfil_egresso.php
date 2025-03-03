@@ -1,4 +1,8 @@
 <?php
+
+use app\dao\EgressoDAO;
+use app\singleton\SessaoUsuarioSingleton;
+
 session_start();
 if (!isset($_SESSION['usuario_id']) || $_SESSION['usuario_tipo'] !== 'empresa') {
   header('Location: ../index.php');
@@ -7,14 +11,6 @@ if (!isset($_SESSION['usuario_id']) || $_SESSION['usuario_tipo'] !== 'empresa') 
 ?>
 
 <?php
-require_once('../model/Usuario.php');
-require_once('../dao/UsuarioDAO.php');
-require_once('../dao/EmpresaDAO.php');
-require_once('../model/Empresa.php');
-require_once('../dao/EgressoDAO.php');
-require_once('../model/Egresso.php');
-require_once('../singleton/SessaoUsuarioSingleton.php');
-require_once('../singleton/ConexaoSingleton.php');
 
 $usuario_logado = SessaoUsuarioSingleton::getInstance()->getUsuario();
 
