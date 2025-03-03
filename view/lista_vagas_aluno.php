@@ -92,6 +92,6 @@ use app\dao\VagaDAO;
         </table>
       </section>
     </main>
-    <script src="../js/openModal.js"></script>
+    <script src="../js/openModalVagasAluno.js"></script>
   </body>
 </html>

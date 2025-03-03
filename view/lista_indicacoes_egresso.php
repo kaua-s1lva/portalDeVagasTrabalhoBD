@@ -11,6 +11,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="../styles/lista_indicacoes_egresso.css" />
+    <link rel="stylesheet" href="../styles/modalIndicacaoEgresso.css">
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -20,6 +21,26 @@
     <title>Indicação de Vagas</title>
   </head>
   <body>
+    <div id="modal" class="modal">
+      <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Inserir E-mail Para Indicação</h2>
+        <p>No campo abaixo digite o e-mail que deseja indicar:</p>
+          <form id="uploadForm" action="../controller/crud_candidatura.php" enctype="multipart/form-data" method="POST">
+            <div class="option-container">
+              <p>Adicionar e-mail:</p>
+              <input type="hidden" name="idvaga" id="idvaga">
+              <input
+                type="text"
+                id="emailAluno"
+                name="emailAluno"
+                required
+              />
+              <button type="submit" id="confirmar" onclick="">Enviar</button>
+          </form>
+        </div>
+      </div>
+    </div>
     <aside>
       <div class="vagas-usu-img">
         <img src="../assets/ufes-logo.png" alt="" />
@@ -32,8 +53,7 @@
     </aside>
     <main>
       <section class="header">
-        <h1>Vagas disponíveis para Indicação</h1>
-        <button>Update</button>
+        <h1>Vagas Disponíveis Para Indicação</h1>
       </section>
       <section class="container">
         <table>
@@ -63,5 +83,6 @@
         </table>
       </section>
     </main>
+    <script src="/js/openModalIndicacaoEgresso.js"></script>
   </body>
 </html>
