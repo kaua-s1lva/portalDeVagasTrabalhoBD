@@ -22,6 +22,7 @@ $router->get('/', new UsuarioController(), 'renderHome');
 $router->get('/usuario/novo', new UsuarioController(), 'renderCreate');
 
 $router->post('/usuario/novo', new UsuarioController(), 'create');
+$router->post('/usuario/login', new UsuarioController(), 'login');
 
 // Processa a requisição
 $router->dispatch($_SERVER['REQUEST_METHOD'], $_SERVER['REQUEST_URI']);
