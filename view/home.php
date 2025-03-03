@@ -25,7 +25,7 @@
         </div>
         <div class="login-form">
           <h1>Portal de Estágios UFES</h1>
-          <form id="loginForm" action="app/controller/login.php" method="POST">
+          <form id="loginForm" action="/usuario/login" method="POST">
             <!-- <label for="username">E-mail:</label> -->
             <input
               type="text"
