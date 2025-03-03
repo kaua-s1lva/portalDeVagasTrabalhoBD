@@ -27,7 +27,7 @@
       <div class="links">
         <a href="">Perfil</a>
         <a href="">Indicação de Vagas</a>
-        <a href="">Log Off</a>
+        <a href="../controller/logout.php">Log Off</a>
       </div>
     </aside>
     <main>

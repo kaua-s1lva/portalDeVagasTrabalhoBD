@@ -28,7 +28,7 @@
       <div class="links">
         <img src="../assets/ufes-logo.png" alt="ufes-logo" />
         <a href="">Voltar</a>
-        <a href="">Log Off</a>
+        <a href="../controller/logout.php">Log Off</a>
       </div>
     </aside>
     <main>

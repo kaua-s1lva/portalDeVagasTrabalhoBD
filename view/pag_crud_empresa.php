@@ -43,7 +43,7 @@ $empresa = SessaoUsuarioSingleton::getInstance()->getUsuario();
       <a href="pag_crud_empresa.php">Perfil</a>
       <a href="lista_edicao_perfil_egresso.php">Egressos</a>
       <a href="lista_vagas_empresa.php">Vagas</a>
-      <a href="logout.php">Log Off</a>
+      <a href="../controller/logout.php">Log Off</a>
     </div>
   </aside>
   <main>

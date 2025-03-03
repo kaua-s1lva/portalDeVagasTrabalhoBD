@@ -37,7 +37,7 @@ class EgressoDAO extends UsuarioDAO
 
             if ($egressoData) {
 
-                $egresso = new Egresso($usuarioData->nome, $usuarioData->email, $usuarioData->senha, $egressoData->cpf, $egressoData->idempresa);
+                $egresso = new Egresso($usuarioData->nomeusuario, $usuarioData->emailusuario, $usuarioData->senhausuario, $egressoData->cpf, $egressoData->idempresa);
                 $egresso->setIdEgresso($egressoData->idegresso);
                 $egresso->setIdUsuario($usuarioData->idusuario);
 
