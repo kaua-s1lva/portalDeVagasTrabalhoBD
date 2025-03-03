@@ -15,12 +15,11 @@
   <body>
     <aside>
       <div class="cad-egresso-title">
-        <h1>Visualizar dados de Egresso</h1>
-        <p>Aqui você pode visualizar os dados atuais do egresso.</p>
+        <img src="../assets/ufes-logo.png" alt="ufes-logo" />
       </div>
       <div class="links">
-        <img src="../assets/ufes-logo.png" alt="ufes-logo" />
-        <a href="">Voltar</a>
+        <a href="">Perfil</a>
+        <a href="">Indicação de vagas</a>
         <a href="../controller/logout.php">Log Off</a>
       </div>
     </aside>
@@ -32,7 +31,7 @@
         <form id="viewForm">
           <div class="crud-form-input">
             <div class="inplbl">
-              <label for="username">Nome:</label>
+              <label for="username">Nome / Razão Social:</label>
               <input
                 type="text"
                 id="username"
@@ -62,7 +61,7 @@
               />
             </div>
             <div class="inplbl">
-              <label for="cpf">CPF:</label>
+              <label for="cpf">CPF / CNPJ:</label>
               <input
                 type="text"
                 id="cpf"
