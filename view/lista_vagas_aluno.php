@@ -1,6 +1,6 @@
 <?php
     session_start();
-    if (!isset($_SESSION['usuario_id']) == true && !isset($_SESSION['tipo_usuario']) == 'aluno') {
+    if (!isset($_SESSION['usuario_id']) == true && !isset($_SESSION['usuario_tipo']) == 'aluno') {
         header('Location: ../index.php');
     }
 
@@ -8,7 +8,8 @@
     require_once('../dao/VagaDAO.php');
     require_once('../model/Vaga.php');
     $vagaDAO = new VagaDAO();
-    $dados = $vagaDAO->findAll(); ?>
+    $dados = $vagaDAO->findAll(); 
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -52,7 +53,7 @@
       <div class="links">
         <a href="pag_crud_aluno.php">Perfil</a>
         <a href="">Visualizar Vagas</a>
-        <a href="">Log Off</a>
+        <a href="../controller/logout.php">Log Off</a>
       </div>
     </aside>
     <main>

@@ -22,7 +22,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 alert('Cadastro realizado com sucesso!');
                 window.location.href = '../index.php';
             </script>";
-    } else if (strlen($cpf_cnpj == 14)) {
+    } else if (strlen($cpf_cnpj) == 14) {
         $empresa = new Empresa($nome, $email, $senha, $cpf_cnpj);
         $dao = new EmpresaDAO();
         $dao->insert($empresa);

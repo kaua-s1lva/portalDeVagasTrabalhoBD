@@ -1,7 +1,7 @@
 <?php
   session_start();
-  if (!isset($_SESSION['usuario_id']) == true && !isset($_SESSION['tipo_usuario']) == 'aluno') {
-      header('Location: login_screen.html');
+  if (!isset($_SESSION['usuario_id']) == true && !isset($_SESSION['usuario_tipo']) == 'aluno') {
+      header('Location: ../index.php');
   }
 
   require_once('../model/Usuario.php');
