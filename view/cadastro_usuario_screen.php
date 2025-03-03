@@ -21,7 +21,7 @@
     </aside>
     <main>
       <h1>Dados Pessoais</h1>
-      <form id="loginForm" action="../controller/cadastrar_usuario.php" method="POST">
+      <form id="loginForm" action="/usuario/novo" method="POST">
         <label for="nome">Nome / Razão Social:</label>
         <input
           type="text"

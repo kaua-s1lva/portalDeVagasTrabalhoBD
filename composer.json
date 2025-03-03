@@ -5,5 +5,7 @@
             "app\\": "app/"
         }
     },
-    "require": {}
+    "require": {
+        "awesome-packages/awesome-routes": "^2.0"
+    }
 }
