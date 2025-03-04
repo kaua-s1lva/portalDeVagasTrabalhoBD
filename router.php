@@ -1,7 +1,6 @@
 <?php
 session_start();
 // Se for um arquivo existente (CSS, JS, imagens, etc.), deixa o PHP servir normalmente
-// Se for um arquivo existente (CSS, JS, imagens, etc.), deixa o PHP servir normalmente
 if (php_sapi_name() === 'cli-server') {
     $filePath = __DIR__ . '/' . parse_url($_SERVER["REQUEST_URI"], PHP_URL_PATH);
     if (is_file($filePath)) {
@@ -53,6 +52,13 @@ $router->post('/empresa/criaregresso', new EmpresaController(), 'criarEgresso');
 $router->get('/empresa/editaregresso/:id', new EmpresaController(), 'renderCreateEditarEgresso');
 $router->post('/empresa/editaregresso', new EmpresaController(), 'editarEgresso');
 $router->get('/empresa/removeregresso/:id', new EmpresaController(), 'removerEgresso');
+
+// ROTAS DE CONTROLE DE VAGAS DA EMPRESA
+
+$router->get('/empresa/rendervaga/:id', new EmpresaController(), 'renderVaga');
+$router->post('/empresa/criarvaga', new EmpresaController(), 'criarVaga');
+$router->post('/empresa/editarvaga', new EmpresaController(), 'editarVaga');
+$router->get('/empresa/removervaga/:id', new EmpresaController(), 'removerVaga');
 
 // Processa a requisição
 $router->dispatch($_SERVER['REQUEST_METHOD'], $_SERVER['REQUEST_URI']);

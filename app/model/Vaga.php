@@ -12,12 +12,10 @@ class Vaga
     // Construtor
 
     public function __construct(
-        int $idVaga,
         int $etapaId,
         string $cargo,
-        int $empresaId,
+        int $empresaId
     ) {
-        $this->idVaga = $idVaga;
         $this->etapaId = $etapaId;
         $this->cargo = $cargo;
         $this->empresaId = $empresaId;
@@ -28,6 +26,11 @@ class Vaga
     public function getIdVaga(): int
     {
         return $this->idVaga;
+    }
+
+    public function setIdVaga($idVaga): void
+    {
+        $this->idVaga = $idVaga;
     }
 
     public function getEtapaId(): int
