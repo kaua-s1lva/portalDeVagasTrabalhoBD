@@ -1,42 +1,10 @@
-<!-- <?php
-
-use app\singleton\ConexaoSingleton;
-use app\singleton\SessaoUsuarioSingleton;
-
-  session_start();
-  if (!isset($_SESSION['usuario_id']) == true && !isset($_SESSION['usuario_tipo']) == 'empresa') {
-    header('Location: ../index.php');
-  }
-?>
-
-<?php
-
-$usuario_logado = SessaoUsuarioSingleton::getInstance()->getUsuario();
-
-// Verifica se o usuário é uma empresa
-if (SessaoUsuarioSingleton::getInstance()->getTipoUsuario() !== 'empresa') {
-  die("Acesso negado.");
-}
-
-$empresa_id = $usuario_logado->getIdUsuario();
-
-try {
-  $conexao = ConexaoSingleton::getInstancia()->getConexao();
-  $stmt = $conexao->prepare("SELECT idvaga, cargo FROM vaga WHERE idempresa = ?");
-  $stmt->execute([$empresa_id]);
-  $vagas = $stmt->fetchAll(PDO::FETCH_ASSOC);
-} catch (PDOException $e) {
-  die("Erro ao conectar ao banco de dados: " . $e->getMessage());
-}
-?> -->
-
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="../styles/lista_vagas_empresa.css" />
-    <link rel="stylesheet" href="../styles/modalListaVagasEmpresa.css">
+    <link rel="stylesheet" href="../styles/empresa_editar_vaga.css" />
+    <link rel="stylesheet" href="../styles/modalEditarVagasEmpresa.css">
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -50,8 +18,8 @@ try {
     <div id="modal" class="modal">
       <div class="modal-content">
         <span class="close">&times;</span>
-        <h2>Insira os Dados da Vaga</h2>
-        <p>Preencha os campos abaixo referentes à vaga que deseja criar:</p>
+        <h2>Editar os Dados da Vaga</h2>
+        <p>Preencha os campos abaixo referentes à vaga que deseja editar:</p>
           <form id="uploadForm" action="../controller/crud_candidatura.php" enctype="multipart/form-data" method="POST">
             <div class="option-container">
               <p>Cargo:</p>
@@ -87,52 +55,42 @@ try {
     </aside>
     <main>
       <section class="header">
-        <h1>Controle de Vagas</h1>
+        <h1>Detalhes de Vaga</h1>
         <div class="header-buttons">
-          <button>Criar Nova Vaga</button>
+          <button>Editar Vaga</button>
         </div>
       </section>
       <section class="container">
+        <section class="filtro-vaga">
+          <div>
+            <label for="cargoFiltro">Cargo:</label>
+            <input type="text" id="cargoFiltro">
+          </div>
+          <div>
+            <label for="etapaFiltro">Etapa:</label>
+            <input type="text" id="etapaFiltro">
+          </div>
+        </section>
         <table>
           <thead>
             <tr>
-              <th>Cargo</th>
-              <th>Total de Inscrições</th>
+              <th>Candidato</th>
+              <th>Egresso</th>
               <th>Opções</th>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <!-- criar novo codigo em php com base nesta nova organização de tabela -->
-              <td>dado 1</td>
-              <td>dado 2</td>
+              <td>Leoncio del Valle Liebner</td>
+              <td>Josnei Hoffman</td>
               <td class="buttons">
-                <button>Visualizar vaga</button>
-                <button>Remover vaga</button>
+                <button>Ver currículo</button>
               </td>
-              <!-- <?php if (!empty($vagas)) : ?>
-            <?php foreach ($vagas as $vaga) : ?>
-            <tr>
-              <td><?php echo htmlspecialchars($vaga['cargo']); ?></td>
-              <td>
-                <?php echo htmlspecialchars($usuario_logado->getNome()); ?>
-              </td>
-              <td class="buttons">
-                <button>Editar vaga</button>
-                <button>Remover vaga</button>
-              </td>
-            </tr>
-            <?php endforeach; ?>
-            <?php else : ?>
-            <tr>
-              <td colspan="3">Nenhuma vaga disponível.</td>
-            </tr>
-            <?php endif; ?> -->
             </tr>
           </tbody>
         </table>
       </section>
     </main>
-    <script src="/js/openModalListaVagasEmpresa.js"></script>
+    <script src="/js/openModalEditarVagasEmpresa.js"></script>
   </body>
 </html>

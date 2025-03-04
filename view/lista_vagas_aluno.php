@@ -1,29 +1,9 @@
-<?php
-/*
-use app\dao\VagaDAO;
-
-    session_start();
-    if (!isset($_SESSION['usuario_id']) == true && !isset($_SESSION['usuario_tipo']) == 'aluno') {
-        header('Location: ../index.php');
-    }
-
-    //require_once('../dao/IDAO.php');
-    //use app\dao\IDAO;
-    //require_once('../app/dao/VagaDAO.php');
-    //require_once('../model/Vaga.php');
-    //use app\dao\VagaDAO;
-
-    $vagaDAO = new VagaDAO();
-    $dados = $vagaDAO->findAll(); 
-    */
-?>
-
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="../styles/lista_vagas_usuario.css" />
+    <link rel="stylesheet" href="../styles/lista_vagas_aluno.css" />
     <link rel="stylesheet" href="../styles/modal.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -67,7 +47,6 @@ use app\dao\VagaDAO;
     <main>
       <section class="header">
         <h1>Vagas disponíveis</h1>
-        <button>Update</button>
       </section>
       <section class="container">
         <table>
@@ -79,7 +58,15 @@ use app\dao\VagaDAO;
             </tr>
           </thead>
           <tbody>
-            <?php foreach($dados as $dado) { ?>
+            <tr>
+              <td>Desenvolvedor de desenvolvimento</td>
+              <td>Alguém aí</td>
+              <td class="buttons">
+                <span class="status-cand">Não enviado</span>
+                <button>Candidatar-se</button>
+              </td>
+            </tr>
+            <!-- <?php foreach($dados as $dado) { ?>
 
             <tr>
               <td><?= $dado['vaga']['cargo'] ?></td>
@@ -89,11 +76,11 @@ use app\dao\VagaDAO;
               </td>
             </tr>
             
-            <?php } ?>
+            <?php } ?> -->
           </tbody>
         </table>
       </section>
     </main>
-    <script src="../js/openModal.js"></script>
+    <script src="../js/openModalVagasAluno.js"></script>
   </body>
 </html>
