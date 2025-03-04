@@ -65,6 +65,10 @@ class EgressoController extends ControllerComHtml implements Controller
             $indicacaoDAO = new IndicacaoDAO();
             $indicacaoDAO->insert(new Indicacao($aluno->getIdAluno(), $idEgresso, $idVaga, 1));
 
+            echo "<script> alert('Aluno indicado com sucesso'); window.location.href = '/egresso'; </script>";
+
+            //header("Location: /egresso");
+
         } else {
             echo "<script> alert('Aluno não encontrado'); window.location.href = '/egresso'; </script>";
         }
