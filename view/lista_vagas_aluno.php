@@ -58,25 +58,29 @@
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>Desenvolvedor de desenvolvimento</td>
-              <td>Alguém aí</td>
-              <td class="buttons">
-                <span class="status-cand">Não enviado</span>
-                <button>Candidatar-se</button>
-              </td>
-            </tr>
-            <!-- <?php foreach($dados as $dado) { ?>
+          <?php
+            // Extraindo os IDs das vagas que o usuário já se candidatou
+            $appliedVagas = array_map(function($candidatura) {
+                return $candidatura->idvaga;
+            }, $candidaturas);
+            ?>
 
-            <tr>
-              <td><?= $dado['vaga']['cargo'] ?></td>
-              <td><?= $dado['usuario']['nomeusuario'] ?></td>
-              <td class="buttons">
-                <button data-id-vaga="<?= $dado['vaga']['idvaga'] ?>">Candidatar-se</button>
-              </td>
-            </tr>
-            
-            <?php } ?> -->
+            <?php foreach($dados as $dado) { ?>
+              <tr>
+                <td><?= $dado['vaga']['cargo'] ?></td>
+                <td><?= $dado['usuario']['nomeusuario'] ?></td>
+                <td class="buttons">
+                  <?php if (in_array($dado['vaga']['idvaga'], $appliedVagas)) { ?>
+                      <span class="status-cand">Enviado</span>
+                      <button disabled data-id-vaga="<?= $dado['vaga']['idvaga'] ?>">Já se candidatou</button>
+                  <?php } else { ?>
+                      <span class="status-cand active">Não enviado</span>
+                      <button data-id-vaga="<?= $dado['vaga']['idvaga'] ?>">Candidatar-se</button>
+                  <?php } ?>
+                </td>
+              </tr>
+            <?php } ?>
+
           </tbody>
         </table>
       </section>

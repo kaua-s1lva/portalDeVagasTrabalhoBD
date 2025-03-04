@@ -3,6 +3,7 @@ namespace app\controller\aluno;
 
 use app\controller\ControllerComHtml;
 use app\dao\AlunoDAO;
+use app\dao\CandidaturaDAO;
 use app\dao\EmpresaDAO;
 use app\dao\VagaDAO;
 use app\model\Aluno;
@@ -23,7 +24,16 @@ class AlunoController extends ControllerComHtml implements Controller
     
         $vagaDAO = new VagaDAO();
         $dados = $vagaDAO->findAll();
-        echo $this->renderizaHtml('lista_vagas_aluno.php', ['dados' => $dados]);
+
+        $candidaturaDAO = new CandidaturaDAO();
+        $usuario_logado = SessaoUsuarioSingleton::getInstance()->getUsuario();
+        $candidaturas = $candidaturaDAO->findByIdAluno($usuario_logado->getIdUsuario());
+        
+        echo $this->renderizaHtml('lista_vagas_aluno.php', [
+                        'dados' => $dados, 
+                        'candidaturas' => $candidaturas
+                    ]);
+
           return $response;
       }
       

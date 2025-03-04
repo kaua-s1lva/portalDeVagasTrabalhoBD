@@ -41,16 +41,23 @@ class CandidaturaDAO implements IDAO
         $stmt->execute([$id]);
     }
 
-    public function findById($id)
+    public function findById($idVaga, $idAluno)
     {
-        $stmt = $this->conexao->prepare("SELECT * FROM candidatura WHERE idVaga=?");
-        $stmt->execute([$id]);
+        $stmt = $this->conexao->prepare("SELECT * FROM candidatura WHERE idVaga=? AND idAluno=?");
+        $stmt->execute([$idVaga, $idAluno]);
         return $stmt->fetch(PDO::FETCH_OBJ);
     }
 
     public function findAll()
     {
         $stmt = $this->conexao->query("SELECT * FROM candidatura");
+        return $stmt->fetchAll(PDO::FETCH_OBJ);
+    }
+
+    public function findByIdAluno($idAluno)
+    {
+        $stmt = $this->conexao->prepare("SELECT * FROM candidatura WHERE idAluno=?");
+        $stmt->execute([$idAluno]);
         return $stmt->fetchAll(PDO::FETCH_OBJ);
     }
 }
