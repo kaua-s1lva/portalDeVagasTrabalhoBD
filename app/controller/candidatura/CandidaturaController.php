@@ -44,7 +44,60 @@ class CandidaturaController extends ControllerComHtml implements Controller
   
           return $response;
       }
+
+
+      public function create(Request $request, Response $response) : Response
+      {
+          if ($_FILES['curriculo']['error'] === UPLOAD_ERR_OK) {
+              // Caminho temporário e informações do arquivo
+              $fileTmpPath = $_FILES['curriculo']['tmp_name'];
+              $fileName    = $_FILES['curriculo']['name'];
       
+              $idvaga = isset($_POST['idvaga']) ? $_POST['idvaga'] : '';
+      
+              // Verifica a extensão do arquivo
+              $fileExtension = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
+              if ($fileExtension !== 'pdf') {
+                  echo "<script>
+                          alert('Apenas arquivos PDF são permitidos.');
+                          window.history.back();
+                        </script>";
+                  exit;
+              }
+      
+              // Lê o conteúdo do arquivo como string binária
+              $fileContent = file_get_contents($fileTmpPath);
+              if ($fileContent === false) {
+                  echo "<script>
+                          alert('Erro ao ler o arquivo.');
+                          window.history.back();
+                        </script>";
+                  exit;
+              }
+      
+              // Converte o conteúdo em binário para a representação de string binária
+              $fileContentBinary = ($fileContent); 
+      
+              // Obtém o ID do usuário atual
+              $idusuario = SessaoUsuarioSingleton::getInstance()->getUsuario()->getIdUsuario();
+      
+              // Cria a instância da DAO e insere os dados com o conteúdo binário
+              $dao = new CandidaturaDAO();
+              $dao->insert(new Candidatura($idvaga, $idusuario, $fileContentBinary, 1));
+      
+              // Redireciona para a página de aluno após o upload
+              header("Location: /aluno");
+          } else {
+              echo "<script>
+                      alert('Erro no upload do arquivo.');
+                      window.history.back();
+                    </script>";
+          }
+      
+          return $response;
+      }
+
+    /*
     public function create(Request $request,Response $response) : Response
     {
 
@@ -91,7 +144,7 @@ class CandidaturaController extends ControllerComHtml implements Controller
         }
         
         return $response;
-    }
+    }*/
       
       public function update(Request $request,Response $response) : Response
       {

@@ -92,8 +92,8 @@
                 <td><?= htmlspecialchars($candidato['nome_candidato']) ?></td>
                 <td><?= htmlspecialchars($candidato['nome_egresso_indicador'] ?? 'N/A') ?></td>
                 <td class="buttons">
-                  <?php if (!empty($candidato['curriculo']) && is_string($candidato['curriculo'])): ?>
-                    <a href="<?= htmlspecialchars($candidato['curriculo']) ?>" target="_blank">Ver Currículo</a>
+                  <?php if (!empty($candidato['curriculo'])): ?>
+                    <a href="/empresa/visualizar/curriculo/<?= $candidato['id_candidato'] ?>" target="_blank">Ver Currículo</a>
                   <?php else: ?>
                     <button disabled>Currículo não disponível</button>
                   <?php endif; ?>
