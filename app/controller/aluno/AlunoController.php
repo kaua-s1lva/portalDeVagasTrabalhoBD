@@ -50,6 +50,8 @@ class AlunoController extends ControllerComHtml implements Controller
       
     public function create(Request $request,Response $response) : Response
     {
+        $this->verificaSessao();
+
         $nome      = isset($_POST['nome']) ? $_POST['nome'] : '';
         $email     = isset($_POST['email']) ? $_POST['email'] : '';
         $senha     = isset($_POST['senha']) ? $_POST['senha'] : '';
@@ -86,6 +88,8 @@ class AlunoController extends ControllerComHtml implements Controller
       
       public function update(Request $request,Response $response) : Response
       {
+        $this->verificaSessao();
+
         $instancia = SessaoUsuarioSingleton::getInstance();
         $usuario_logado = $instancia->getUsuario();
         $dao = new AlunoDAO();
@@ -113,6 +117,8 @@ class AlunoController extends ControllerComHtml implements Controller
       
       public function destroy(Request $request,Response $response) : Response
       {
+        $this->verificaSessao();
+
         $dao = new AlunoDAO();
         $instancia = SessaoUsuarioSingleton::getInstance();
         $usuario_logado = $instancia->getUsuario();
@@ -124,25 +130,6 @@ class AlunoController extends ControllerComHtml implements Controller
         header("Location: /");
   
         return $response;
-      }
-
-      function verificarLogin($username, $password)
-      {
-          if (empty($username) || empty($password)) {
-              return "Preencha todos os campos.";
-          }
-      
-          // Criando o serviço de autenticação
-          $autenticacaoService = new AutenticacaoService();
-      
-          // Verifica se a autenticação foi bem-sucedida
-          $usuario = $autenticacaoService->autenticar($username, $password);
-      
-          if ($usuario) {
-              return true;
-          }
-      
-          return "Usuário não encontrado, e-mail ou senha inválidos.";
       }
 
     public function verificaSessao() {

@@ -3,21 +3,15 @@ namespace app\controller\egresso;
 
 use app\controller\ControllerComHtml;
 use app\dao\AlunoDAO;
-use app\dao\CandidaturaDAO;
 use app\dao\EgressoDAO;
-use app\dao\EmpresaDAO;
 use app\dao\IndicacaoDAO;
 use app\dao\VagaDAO;
 use app\model\Aluno;
-use app\model\Egresso;
-use app\model\Empresa;
 use app\model\Indicacao;
-use app\service\AutenticacaoService;
 use app\singleton\SessaoUsuarioSingleton;
 use AwesomePackages\AwesomeRoutes\Core\Controller;
 use AwesomePackages\AwesomeRoutes\Core\Request;
 use AwesomePackages\AwesomeRoutes\Core\Response;
-use AwesomePackages\AwesomeRoutes\Enum\StatusCode;
 
 class EgressoController extends ControllerComHtml implements Controller
 {
@@ -53,6 +47,8 @@ class EgressoController extends ControllerComHtml implements Controller
       
     public function create(Request $request,Response $response) : Response
     {
+        $this->verificaSessao();
+
         $email     = isset($_POST['emailAluno']) ? $_POST['emailAluno'] : '';
         $alunoDAO = new AlunoDAO();
         $aluno = $alunoDAO->findByEmail($email);
@@ -80,6 +76,8 @@ class EgressoController extends ControllerComHtml implements Controller
       
       public function update(Request $request,Response $response) : Response
       {
+        $this->verificaSessao();
+
         $instancia = SessaoUsuarioSingleton::getInstance();
         $usuario_logado = $instancia->getUsuario();
         $dao = new AlunoDAO();
@@ -107,6 +105,8 @@ class EgressoController extends ControllerComHtml implements Controller
       
       public function destroy(Request $request,Response $response) : Response
       {
+        $this->verificaSessao();
+        
         $dao = new AlunoDAO();
         $instancia = SessaoUsuarioSingleton::getInstance();
         $usuario_logado = $instancia->getUsuario();
@@ -118,25 +118,6 @@ class EgressoController extends ControllerComHtml implements Controller
         header("Location: /");
   
         return $response;
-      }
-
-      function verificarLogin($username, $password)
-      {
-          if (empty($username) || empty($password)) {
-              return "Preencha todos os campos.";
-          }
-      
-          // Criando o serviço de autenticação
-          $autenticacaoService = new AutenticacaoService();
-      
-          // Verifica se a autenticação foi bem-sucedida
-          $usuario = $autenticacaoService->autenticar($username, $password);
-      
-          if ($usuario) {
-              return true;
-          }
-      
-          return "Usuário não encontrado, e-mail ou senha inválidos.";
       }
 
     public function verificaSessao() {

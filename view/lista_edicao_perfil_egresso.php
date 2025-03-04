@@ -28,7 +28,7 @@
       <h1>Gestão de Egressos</h1>
       <div class="header-buttons">
         <button onclick="window.location.href='../view/empresa_cadastro_egresso.php'">Adicionar Novo Egresso</button>
-        <button onclick="location.reload();">Atualizar</button>
+        
       </div>
     </section>
     <section class="container">

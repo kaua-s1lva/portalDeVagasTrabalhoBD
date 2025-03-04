@@ -24,14 +24,10 @@ use PDOException;
 class EmpresaController extends ControllerComHtml implements Controller
 {
 
-    public function renderHome(Request $request, Response $response): Response
-    {
-        echo $this->renderizaHtml('index.php', []);
-        return $response;
-    }
-
     public function renderCreateVagas(Request $request, Response $response): Response
     {
+        $this->verificaSessao();
+
         $empresa = SessaoUsuarioSingleton::getInstance()->getUsuario();
 
         $empresa_id = $empresa->getIdUsuario();
@@ -65,6 +61,8 @@ class EmpresaController extends ControllerComHtml implements Controller
 
     public function renderVaga(Request $request, Response $response): Response
     {
+        $this->verificaSessao();
+
         $idVaga = $request->id;
         $vagaDAO = new VagaDAO();
         $conexao = ConexaoSingleton::getInstancia()->getConexao();
@@ -111,6 +109,8 @@ class EmpresaController extends ControllerComHtml implements Controller
 
     public function criarVaga(Request $request, Response $response): Response
     {
+        $this->verificaSessao();
+
         $empresa = SessaoUsuarioSingleton::getInstance()->getUsuario();
         $vagaDAO = new VagaDAO();
         $cargo = $_POST['cargo'];
@@ -134,6 +134,8 @@ class EmpresaController extends ControllerComHtml implements Controller
 
     public function editarVaga(Request $request, Response $response): Response
     {
+        $this->verificaSessao();
+
         $empresa = SessaoUsuarioSingleton::getInstance()->getUsuario();
         $etapaDAO = new EtapaDAO();
         $vagaDAO = new VagaDAO();
@@ -164,6 +166,8 @@ class EmpresaController extends ControllerComHtml implements Controller
 
     public function removerVaga(Request $request, Response $response): Response
     {
+        $this->verificaSessao();
+
         $idVaga = $request->id;
         $vagaDAO = new VagaDAO();
 
@@ -183,6 +187,8 @@ class EmpresaController extends ControllerComHtml implements Controller
 
     public function renderCreatePerfilEmpresa(Request $request, Response $response): Response
     {
+        $this->verificaSessao();
+
         $empresa = SessaoUsuarioSingleton::getInstance()->getUsuario();
 
         // Verifica se o usuário é uma empresa
@@ -197,6 +203,8 @@ class EmpresaController extends ControllerComHtml implements Controller
 
     public function renderCreateEgressos(Request $request, Response $response): Response
     {
+        $this->verificaSessao();
+
         $usuario_logado = SessaoUsuarioSingleton::getInstance()->getUsuario();
 
         $empresa_id = $usuario_logado->getIdUsuario();
@@ -213,6 +221,8 @@ class EmpresaController extends ControllerComHtml implements Controller
 
     public function renderCreateCriarEgresso(Request $request, Response $response): Response
     {
+        $this->verificaSessao();
+
         echo $this->renderizaHtml('empresa_editar_egresso.php', []);
         return $response;
     }
@@ -220,6 +230,8 @@ class EmpresaController extends ControllerComHtml implements Controller
 
     public function renderCreateEditarEgresso(Request $request, Response $response): Response
     {
+        $this->verificaSessao();
+
         $idEgresso = $request->id;
         $egressoDAO = new EgressoDAO();
 
@@ -233,6 +245,8 @@ class EmpresaController extends ControllerComHtml implements Controller
 
     public function editarEmpresa(Request $request, Response $response): Response
     {
+        $this->verificaSessao();
+
         session_start();
         $empresa = SessaoUsuarioSingleton::getInstance()->getUsuario();
         $empresa_id = $empresa->getIdUsuario();
@@ -262,6 +276,8 @@ class EmpresaController extends ControllerComHtml implements Controller
 
     public function excluirEmpresa(Request $request, Response $response): Response
     {
+        $this->verificaSessao();
+
         $empresa = SessaoUsuarioSingleton::getInstance()->getUsuario();
         $empresaDAO = new EmpresaDAO();
 
@@ -278,6 +294,8 @@ class EmpresaController extends ControllerComHtml implements Controller
 
     public function criarEgresso(Request $request, Response $response): Response
     {
+        $this->verificaSessao();
+
         $usuario_logado = SessaoUsuarioSingleton::getInstance()->getUsuario();
         $empresa_id = $usuario_logado->getIdUsuario();
 
@@ -313,6 +331,8 @@ class EmpresaController extends ControllerComHtml implements Controller
 
     public function editarEgresso(Request $request, Response $response): Response
     {
+        $this->verificaSessao();
+
         $usuario_logado = SessaoUsuarioSingleton::getInstance()->getUsuario();
 
         $empresa_id = $usuario_logado->getIdUsuario();
@@ -337,7 +357,7 @@ class EmpresaController extends ControllerComHtml implements Controller
                     $idegresso = $egresso->getIdEgresso();
                     echo "<script>
                     alert('Dados do egresso atualizados com sucesso!');
-                    window.location.href = '/empresa/editaregresso/$idegresso';
+                    window.location.href = '/empresa/editaregresso/{$idegresso}';
                 </script>";
                     exit();
                 } else {
@@ -352,6 +372,8 @@ class EmpresaController extends ControllerComHtml implements Controller
 
     public function removerEgresso(Request $request, Response $response): Response
     {
+        $this->verificaSessao();
+
         $idEgresso = $request->id;
         $egressoDAO = new EgressoDAO();
 
@@ -371,7 +393,8 @@ class EmpresaController extends ControllerComHtml implements Controller
 
     public function atualizarEmpresa(Request $request, Response $response): Response
     {
-
+        $this->verificaSessao();
+        
         // Verificar se o usuário está logado como empresa
         if (!isset($_SESSION['usuario_id']) || $_SESSION['usuario_tipo'] !== 'empresa') {
             header('Location: ../index.php'); // Redireciona se não estiver logado
@@ -415,6 +438,12 @@ class EmpresaController extends ControllerComHtml implements Controller
             }
         }
         return $response;
+    }
+
+    public function verificaSessao() {
+        if (SessaoUsuarioSingleton::getInstance()->getTipoUsuario() !== 'empresa') {
+            die("Acesso negado.");
+        }
     }
 
 
