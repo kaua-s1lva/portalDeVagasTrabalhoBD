@@ -40,7 +40,7 @@ class UsuarioController extends ControllerComHtml implements Controller
             if ($_SESSION['usuario_tipo'] == 'aluno') {
                 header("Location: /aluno");
             } elseif ($_SESSION['usuario_tipo'] == 'egresso') {
-                echo $this->renderizaHtml("lista_indicacoes_egresso.php", []);  // Página para Egresso
+                header("Location: /egresso");  // Página para Egresso
             } elseif ($_SESSION['usuario_tipo'] == 'empresa') {
                 echo $this->renderizaHtml("lista_vagas_empresa.php", []);  // Página para Empresa
             }
