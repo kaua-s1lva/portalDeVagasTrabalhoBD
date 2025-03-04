@@ -1,96 +1,117 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="../styles/empresa_editar_vaga.css" />
-    <link rel="stylesheet" href="../styles/modalEditarVagasEmpresa.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
-      rel="stylesheet"
-    />
-    <title>Controle de Vagas</title>
-  </head>
+<html lang="pt-br">
 
-  <body>
-    <div id="modal" class="modal">
-      <div class="modal-content">
-        <span class="close">&times;</span>
-        <h2>Editar os Dados da Vaga</h2>
-        <p>Preencha os campos abaixo referentes à vaga que deseja editar:</p>
-          <form id="uploadForm" action="../controller/crud_candidatura.php" enctype="multipart/form-data" method="POST">
-            <div class="option-container">
-              <p>Cargo:</p>
-              <input type="hidden" name="idvaga" id="idvaga">
-              <input
-                type="text"
-                id="emailAluno"
-                name="emailAluno"
-                placeholder="Ex: Desenvolvedor..."
-                required
-              />
-              <p>Status da vaga:</p>
-              <select name="selVaga" id="selVaga">
-                <option value="aberto">Em aberto</option>
-                <option value="fechado">Fechada</option>
-                <option value="pausado">Pausada</option>
-              </select>
-              <button type="submit" id="confirmar" onclick="">Enviar</button>
-          </form>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Controle de Vagas</title>
+  <link rel="stylesheet" href="/styles/empresa_editar_vaga.css">
+  <link rel="stylesheet" href="/styles/modalEditarVagasEmpresa.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&family=Roboto:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+  <!-- Modal de Edição da Vaga -->
+  <div id="modal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h2>Editar os Dados da Vaga</h2>
+      <p>Preencha os campos abaixo referentes à vaga que deseja editar:</p>
+      <form id="uploadForm" action="/empresa/editarvaga" enctype="multipart/form-data" method="POST">
+        <div class="option-container">
+          <p>Cargo:</p>
+
+          <input type="hidden" name="idvaga" id="idvaga">
+          <input type="text" id="cargo" name="cargo" placeholder="Ex: Desenvolvedor..." required value="<?= htmlspecialchars($vaga['cargo'] ?? '') ?>">
+
+          <p>Etapa da vaga:</p>
+          <select name="etapaVaga" id="etapaVaga">
+            <option value="1">Em Aberto</option>
+            <option value="2">Em Triagem</option>
+            <option value="3">Em Entrevista</option>
+            <option value="4">Concluído</option>
+          </select>
+
+          <button type="submit" id="confirmar">Salvar Alterações</button>
         </div>
-      </div>
+      </form>
     </div>
-    <aside>
-      <div class="vagas-usu-img">
-        <img src="../assets/ufes-logo.png" alt="" />
+  </div>
+
+  <!-- Barra Lateral -->
+  <aside>
+    <div class="vagas-usu-img">
+      <img src="../assets/ufes-logo.png" alt="Logo UFES">
+    </div>
+    <div class="links">
+      <a href="lista_edicao_perfil_egresso.php">Egressos</a>
+      <a href="pag_crud_empresa.php">Perfil</a>
+      <a href="lista_vagas_empresa.php">Vagas</a>
+      <a href="../controller/logout.php">Log Off</a>
+    </div>
+  </aside>
+
+  <!-- Conteúdo Principal -->
+  <main>
+    <section class="header">
+      <h1>Detalhes da Vaga</h1>
+      <div class="header-buttons">
+        <button data-id-vaga="<?= $vaga['idvaga'] ?>">Editar Vaga</button>
       </div>
-      <div class="links">
-        <a href="lista_edicao_perfil_egresso.php">Egressos</a>
-        <a href="pag_crud_empresa.php">Perfil</a>
-        <a href="lista_vagas_empresa.php">Vagas</a>
-        <a href="../controller/logout.php">Log Off</a>
-      </div>
-    </aside>
-    <main>
-      <section class="header">
-        <h1>Detalhes de Vaga</h1>
-        <div class="header-buttons">
-          <button>Editar Vaga</button>
+    </section>
+
+    <section class="container">
+      <!-- Filtros -->
+      <section class="filtro-vaga">
+        <div>
+          <label for="cargoFiltro">Cargo:</label>
+          <input type="text" id="cargoFiltro" value="<?= htmlspecialchars($vaga['cargo'] ?? '') ?>" readonly>
+        </div>
+        <div>
+          <label for="etapaFiltro">Etapa:</label>
+          <input type="text" id="etapaFiltro" value="<?= htmlspecialchars($vaga['nome_etapa'] ?? '') ?>" readonly>
         </div>
       </section>
-      <section class="container">
-        <section class="filtro-vaga">
-          <div>
-            <label for="cargoFiltro">Cargo:</label>
-            <input type="text" id="cargoFiltro">
-          </div>
-          <div>
-            <label for="etapaFiltro">Etapa:</label>
-            <input type="text" id="etapaFiltro">
-          </div>
-        </section>
-        <table>
-          <thead>
+
+      <!-- Tabela de Candidatos -->
+      <table>
+        <thead>
+          <tr>
+            <th>Candidato</th>
+            <th>Indicado Por</th>
+            <th>Opções</th>
+          </tr>
+        </thead>
+        <tbody>
+          <?php if (!empty($candidatos)): ?>
+            <?php foreach ($candidatos as $candidato): ?>
+              <tr>
+                <td><?= htmlspecialchars($candidato['nome_candidato']) ?></td>
+                <td><?= htmlspecialchars($candidato['nome_egresso_indicador'] ?? 'N/A') ?></td>
+                <td class="buttons">
+                  <?php if (!empty($candidato['curriculo']) && is_string($candidato['curriculo'])): ?>
+                    <a href="<?= htmlspecialchars($candidato['curriculo']) ?>" target="_blank">Ver Currículo</a>
+                  <?php else: ?>
+                    <button disabled>Currículo não disponível</button>
+                  <?php endif; ?>
+                </td>
+
+              </tr>
+            <?php endforeach; ?>
+          <?php else: ?>
             <tr>
-              <th>Candidato</th>
-              <th>Egresso</th>
-              <th>Opções</th>
+              <td colspan="3">Nenhum candidato cadastrado para esta vaga.</td>
             </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>Leoncio del Valle Liebner</td>
-              <td>Josnei Hoffman</td>
-              <td class="buttons">
-                <button>Ver currículo</button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </section>
-    </main>
-    <script src="/js/openModalEditarVagasEmpresa.js"></script>
-  </body>
+          <?php endif; ?>
+        </tbody>
+      </table>
+    </section>
+  </main>
+
+  <script src="/js/openModalEditarVagasEmpresa.js"></script>
+</body>
+
 </html>

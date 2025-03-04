@@ -7,6 +7,8 @@ if (php_sapi_name() === 'cli-server') {
     }
 }
 
+session_start();
+
 require_once __DIR__ . '/vendor/autoload.php';
 
 use app\controller\usuario\UsuarioController;
@@ -34,6 +36,13 @@ $router->post('/empresa/criaregresso', new EmpresaController(), 'criarEgresso');
 $router->get('/empresa/editaregresso/:id', new EmpresaController(), 'renderCreateEditarEgresso');
 $router->post('/empresa/editaregresso', new EmpresaController(), 'editarEgresso');
 $router->get('/empresa/removeregresso/:id', new EmpresaController(), 'removerEgresso');
+
+// ROTAS DE VAGA DA EMPRESA
+
+$router->get('/empresa/rendervaga/:id', new EmpresaController(), 'renderVaga');
+$router->post('/empresa/criarvaga', new EmpresaController(), 'criarVaga');
+$router->post('/empresa/editarvaga', new EmpresaController(), 'editarVaga');
+$router->get('/empresa/removervaga/:id', new EmpresaController(), 'removerVaga');
 
 // Processa a requisição
 $router->dispatch($_SERVER['REQUEST_METHOD'], $_SERVER['REQUEST_URI']);

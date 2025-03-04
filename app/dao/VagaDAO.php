@@ -17,30 +17,32 @@ class VagaDAO implements IDAO
 
     public function insert($vaga)
     {
-        $stmt = $this->conexao->prepare("INSERT INTO vagas (etapa_id, cargo, empresa_id, created_at) VALUES (?, ?, ?, NOW())");
+        $stmt = $this->conexao->prepare("INSERT INTO vaga (idetapa, cargo, idempresa) VALUES (?, ?, ?)");
         $stmt->execute([$vaga->getEtapaId(), $vaga->getCargo(), $vaga->getEmpresaId()]);
         return $this->conexao->lastInsertId();
     }
 
     public function update($vaga)
     {
-        $stmt = $this->conexao->prepare("UPDATE vagas SET etapa_id=?, cargo=?, empresa_id=?, updated_at=NOW() WHERE id_vaga=?");
+        $stmt = $this->conexao->prepare("UPDATE vaga SET idetapa=?, cargo=?, idempresa=?, updated_at=NOW() WHERE idvaga=?");
         $stmt->execute([$vaga->getEtapaId(), $vaga->getCargo(), $vaga->getEmpresaId(), $vaga->getIdVaga()]);
+        return $stmt->rowCount() > 0;
     }
 
     public function delete($id)
     {
-        $stmt = $this->conexao->prepare("UPDATE vagas SET deleted_at=NOW() WHERE id_vaga=?");
+        $stmt = $this->conexao->prepare("DELETE FROM vaga WHERE idvaga=?");
         $stmt->execute([$id]);
+        return $stmt->rowCount() > 0;
     }
 
     public function findById($id)
     {
-        $stmt = $this->conexao->prepare("SELECT * FROM vagas WHERE id_vaga=?");
+        $stmt = $this->conexao->prepare("SELECT * FROM vaga WHERE idvaga=?");
         $stmt->execute([$id]);
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        return $row ? new Vaga($row['id_vaga'], $row['etapa_id'], $row['cargo'], $row['empresa_id']) : null;
+        return $row ? new Vaga($row['idvaga'], $row['idetapa'], $row['cargo'], $row['idempresa']) : null;
     }
 
     public function findAll()

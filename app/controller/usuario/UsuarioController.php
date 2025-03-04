@@ -41,11 +41,12 @@ class UsuarioController extends ControllerComHtml implements Controller
             } elseif ($_SESSION['usuario_tipo'] == 'egresso') {
                 echo $this->renderizaHtml("lista_indicacoes_egresso.php", []);  // Página para Egresso
             } elseif ($_SESSION['usuario_tipo'] == 'empresa') {
-                echo $this->renderizaHtml("lista_vagas_empresa.php", []);  // Página para Empresa
+                header('location: /empresa/vagas');
+             //   echo $this->renderizaHtml("/empresa/vagas", []);  // Página para Empresa
             }
             exit;
         } else {
-            echo "<script>alert('$resultado'); window.location.href = '../index.php';</script>";
+            echo "<script>alert('$resultado'); window.location.href = '/';</script>";
             exit;
         }
         header("/");
