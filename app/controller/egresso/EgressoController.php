@@ -40,7 +40,7 @@ class EgressoController extends ControllerComHtml implements Controller
       
         $usuario_logado = SessaoUsuarioSingleton::getInstance()->getUsuario();
 
-          echo $this->renderizaHtml('pag_crud_aluno.php', ['usuario_logado' => $usuario_logado]);
+          echo $this->renderizaHtml('visualizar_dados_egresso.php', ['usuario_logado' => $usuario_logado]);
   
           return $response;
       }
