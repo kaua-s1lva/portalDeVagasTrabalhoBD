@@ -45,34 +45,47 @@ class EgressoController extends ControllerComHtml implements Controller
           return $response;
       }
       
-    public function create(Request $request,Response $response) : Response
-    {
-        $this->verificaSessao();
-
-        $email     = isset($_POST['emailAluno']) ? $_POST['emailAluno'] : '';
-        $alunoDAO = new AlunoDAO();
-        $aluno = $alunoDAO->findByEmail($email);
-
-        if ($aluno != null) {
-            $idVaga    = isset($_POST['idvaga']) ? $_POST['idvaga'] : '';
-    
-            $idEgresso = SessaoUsuarioSingleton::getInstance()->getUsuario()->getIdUsuario();
-    
-            $indicacaoDAO = new IndicacaoDAO();
-            $indicacaoDAO->insert(new Indicacao($aluno->getIdAluno(), $idEgresso, $idVaga, 1));
-
-            echo "<script> alert('Aluno indicado com sucesso'); window.location.href = '/egresso'; </script>";
-
-            //header("Location: /egresso");
-
-        } else {
-            echo "<script> alert('Aluno não encontrado'); window.location.href = '/egresso'; </script>";
-        }
-
-        
-  
-        return $response;
-    }
+      public function create(Request $request, Response $response): Response
+      {
+          $this->verificaSessao();
+      
+          $email = isset($_POST['emailAluno']) ? $_POST['emailAluno'] : '';
+          $alunoDAO = new AlunoDAO();
+          $aluno = $alunoDAO->findByEmail($email);
+      
+          if ($aluno != null) {
+              $idVaga = isset($_POST['idvaga']) ? $_POST['idvaga'] : '';
+              $idEgresso = SessaoUsuarioSingleton::getInstance()->getUsuario()->getIdUsuario();
+      
+              $indicacaoDAO = new IndicacaoDAO();
+              try {
+                  $indicacaoDAO->insert(new Indicacao($aluno->getIdAluno(), $idEgresso, $idVaga, 1));
+                  echo "<script>
+                          alert('Aluno indicado com sucesso');
+                          window.location.href = '/egresso';
+                        </script>";
+              } catch (\PDOException $e) {
+                  if ($e->getCode() === '23505') {
+                      echo "<script>
+                              alert('Este aluno já foi indicado.');
+                              window.location.href = '/egresso';
+                            </script>";
+                  } else {
+                      echo "<script>
+                              alert('Erro ao indicar aluno: " . addslashes($e->getMessage()) . "');
+                              window.location.href = '/egresso';
+                            </script>";
+                  }
+              }
+          } else {
+              echo "<script>
+                      alert('Aluno não encontrado');
+                      window.location.href = '/egresso';
+                    </script>";
+          }
+          return $response;
+      }
+      
       
       public function update(Request $request,Response $response) : Response
       {
