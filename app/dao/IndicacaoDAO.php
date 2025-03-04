@@ -15,8 +15,8 @@ use PDO;
 
         public function insert($indicacao)
         {
-            $stmt = $this->conexao->prepare("INSERT INTO indicacao (egresso_idEgresso, aluno_idAluno, vaga_idVaga, created_at, status_idStatus) VALUES (?, ?, ?, ?, ?)");
-            $stmt->execute([$indicacao->egresso_idEgresso, $indicacao->aluno_idAluno, $indicacao->vaga_idVaga, $indicacao->created_at->format('Y-m-d H:i:s'), $indicacao->status_idStatus]);
+            $stmt = $this->conexao->prepare("INSERT INTO indicacao (idEgresso, idAluno, idVaga, idStatus) VALUES (?, ?, ?, ?)");
+            $stmt->execute([$indicacao->getEgressoIdEgresso(), $indicacao->getAlunoIdAluno(), $indicacao->getVagaIdVaga(), $indicacao->getStatusIdStatus()]);
         }
 
         public function update($indicacao)

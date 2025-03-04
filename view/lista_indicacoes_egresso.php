@@ -1,10 +1,3 @@
-<?php
-  session_start();
-  if (!isset($_SESSION['usuario_id']) == true && !isset($_SESSION['usuario_tipo']) == 'egresso') {
-    header('Location: ../index.php');
-  }
-?>
-
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -26,7 +19,7 @@
         <span class="close">&times;</span>
         <h2>Inserir E-mail Para Indicação</h2>
         <p>No campo abaixo digite o e-mail que deseja indicar:</p>
-          <form id="uploadForm" action="../controller/crud_candidatura.php" enctype="multipart/form-data" method="POST">
+          <form id="uploadForm" action="/egresso/indicar" enctype="multipart/form-data" method="POST">
             <div class="option-container">
               <p>Adicionar e-mail:</p>
               <input type="hidden" name="idvaga" id="idvaga">
@@ -65,20 +58,15 @@
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>Desenvolvedor Web Júnior</td>
-              <td>Stacks LTDA</td>
-              <td class="buttons">
-                <button>Indicar vaga</button>
-              </td>
-            </tr>
-            <tr>
-              <td>Analista De Dados Junior</td>
-              <td>Unreal Data</td>
-              <td class="buttons">
-                <button>Indicar vaga</button>
-              </td>
-            </tr>
+            <?php foreach($dados as $dado) { ?>
+              <tr>
+                <td><?= $dado['vaga']['cargo'] ?></td>
+                <td><?= $dado['usuario']['nomeusuario'] ?></td>
+                <td class="buttons">
+                  <button data-id-vaga="<?= $dado['vaga']['idvaga'] ?>">Indicar vaga</button>
+                </td>
+              </tr>
+            <?php } ?>
           </tbody>
         </table>
       </section>

@@ -1,21 +1,3 @@
-<!-- <?php
-use app\dao\VagaDAO;
-
-    session_start();
-    if (!isset($_SESSION['usuario_id']) == true && !isset($_SESSION['usuario_tipo']) == 'aluno') {
-        header('Location: ../index.php');
-    }
-
-    //require_once('../dao/IDAO.php');
-    //use app\dao\IDAO;
-    //require_once('../app/dao/VagaDAO.php');
-    //require_once('../model/Vaga.php');
-    //use app\dao\VagaDAO;
-
-    $vagaDAO = new VagaDAO();
-    $dados = $vagaDAO->findAll(); 
-?> -->
-
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -37,7 +19,7 @@ use app\dao\VagaDAO;
         <span class="close">&times;</span>
         <h2>Adicione seu currículo</h2>
         <p>Clique no botão abaixo para enviar seu currículo em formato PDF.</p>
-          <form id="uploadForm" action="../controller/crud_candidatura.php" enctype="multipart/form-data" method="POST">
+          <form id="uploadForm" action="/aluno/candidatar" enctype="multipart/form-data" method="POST">
             <div class="option-container">
               <p>Adicionar currículo:</p>
               <input type="hidden" name="idvaga" id="idvaga">
@@ -57,9 +39,9 @@ use app\dao\VagaDAO;
       <img src="../assets/ufes-logo.png" alt="" />
       <span></span>
       <div class="links">
-        <a href="pag_crud_aluno.php">Perfil</a>
-        <a href="lista_vagas_aluno.php">Visualizar Vagas</a>
-        <a href="../controller/logout.php">Log Off</a>
+        <a href="aluno/visualizar">Perfil</a>
+        <a href="/aluno"><b>Visualizar Vagas</b></a>
+        <a href="/usuario/logout">Log Off</a>
       </div>
     </aside>
     <main>
@@ -76,25 +58,29 @@ use app\dao\VagaDAO;
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>Desenvolvedor de desenvolvimento</td>
-              <td>Alguém aí</td>
-              <td class="buttons">
-                <span class="status-cand">Não enviado</span>
-                <button>Candidatar-se</button>
-              </td>
-            </tr>
-            <!-- <?php foreach($dados as $dado) { ?>
+          <?php
+            // Extraindo os IDs das vagas que o usuário já se candidatou
+            $appliedVagas = array_map(function($candidatura) {
+                return $candidatura->idvaga;
+            }, $candidaturas);
+            ?>
 
-            <tr>
-              <td><?= $dado['vaga']['cargo'] ?></td>
-              <td><?= $dado['usuario']['nomeusuario'] ?></td>
-              <td class="buttons">
-                <button data-id-vaga="<?= $dado['vaga']['idvaga'] ?>">Candidatar-se</button>
-              </td>
-            </tr>
-            
-            <?php } ?> -->
+            <?php foreach($dados as $dado) { ?>
+              <tr>
+                <td><?= $dado['vaga']['cargo'] ?></td>
+                <td><?= $dado['usuario']['nomeusuario'] ?></td>
+                <td class="buttons">
+                  <?php if (in_array($dado['vaga']['idvaga'], $appliedVagas)) { ?>
+                      <span class="status-cand">Enviado</span>
+                      <button disabled data-id-vaga="<?= $dado['vaga']['idvaga'] ?>">Já se candidatou</button>
+                  <?php } else { ?>
+                      <span class="status-cand active">Não enviado</span>
+                      <button data-id-vaga="<?= $dado['vaga']['idvaga'] ?>">Candidatar-se</button>
+                  <?php } ?>
+                </td>
+              </tr>
+            <?php } ?>
+
           </tbody>
         </table>
       </section>

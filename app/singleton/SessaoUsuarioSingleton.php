@@ -75,7 +75,7 @@ class SessaoUsuarioSingleton
         // Limpar os cookies da sessão
         setcookie(session_name(), '', time() - 3600, '/');
         self::$instance = null;
-        header('Location: ../index.php');  // Redireciona para a tela de login
+        header('Location: /');  // Redireciona para a tela de login
         exit();  // Garante que o script pare de executar após o redirecionamento
     }
 }

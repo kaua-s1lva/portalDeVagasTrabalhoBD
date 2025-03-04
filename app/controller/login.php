@@ -46,7 +46,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         echo "<script>alert('$resultado'); window.location.href = '../index.php';</script>";
         exit;
     }
-    header("Location: index.php");
+    header("Location: teste.php");
 } else {
     echo "Método de requisição inválido.";
 }

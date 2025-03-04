@@ -1,9 +1,11 @@
 <?php
-namespace app\controller\usuario;
+namespace app\controller\aluno;
 
 use app\controller\ControllerComHtml;
 use app\dao\AlunoDAO;
+use app\dao\CandidaturaDAO;
 use app\dao\EmpresaDAO;
+use app\dao\VagaDAO;
 use app\model\Aluno;
 use app\model\Empresa;
 use app\service\AutenticacaoService;
@@ -13,78 +15,35 @@ use AwesomePackages\AwesomeRoutes\Core\Request;
 use AwesomePackages\AwesomeRoutes\Core\Response;
 use AwesomePackages\AwesomeRoutes\Enum\StatusCode;
 
-class UsuarioController extends ControllerComHtml implements Controller
+class AlunoController extends ControllerComHtml implements Controller
 {
-    public function renderHome(Request $request, Response $response) : Response
-    {
-        echo $this->renderizaHtml('home.php', []);
-        return $response;
-    }
-
-    public function renderCreate(Request $request, Response $response) : Response 
-    {
-        echo $this->renderizaHtml('cadastro_usuario_screen.php', []);
-        return $response;
-    }
-
-    public function login(Request $request, Response $response) : Response 
-    {
-        $username = isset($_POST['username']) ? trim($_POST['username']) : '';
-        $password = isset($_POST['password']) ? trim($_POST['password']) : '';
-
-        // Verifica o login
-        $resultado = $this->verificarLogin($username, $password);
-
-        if ($resultado === true) {
-            // Redireciona o usuário baseado no tipo de usuário
-            if ($_SESSION['usuario_tipo'] == 'aluno') {
-                header("Location: /aluno");
-            } elseif ($_SESSION['usuario_tipo'] == 'egresso') {
-                header("Location: /egresso");  // Página para Egresso
-            } elseif ($_SESSION['usuario_tipo'] == 'empresa') {
-                header('location: /empresa/vagas');
-             //   echo $this->renderizaHtml("/empresa/vagas", []);  // Página para Empresa
-            }
-            exit;
-        } else {
-            echo "<script>alert('$resultado'); window.location.href = '/';</script>";
-            exit;
-        }
-        header("Location: /");
-        return $response;
-    }
-
-    public function logout(Request $request, Response $response) : Response 
-    {
-        SessaoUsuarioSingleton::getInstance()->logout();
-        return $response;
-    }
 
       public function index(Request $request,Response $response) : Response
       {
-          $response->setBody([
-              ['name' => 'Rhuan Gabriel', 'age' => 23],
-              ['name' => 'Eloah Hadassa', 'age' => 13]
-          ]);
+        $this->verificaSessao();
+    
+        $vagaDAO = new VagaDAO();
+        $dados = $vagaDAO->findAll();
 
-          $response->setStatusCode(StatusCode::SUCCESS);
-          //print_r($response);
-          echo $this->renderizaHtml('cadastro_usuario_screen.php', []);
+        $candidaturaDAO = new CandidaturaDAO();
+        $usuario_logado = SessaoUsuarioSingleton::getInstance()->getUsuario();
+        $candidaturas = $candidaturaDAO->findByIdAluno($usuario_logado->getIdUsuario());
+        
+        echo $this->renderizaHtml('lista_vagas_aluno.php', [
+                        'dados' => $dados, 
+                        'candidaturas' => $candidaturas
+                    ]);
+
           return $response;
       }
       
       public function show(Request $request,Response $response) : Response
       {
-          $id = $request->id;
+        $this->verificaSessao();
       
-          $response->setBody([
-              'name' => 'Rhuan Gabriel',
-              'age' => 23
-          ]);
-  
-          $response->setStatusCode(StatusCode::SUCCESS);
+        $usuario_logado = SessaoUsuarioSingleton::getInstance()->getUsuario();
 
-          echo $this->renderizaHtml('cadastro_usuario_screen.php', []);
+          echo $this->renderizaHtml('pag_crud_aluno.php', ['usuario_logado' => $usuario_logado]);
   
           return $response;
       }
@@ -127,29 +86,44 @@ class UsuarioController extends ControllerComHtml implements Controller
       
       public function update(Request $request,Response $response) : Response
       {
-          $id = $request->id;
-          $body = $request->body;
-      
-          $response->setBody([
-              'message' => 'User has been updated'
-          ]);
-          
-          $response->setStatusCode(StatusCode::SUCCESS);
+        $instancia = SessaoUsuarioSingleton::getInstance();
+        $usuario_logado = $instancia->getUsuario();
+        $dao = new AlunoDAO();
+          // Resgata os dados enviados pelo formulário
+        $nome      = isset($_POST['nome']) ? $_POST['nome'] : '';
+        $email     = isset($_POST['email']) ? $_POST['email'] : '';
+        $senha     = isset($_POST['senha']) ? $_POST['senha'] : '';
+        $cpf       = isset($_POST['cpf']) ? $_POST['cpf'] : '';
+
+        if (strlen($cpf) == 11) {
+            $aluno = new Aluno($nome, $email, $senha, $cpf);
+            $aluno->setIdAluno($usuario_logado->getIdAluno());
+            $aluno->setIdUsuario($usuario_logado->getIdUsuario());
+
+            if ($dao->update($aluno)) {
+                echo "<script> alert('Dados do aluno atualizados com sucesso!'); window.location.href = '/aluno/visualizar'; </script>";
+                exit();
+            }
+        } else {
+            echo "CPF inválido";
+        }
   
           return $response;
       }
       
       public function destroy(Request $request,Response $response) : Response
       {
-          $id = $request->id;
-          
-          $response->setBody([
-              'message' => 'User has been deleted'
-          ]);
-          
-          $response->setStatusCode(StatusCode::SUCCESS);
+        $dao = new AlunoDAO();
+        $instancia = SessaoUsuarioSingleton::getInstance();
+        $usuario_logado = $instancia->getUsuario();
+
+        $dao->delete($usuario_logado->getIdUsuario());
+
+        $instancia->logout();
+
+        header("Location: /");
   
-          return $response;
+        return $response;
       }
 
       function verificarLogin($username, $password)
@@ -172,7 +146,9 @@ class UsuarioController extends ControllerComHtml implements Controller
       }
 
     public function verificaSessao() {
-        
+        if (SessaoUsuarioSingleton::getInstance()->getTipoUsuario() !== 'aluno') {
+            die("Acesso negado.");
+        }
     }
 
 }
