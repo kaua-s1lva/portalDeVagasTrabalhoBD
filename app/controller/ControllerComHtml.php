@@ -12,6 +12,4 @@ abstract class ControllerComHtml {
 
         return $html;
     }
-
-    public abstract function verificaSessao();
 }
