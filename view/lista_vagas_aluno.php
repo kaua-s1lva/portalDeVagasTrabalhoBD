@@ -40,7 +40,7 @@
       <span></span>
       <div class="links">
         <a href="aluno/visualizar">Perfil</a>
-        <a href="lista_vagas_aluno.php">Visualizar Vagas</a>
+        <a href="/aluno"><b>Visualizar Vagas</b></a>
         <a href="/usuario/logout">Log Off</a>
       </div>
     </aside>

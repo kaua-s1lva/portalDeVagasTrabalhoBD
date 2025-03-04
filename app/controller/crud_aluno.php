@@ -29,8 +29,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             echo "CPF inválido";
         }
     } else if (isset($_POST['excluir'])) {
-
-        $dao = new AlunoDAO();
         $dao->delete($usuario_logado->getIdUsuario());
 
         $instancia->logout();

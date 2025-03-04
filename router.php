@@ -1,9 +1,9 @@
 <?php
 session_start();
+// Se for um arquivo existente (CSS, JS, imagens, etc.), deixa o PHP servir normalmente
 if (php_sapi_name() === 'cli-server') {
-    $url  = parse_url($_SERVER['REQUEST_URI']);
-    $file = __DIR__ . $url['path'];
-    if (is_file($file)) {
+    $filePath = __DIR__ . '/' . parse_url($_SERVER["REQUEST_URI"], PHP_URL_PATH);
+    if (is_file($filePath)) {
         return false;
     }
 }
@@ -31,6 +31,8 @@ $router->get('/usuario/logout', new UsuarioController(), 'logout');
 
 $router->get('/aluno', new AlunoController(), 'index');
 $router->get('/aluno/visualizar', new AlunoController(), 'show');
+$router->post('/aluno/editar', new AlunoController(), 'update');
+$router->post('/aluno/excluir', new AlunoController(), 'destroy');
 
 $router->post('/aluno/candidatar', new CandidaturaController(), 'create');
 

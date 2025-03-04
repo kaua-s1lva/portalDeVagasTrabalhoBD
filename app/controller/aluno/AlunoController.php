@@ -39,9 +39,7 @@ class AlunoController extends ControllerComHtml implements Controller
       
       public function show(Request $request,Response $response) : Response
       {
-        if (!isset($_SESSION['usuario_id']) == true && !isset($_SESSION['usuario_tipo']) == 'aluno') {
-            header('Location: /');
-        }
+        $this->verificaSessao();
       
         $usuario_logado = SessaoUsuarioSingleton::getInstance()->getUsuario();
 
@@ -88,29 +86,44 @@ class AlunoController extends ControllerComHtml implements Controller
       
       public function update(Request $request,Response $response) : Response
       {
-          $id = $request->id;
-          $body = $request->body;
-      
-          $response->setBody([
-              'message' => 'User has been updated'
-          ]);
-          
-          $response->setStatusCode(StatusCode::SUCCESS);
+        $instancia = SessaoUsuarioSingleton::getInstance();
+        $usuario_logado = $instancia->getUsuario();
+        $dao = new AlunoDAO();
+          // Resgata os dados enviados pelo formulário
+        $nome      = isset($_POST['nome']) ? $_POST['nome'] : '';
+        $email     = isset($_POST['email']) ? $_POST['email'] : '';
+        $senha     = isset($_POST['senha']) ? $_POST['senha'] : '';
+        $cpf       = isset($_POST['cpf']) ? $_POST['cpf'] : '';
+
+        if (strlen($cpf) == 11) {
+            $aluno = new Aluno($nome, $email, $senha, $cpf);
+            $aluno->setIdAluno($usuario_logado->getIdAluno());
+            $aluno->setIdUsuario($usuario_logado->getIdUsuario());
+
+            if ($dao->update($aluno)) {
+                echo "<script> alert('Dados do aluno atualizados com sucesso!'); window.location.href = '/aluno/visualizar'; </script>";
+                exit();
+            }
+        } else {
+            echo "CPF inválido";
+        }
   
           return $response;
       }
       
       public function destroy(Request $request,Response $response) : Response
       {
-          $id = $request->id;
-          
-          $response->setBody([
-              'message' => 'User has been deleted'
-          ]);
-          
-          $response->setStatusCode(StatusCode::SUCCESS);
+        $dao = new AlunoDAO();
+        $instancia = SessaoUsuarioSingleton::getInstance();
+        $usuario_logado = $instancia->getUsuario();
+
+        $dao->delete($usuario_logado->getIdUsuario());
+
+        $instancia->logout();
+
+        header("Location: /");
   
-          return $response;
+        return $response;
       }
 
       function verificarLogin($username, $password)

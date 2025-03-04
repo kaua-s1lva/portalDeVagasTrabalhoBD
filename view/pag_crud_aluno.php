@@ -18,9 +18,9 @@
         <img src="../assets/ufes-logo.png" alt="ufes-logo" />
       </div>
       <div class="links">
-        <a href="/aluno/visualizar">Perfil</a>
+        <a href="/aluno/visualizar"><b>Perfil</b></a>
         <a href="/aluno">Visualizar Vagas</a>
-        <a href="../controller/logout.php">Log Off</a>
+        <a href="/usuario/logout">Log Off</a>
       </div>
     </aside>
     <main>
@@ -28,7 +28,7 @@
         <h1>Atualizar Dados Pessoais</h1>
       </section>
       <section class="container">
-        <form id="loginForm" action="../controller/crud_aluno.php" method="POST">
+        <form id="loginForm" action="/aluno/editar" method="POST">
           <div class="crud-form-input">
             <div class="inplbl">
               <label for="nome">Nome:</label>
@@ -49,7 +49,7 @@
           </div>
           <div class="crud-form-buttons">
             <button type="submit" id="salvar" name="salvar">Salvar</button>
-            <button type="submit" id="excluir" name="excluir" onclick="return confirm('Tem certeza que deseja excluir seu perfil?');">Excluir</button>
+            <button type="submit" id="excluir" name="excluir" onclick="this.form.action='/aluno/excluir'; return confirm('Tem certeza que deseja excluir seu perfil?');">Excluir</button>
           </div>
         </form>
       </section>

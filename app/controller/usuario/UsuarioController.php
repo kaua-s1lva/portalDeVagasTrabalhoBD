@@ -49,7 +49,7 @@ class UsuarioController extends ControllerComHtml implements Controller
             echo "<script>alert('$resultado'); window.location.href = '/';</script>";
             exit;
         }
-        header("/");
+        header("Location: /");
         return $response;
     }
 
