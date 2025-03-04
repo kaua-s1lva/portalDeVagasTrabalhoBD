@@ -18,6 +18,7 @@ use AwesomePackages\AwesomeRoutes\Core\Controller;
 use AwesomePackages\AwesomeRoutes\Core\Request;
 use AwesomePackages\AwesomeRoutes\Core\Response;
 use AwesomePackages\AwesomeRoutes\Enum\StatusCode;
+use Exception;
 use PDO;
 use PDOException;
 
@@ -64,38 +65,50 @@ class EmpresaController extends ControllerComHtml implements Controller
         $this->verificaSessao();
 
         $idVaga = $request->id;
-        $vagaDAO = new VagaDAO();
         $conexao = ConexaoSingleton::getInstancia()->getConexao();
 
         try {
-            // Busca informações da vaga
             $stmtVaga = $conexao->prepare("
-                SELECT v.idVaga AS idvaga, v.cargo, e.nomeEtapa AS nome_etapa
-                FROM VAGA v
-                INNER JOIN ETAPA e ON v.idEtapa = e.idEtapa
-                WHERE v.idVaga = ?
-            ");
+            SELECT v.idVaga AS idvaga, v.cargo, e.nomeEtapa AS nome_etapa
+            FROM VAGA v
+            INNER JOIN ETAPA e ON v.idEtapa = e.idEtapa
+            WHERE v.idVaga = ?
+        ");
             $stmtVaga->execute([$idVaga]);
             $vaga = $stmtVaga->fetch(PDO::FETCH_ASSOC);
 
             // Busca candidatos da vaga
             $stmtCandidatos = $conexao->prepare("
-                SELECT 
-                    u.idUsuario AS id_candidato,
-                    u.nomeUsuario AS nome_candidato,
-                    CASE WHEN i.idEgresso IS NOT NULL THEN 1 ELSE 0 END AS tem_indicacao,
-                    eu.nomeUsuario AS nome_egresso_indicador,
-                    s.nomeStatus AS status_candidatura,
-                    c.curriculo AS curriculo
-                FROM CANDIDATURA c
-                INNER JOIN USUARIO u ON c.idAluno = u.idUsuario
-                LEFT JOIN INDICACAO i ON c.idAluno = i.idAluno AND c.idVaga = i.idVaga
-                LEFT JOIN USUARIO eu ON i.idEgresso = eu.idUsuario
-                LEFT JOIN STATUS s ON i.idStatus = s.idStatus
-                WHERE c.idVaga = ?
-            ");
+            SELECT 
+                u.idUsuario AS id_candidato,
+                u.nomeUsuario AS nome_candidato,
+                CASE WHEN i.idEgresso IS NOT NULL THEN 1 ELSE 0 END AS tem_indicacao,
+                eu.nomeUsuario AS nome_egresso_indicador,
+                s.nomeStatus AS status_candidatura,
+                c.curriculo AS curriculo
+            FROM CANDIDATURA c
+            INNER JOIN USUARIO u ON c.idAluno = u.idUsuario
+            LEFT JOIN INDICACAO i ON c.idAluno = i.idAluno AND c.idVaga = i.idVaga
+            LEFT JOIN USUARIO eu ON i.idEgresso = eu.idUsuario
+            LEFT JOIN STATUS s ON i.idStatus = s.idStatus
+            WHERE c.idVaga = ?
+        ");
             $stmtCandidatos->execute([$idVaga]);
             $candidatos = $stmtCandidatos->fetchAll(PDO::FETCH_ASSOC);
+
+            // Verifique se os candidatos existem
+            if (empty($candidatos)) {
+                echo "Nenhum candidato encontrado para esta vaga.";
+                exit;
+            }
+
+            foreach ($candidatos as &$candidato) {
+                if (!empty($candidato['curriculo'])) {
+                    $candidato['curriculo_link'] = '/empresa/visualizar/curriculo/' . $candidato['id_candidato'];
+                } else {
+                    $candidato['curriculo_link'] = null;
+                }
+            }
         } catch (PDOException $e) {
             die("Erro ao buscar dados da vaga: " . $e->getMessage());
         }
@@ -104,6 +117,61 @@ class EmpresaController extends ControllerComHtml implements Controller
             'vaga' => $vaga,
             'candidatos' => $candidatos
         ]);
+        return $response;
+    }
+
+    public function visualizarCurriculo(Request $request, Response $response)
+    {
+        // Captura o parâmetro 'id' da query string
+        $idCandidato = $request->id;
+
+        // Verificação de erro caso o 'id' não seja fornecido
+        if (!$idCandidato) {
+            http_response_code(400);  // Define o status HTTP 400
+            return "Erro: ID do candidato não fornecido.";
+        }
+
+        $conexao = ConexaoSingleton::getInstancia()->getConexao();
+
+        try {
+            // Prepara a consulta para buscar o currículo (que está em formato BYTEA)
+            $stmt = $conexao->prepare("SELECT curriculo FROM CANDIDATURA WHERE idAluno = ?");
+            $stmt->execute([$idCandidato]);
+
+            // Recupera o conteúdo do currículo
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            if (!$result || empty($result['curriculo'])) {
+                http_response_code(404);  // Define o status HTTP 404
+                return "Erro: Currículo não encontrado para o candidato com ID: " . $idCandidato;
+            }
+
+            // O conteúdo do currículo pode ser um recurso, então converta-o para string
+            $curriculo = $result['curriculo'];
+
+            // Verifica se é um recurso
+            if (is_resource($curriculo)) {
+                // Converte o recurso em string binária
+                $curriculo = stream_get_contents($curriculo);
+            }
+
+            // Verificar se o conteúdo é um PDF válido (bytes PDF começam com %PDF)
+            if (substr($curriculo, 0, 4) !== "%PDF") {
+                http_response_code(415);  // Tipo de mídia não suportado
+                return "Erro: O conteúdo do currículo não é um PDF válido.";
+            }
+
+            // Configura os cabeçalhos para que o navegador saiba que é um PDF
+            header('Content-Type: application/pdf');
+            header('Content-Disposition: inline; filename="curriculo_' . $idCandidato . '.pdf"');
+            header('Content-Length: ' . strlen($curriculo));
+
+            // Exibe o conteúdo binário do currículo (em formato PDF)
+            echo $curriculo;
+        } catch (Exception $e) {
+            http_response_code(500);  // Define o status HTTP 500
+            return "Erro interno: " . $e->getMessage();
+        }
         return $response;
     }
 
@@ -139,7 +207,7 @@ class EmpresaController extends ControllerComHtml implements Controller
         $empresa = SessaoUsuarioSingleton::getInstance()->getUsuario();
         $etapaDAO = new EtapaDAO();
         $vagaDAO = new VagaDAO();
-       
+
 
         $idVaga = $_POST['idvaga'];
         $cargo = $_POST['cargo'];
@@ -148,7 +216,7 @@ class EmpresaController extends ControllerComHtml implements Controller
         $empresa_id = $empresa->getIdEmpresa();
         $etapa = $etapaDAO->findById($idEtapa);
         $etapa_id = $etapa->getIdEtapa();
-   
+
         $vagaAtualizada = new Vaga($idVaga, $etapa_id, $cargo, $empresa_id);
 
         if ($vagaDAO->update($vagaAtualizada)) {
