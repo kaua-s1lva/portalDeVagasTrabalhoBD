@@ -74,4 +74,38 @@ class VagaDAO implements IDAO
         }
         return $dados;
     }
+
+    public function findAllByIdEmpresa($id)
+    {
+        $stmt = $this->conexao->prepare("   SELECT * FROM vaga 
+                                            INNER JOIN empresa ON empresa.idempresa = vaga.idempresa
+                                            INNER JOIN usuario ON usuario.idusuario = empresa.idempresa
+                                            WHERE empresa.idempresa = ?"
+                                        );
+        $stmt->execute([$id]);
+        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        $dados = [];
+        foreach ($result as $row) {
+            $dados[] = [
+                'vaga' => [
+                    'idvaga' => $row['idvaga'],
+                    'idetapa' => $row['idetapa'],
+                    'cargo' => $row['cargo'],
+                    'idempresa' => $row['idempresa']
+                ],
+                'empresa' => [
+                    'idempresa' => $row['idempresa'],
+                    'cnpj' => $row['cnpj']
+                ],
+                'usuario' => [
+                    'idusuario' => $row['idusuario'],
+                    'nomeusuario' => $row['nomeusuario'],
+                    'emailusuario' => $row['emailusuario'],
+                    'senhausuario' => $row['senhausuario']
+                ]
+            ];
+        }
+        return $dados;
+    }
 }
