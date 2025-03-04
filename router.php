@@ -1,15 +1,12 @@
 <?php
 session_start();
 // Se for um arquivo existente (CSS, JS, imagens, etc.), deixa o PHP servir normalmente
-// Se for um arquivo existente (CSS, JS, imagens, etc.), deixa o PHP servir normalmente
 if (php_sapi_name() === 'cli-server') {
     $filePath = __DIR__ . '/' . parse_url($_SERVER["REQUEST_URI"], PHP_URL_PATH);
     if (is_file($filePath)) {
         return false;
     }
 }
-
-session_start();
 
 require_once __DIR__ . '/vendor/autoload.php';
 
