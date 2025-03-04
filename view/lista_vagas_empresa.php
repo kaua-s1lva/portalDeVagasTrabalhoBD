@@ -49,8 +49,8 @@
     <div class="links">
       <a href="/empresa/egressos">Egressos</a>
       <a href="/empresa/perfil">Perfil</a>
-      <a href="/empresa/vagas">Vagas</a>
-      <a href="../controller/logout.php">Log Off</a>
+      <a href="/empresa/vagas"><b>Vagas</b></a>
+      <a href="/usuario/logout">Log Off</a>
     </div>
   </aside>
   <main>

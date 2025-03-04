@@ -79,6 +79,8 @@ class CandidaturaController extends ControllerComHtml implements Controller
     
             $dao = new CandidaturaDAO();
             $dao->insert(new Candidatura($idvaga, $idusuario, $fileContent, 1));
+
+            header("Location: /aluno");
             
             
         } else {

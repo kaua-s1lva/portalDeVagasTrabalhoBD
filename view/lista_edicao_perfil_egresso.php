@@ -17,10 +17,10 @@
       <img src="../assets/ufes-logo.png" alt="Logo UFES" />
     </div>
     <div class="links">
+      <a href="/empresa/egressos"><b>Egressos</b></a>
       <a href="/empresa/perfil">Perfil</a>
-      <a href="/empresa/egressos">Egressos</a>
       <a href="/empresa/vagas">Vagas</a>
-      <a href="../controller/logout.php">Log Off</a>
+      <a href="/usuario/logout">Log Off</a>
     </div>
   </aside>
   <main>

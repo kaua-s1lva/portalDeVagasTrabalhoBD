@@ -44,13 +44,13 @@
   <!-- Barra Lateral -->
   <aside>
     <div class="vagas-usu-img">
-      <img src="../assets/ufes-logo.png" alt="Logo UFES">
+      <img src="/assets/ufes-logo.png" alt="Logo UFES">
     </div>
     <div class="links">
-      <a href="lista_edicao_perfil_egresso.php">Egressos</a>
-      <a href="pag_crud_empresa.php">Perfil</a>
-      <a href="lista_vagas_empresa.php">Vagas</a>
-      <a href="../controller/logout.php">Log Off</a>
+      <a href="/empresa/egressos">Egressos</a>
+      <a href="/empresa/perfil">Perfil</a>
+      <a href="/empresa/vagas"><b>Vagas</b></a>
+      <a href="/usuario/logout">Log Off</a>
     </div>
   </aside>
 
