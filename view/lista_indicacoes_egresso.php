@@ -39,9 +39,9 @@
         <img src="../assets/ufes-logo.png" alt="" />
       </div>
       <div class="links">
-        <a href="">Perfil</a>
-        <a href="">Indicação de Vagas</a>
-        <a href="../controller/logout.php">Log Off</a>
+        <a href="/egresso/visualizar">Perfil</a>
+        <a href="/egresso"><b>Indicação de Vagas</b></a>
+        <a href="/usuario/logout">Log Off</a>
       </div>
     </aside>
     <main>
@@ -53,7 +53,6 @@
           <thead>
             <tr>
               <th>Descrição</th>
-              <th>Contratante</th>
               <th>Opções</th>
             </tr>
           </thead>
@@ -61,7 +60,6 @@
             <?php foreach($dados as $dado) { ?>
               <tr>
                 <td><?= $dado['vaga']['cargo'] ?></td>
-                <td><?= $dado['usuario']['nomeusuario'] ?></td>
                 <td class="buttons">
                   <button data-id-vaga="<?= $dado['vaga']['idvaga'] ?>">Indicar vaga</button>
                 </td>

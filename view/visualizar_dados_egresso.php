@@ -18,9 +18,9 @@
         <img src="../assets/ufes-logo.png" alt="ufes-logo" />
       </div>
       <div class="links">
-        <a href="">Perfil</a>
-        <a href="">Indicação de vagas</a>
-        <a href="../controller/logout.php">Log Off</a>
+        <a href="/egresso/visualizar"><b>Perfil</b></a>
+        <a href="/egresso">Indicação de vagas</a>
+        <a href="/usuario/logout">Log Off</a>
       </div>
     </aside>
     <main>
