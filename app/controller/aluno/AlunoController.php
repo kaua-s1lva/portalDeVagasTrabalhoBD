@@ -1,9 +1,10 @@
 <?php
-namespace app\controller\usuario;
+namespace app\controller\aluno;
 
 use app\controller\ControllerComHtml;
 use app\dao\AlunoDAO;
 use app\dao\EmpresaDAO;
+use app\dao\VagaDAO;
 use app\model\Aluno;
 use app\model\Empresa;
 use app\service\AutenticacaoService;
@@ -13,77 +14,28 @@ use AwesomePackages\AwesomeRoutes\Core\Request;
 use AwesomePackages\AwesomeRoutes\Core\Response;
 use AwesomePackages\AwesomeRoutes\Enum\StatusCode;
 
-class UsuarioController extends ControllerComHtml implements Controller
+class AlunoController extends ControllerComHtml implements Controller
 {
-    public function renderHome(Request $request, Response $response) : Response
-    {
-        echo $this->renderizaHtml('home.php', []);
-        return $response;
-    }
-
-    public function renderCreate(Request $request, Response $response) : Response 
-    {
-        echo $this->renderizaHtml('cadastro_usuario_screen.php', []);
-        return $response;
-    }
-
-    public function login(Request $request, Response $response) : Response 
-    {
-        $username = isset($_POST['username']) ? trim($_POST['username']) : '';
-        $password = isset($_POST['password']) ? trim($_POST['password']) : '';
-
-        // Verifica o login
-        $resultado = $this->verificarLogin($username, $password);
-
-        if ($resultado === true) {
-            // Redireciona o usuário baseado no tipo de usuário
-            if ($_SESSION['usuario_tipo'] == 'aluno') {
-                header("Location: /aluno");
-            } elseif ($_SESSION['usuario_tipo'] == 'egresso') {
-                echo $this->renderizaHtml("lista_indicacoes_egresso.php", []);  // Página para Egresso
-            } elseif ($_SESSION['usuario_tipo'] == 'empresa') {
-                echo $this->renderizaHtml("lista_vagas_empresa.php", []);  // Página para Empresa
-            }
-            exit;
-        } else {
-            echo "<script>alert('$resultado'); window.location.href = '/';</script>";
-            exit;
-        }
-        header("/");
-        return $response;
-    }
-
-    public function logout(Request $request, Response $response) : Response 
-    {
-        SessaoUsuarioSingleton::getInstance()->logout();
-        return $response;
-    }
 
       public function index(Request $request,Response $response) : Response
       {
-          $response->setBody([
-              ['name' => 'Rhuan Gabriel', 'age' => 23],
-              ['name' => 'Eloah Hadassa', 'age' => 13]
-          ]);
-
-          $response->setStatusCode(StatusCode::SUCCESS);
-          //print_r($response);
-          echo $this->renderizaHtml('cadastro_usuario_screen.php', []);
+        $this->verificaSessao();
+    
+        $vagaDAO = new VagaDAO();
+        $dados = $vagaDAO->findAll();
+        echo $this->renderizaHtml('lista_vagas_aluno.php', ['dados' => $dados]);
           return $response;
       }
       
       public function show(Request $request,Response $response) : Response
       {
-          $id = $request->id;
+        if (!isset($_SESSION['usuario_id']) == true && !isset($_SESSION['usuario_tipo']) == 'aluno') {
+            header('Location: /');
+        }
       
-          $response->setBody([
-              'name' => 'Rhuan Gabriel',
-              'age' => 23
-          ]);
-  
-          $response->setStatusCode(StatusCode::SUCCESS);
+        $usuario_logado = SessaoUsuarioSingleton::getInstance()->getUsuario();
 
-          echo $this->renderizaHtml('cadastro_usuario_screen.php', []);
+          echo $this->renderizaHtml('pag_crud_aluno.php', ['usuario_logado' => $usuario_logado]);
   
           return $response;
       }
@@ -171,7 +123,9 @@ class UsuarioController extends ControllerComHtml implements Controller
       }
 
     public function verificaSessao() {
-        
+        if (SessaoUsuarioSingleton::getInstance()->getTipoUsuario() !== 'aluno') {
+            die("Acesso negado.");
+        }
     }
 
 }

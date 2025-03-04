@@ -1,13 +1,3 @@
-<?php
-  use app\singleton\SessaoUsuarioSingleton;
-  session_start();
-  if (!isset($_SESSION['usuario_id']) == true && !isset($_SESSION['usuario_tipo']) == 'aluno') {
-      header('Location: ../index.php');
-  }
-
-  $usuario_logado = SessaoUsuarioSingleton::getInstance()->getUsuario();
-?>
-
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -28,8 +18,8 @@
         <img src="../assets/ufes-logo.png" alt="ufes-logo" />
       </div>
       <div class="links">
-        <a href="pag_crud_aluno.php">Perfil</a>
-        <a href="lista_vagas_aluno.php">Visualizar Vagas</a>
+        <a href="/aluno/visualizar">Perfil</a>
+        <a href="/aluno">Visualizar Vagas</a>
         <a href="../controller/logout.php">Log Off</a>
       </div>
     </aside>

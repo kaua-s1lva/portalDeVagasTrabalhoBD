@@ -15,9 +15,19 @@ class CandidaturaDAO implements IDAO
 
     public function insert($candidatura)
     {
-        $stmt = $this->conexao->prepare("INSERT INTO candidatura (idVaga, idAluno, curriculo, created_at, situacao) VALUES (?, ?, ?, NOW(), ?)");
-        $stmt->execute([$candidatura->getIdVaga(), $candidatura->getIdAluno(), $candidatura->getIdCurriculo(), $candidatura->getIdSituacao()]);
+        $stmt = $this->conexao->prepare(
+            "INSERT INTO candidatura (idVaga, idAluno, curriculo, created_at, idsituacao)
+            VALUES (?, ?, ?, NOW(), ?)"
+        );
+        
+        $stmt->bindValue(1, $candidatura->getIdVaga(), PDO::PARAM_INT);
+        $stmt->bindValue(2, $candidatura->getIdAluno(), PDO::PARAM_INT);
+        $stmt->bindValue(3, $candidatura->getCurriculo(), PDO::PARAM_LOB);
+        $stmt->bindValue(4, $candidatura->getIdSituacao(), PDO::PARAM_INT);
+        
+        $stmt->execute();
     }
+
 
     public function update($candidatura)
     {
