@@ -1,35 +1,3 @@
-<!-- <?php
-
-use app\singleton\ConexaoSingleton;
-use app\singleton\SessaoUsuarioSingleton;
-
-  session_start();
-  if (!isset($_SESSION['usuario_id']) == true && !isset($_SESSION['usuario_tipo']) == 'empresa') {
-    header('Location: ../index.php');
-  }
-?>
-
-<?php
-
-$usuario_logado = SessaoUsuarioSingleton::getInstance()->getUsuario();
-
-// Verifica se o usuário é uma empresa
-if (SessaoUsuarioSingleton::getInstance()->getTipoUsuario() !== 'empresa') {
-  die("Acesso negado.");
-}
-
-$empresa_id = $usuario_logado->getIdUsuario();
-
-try {
-  $conexao = ConexaoSingleton::getInstancia()->getConexao();
-  $stmt = $conexao->prepare("SELECT idvaga, cargo FROM vaga WHERE idempresa = ?");
-  $stmt->execute([$empresa_id]);
-  $vagas = $stmt->fetchAll(PDO::FETCH_ASSOC);
-} catch (PDOException $e) {
-  die("Erro ao conectar ao banco de dados: " . $e->getMessage());
-}
-?> -->
-
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -79,9 +47,9 @@ try {
         <img src="../assets/ufes-logo.png" alt="" />
       </div>
       <div class="links">
-        <a href="lista_edicao_perfil_egresso.php">Egressos</a>
-        <a href="pag_crud_empresa.php">Perfil</a>
-        <a href="lista_vagas_empresa.php">Vagas</a>
+        <a href="/empresa/egressos">Egressos</a>
+        <a href="/empresa/perfil">Perfil</a>
+        <a href="/empresa/vagas">Vagas</a>
         <a href="../controller/logout.php">Log Off</a>
       </div>
     </aside>

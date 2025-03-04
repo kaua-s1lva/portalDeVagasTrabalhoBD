@@ -1,38 +1,10 @@
-<?php
-
-use app\dao\EgressoDAO;
-use app\singleton\SessaoUsuarioSingleton;
-
-session_start();
-if (!isset($_SESSION['usuario_id']) || $_SESSION['usuario_tipo'] !== 'empresa') {
-  header('Location: ../index.php');
-  exit();
-}
-?>
-
-<?php
-
-$egressoDAO = new EgressoDAO();
-
-$usuario_logado = SessaoUsuarioSingleton::getInstance()->getUsuario();
-$empresa_id = $usuario_logado->getIdUsuario();
-
-// Buscar o egresso pelo id
-$egresso = $egressoDAO->findByIdEmpresa($empresa_id);
-//var_dump($egresso);
-if (!$egresso) {
-  die("Egresso não encontrado.");
-}
-
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="stylesheet" href="../styles/empresa_editar_egresso.css" />
+  <link rel="stylesheet" href="/styles/empresa_editar_egresso.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
@@ -48,9 +20,9 @@ if (!$egresso) {
       <p>Insira seus dados para editar os dados do egresso na sua empresa.</p>
     </div>
     <div class="links">
-      <img src="../assets/ufes-logo.png" alt="ufes-logo" />
-      <a href="">Voltar</a>
-      <a href="../controller/logout.php">Log Off</a>
+      <img src="/assets/ufes-logo.png" alt="ufes-logo" />
+      <a href="/empresa/egressos">Voltar</a>
+      <a href="/controller/logout.php">Log Off</a>
     </div>
   </aside>
   <main>
@@ -58,7 +30,7 @@ if (!$egresso) {
       <h1>Dados Pessoais</h1>
     </section>
     <section class="container">
-      <form id="loginForm" method="POST" action="../controller/crud_egresso.php">
+      <form id="loginForm" method="POST" action="/empresa/editaregresso">
         <div class="crud-form-input">
           <div class="inplbl">
             <label for="username">Nome:</label>

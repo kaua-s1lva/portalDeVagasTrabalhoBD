@@ -1,10 +1,3 @@
-<?php
-  session_start();
-  if (!isset($_SESSION['usuario_id']) == true && !isset($_SESSION['usuario_tipo']) == 'empresa') {
-    header('Location: ../index.php');
-  }
-?>
-
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -27,7 +20,7 @@
       </div>
       <div class="links">
         <img src="../assets/ufes-logo.png" alt="ufes-logo" />
-        <a href="">Voltar</a>
+        <a href="/empresa/egressos">Voltar</a>
         <a href="../controller/logout.php">Log Off</a>
       </div>
     </aside>
@@ -36,7 +29,7 @@
         <h1>Dados Pessoais</h1>
       </section>
       <section class="container">
-        <form id="loginForm" method="POST" action="../controller/crud_egresso.php">
+        <form id="loginForm" method="POST" action="/empresa/criaregresso">
           <div class="crud-form-input">
             <div class="inplbl">
               <label for="username">Nome:</label>
