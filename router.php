@@ -1,6 +1,7 @@
 <?php
 session_start();
 // Se for um arquivo existente (CSS, JS, imagens, etc.), deixa o PHP servir normalmente
+// Se for um arquivo existente (CSS, JS, imagens, etc.), deixa o PHP servir normalmente
 if (php_sapi_name() === 'cli-server') {
     $filePath = __DIR__ . '/' . parse_url($_SERVER["REQUEST_URI"], PHP_URL_PATH);
     if (is_file($filePath)) {
@@ -13,6 +14,7 @@ require_once __DIR__ . '/vendor/autoload.php';
 use app\controller\aluno\AlunoController;
 use app\controller\candidatura\CandidaturaController;
 use app\controller\usuario\UsuarioController;
+use app\controller\empresa\EmpresaController;
 use AwesomePackages\AwesomeRoutes\Core\Request;
 use AwesomePackages\AwesomeRoutes\Router;
 
@@ -35,6 +37,16 @@ $router->post('/aluno/editar', new AlunoController(), 'update');
 $router->post('/aluno/excluir', new AlunoController(), 'destroy');
 
 $router->post('/aluno/candidatar', new CandidaturaController(), 'create');
+
+// ROTAS DE EMPRESA
+$router->get('/empresa/vagas', new EmpresaController(), 'renderCreateVagas');
+$router->get('/empresa/perfil', new EmpresaController(), 'renderCreatePerfilEmpresa');
+$router->get('/empresa/egressos', new EmpresaController(), 'renderCreateEgressos');
+$router->post('/empresa/atualizarempresa', new EmpresaController(), 'atualizarEmpresa');
+$router->post('/empresa/criaregresso', new EmpresaController(), 'criarEgresso');
+$router->get('/empresa/editaregresso/:id', new EmpresaController(), 'renderCreateEditarEgresso');
+$router->post('/empresa/editaregresso', new EmpresaController(), 'editarEgresso');
+$router->get('/empresa/removeregresso/:id', new EmpresaController(), 'removerEgresso');
 
 // Processa a requisição
 $router->dispatch($_SERVER['REQUEST_METHOD'], $_SERVER['REQUEST_URI']);
