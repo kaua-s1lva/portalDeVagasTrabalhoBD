@@ -53,7 +53,7 @@ $router->get('/empresa/editaregresso/:id', new EmpresaController(), 'renderCreat
 $router->post('/empresa/editaregresso', new EmpresaController(), 'editarEgresso');
 $router->get('/empresa/removeregresso/:id', new EmpresaController(), 'removerEgresso');
 
-// ROTAS DE VAGA DA EMPRESA
+// ROTAS DE CONTROLE DE VAGAS DA EMPRESA
 
 $router->get('/empresa/rendervaga/:id', new EmpresaController(), 'renderVaga');
 $router->post('/empresa/criarvaga', new EmpresaController(), 'criarVaga');
