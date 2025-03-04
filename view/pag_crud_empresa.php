@@ -1,26 +1,10 @@
-<?php
-
-use app\singleton\SessaoUsuarioSingleton;
-
-session_start();
-
-// Verificar se o usuário está logado como empresa
-if (!isset($_SESSION['usuario_id']) || $_SESSION['usuario_tipo'] !== 'empresa') {
-  header('Location: ../index.php');
-  exit();
-}
-
-$empresa = SessaoUsuarioSingleton::getInstance()->getUsuario();
-
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="stylesheet" href="../styles/pag_crud_empresa.css" />
+  <link rel="stylesheet" href="/styles/pag_crud_empresa.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
@@ -35,9 +19,9 @@ $empresa = SessaoUsuarioSingleton::getInstance()->getUsuario();
       <img src="../assets/ufes-logo.png" alt="ufes-logo" />
     </div>
     <div class="links">
-      <a href="pag_crud_empresa.php">Perfil</a>
-      <a href="lista_edicao_perfil_egresso.php">Egressos</a>
-      <a href="lista_vagas_empresa.php">Vagas</a>
+      <a href="/empresa/perfil">Perfil</a>
+      <a href="/empresa/egressos">Egressos</a>
+      <a href="/empresa/vagas">Vagas</a>
       <a href="../controller/logout.php">Log Off</a>
     </div>
   </aside>
@@ -46,7 +30,7 @@ $empresa = SessaoUsuarioSingleton::getInstance()->getUsuario();
       <h1>Atualizar Dados da Empresa</h1>
     </section>
     <section class="container">
-      <form id="loginForm" method="POST" action="../controller/crud_empresa.php">
+      <form id="loginForm" method="POST" action="/empresa/atualizarempresa">
         <div class="crud-form-input">
           <div class="inplbl">
             <label for="razao_social">Razão Social:</label>

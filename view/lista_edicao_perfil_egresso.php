@@ -1,33 +1,3 @@
-<?php
-
-use app\dao\EgressoDAO;
-use app\singleton\SessaoUsuarioSingleton;
-
-session_start();
-if (!isset($_SESSION['usuario_id']) || $_SESSION['usuario_tipo'] !== 'empresa') {
-  header('Location: ../index.php');
-  exit();
-}
-?>
-
-<?php
-
-$usuario_logado = SessaoUsuarioSingleton::getInstance()->getUsuario();
-
-// Verifica se o usuário é uma empresa
-if (SessaoUsuarioSingleton::getInstance()->getTipoUsuario() !== 'empresa') {
-  die("Acesso negado.");
-}
-
-$empresa_id = $usuario_logado->getIdUsuario();
-$egressoDAO = new EgressoDAO();
-try {
-  $egressos = $egressoDAO->findAllByIdEmpresa($empresa_id);
-} catch (PDOException $e) {
-  die("Erro ao conectar ao banco de dados: " . $e->getMessage());
-}
-?>
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 
@@ -47,9 +17,9 @@ try {
       <img src="../assets/ufes-logo.png" alt="Logo UFES" />
     </div>
     <div class="links">
-      <a href="pag_crud_empresa.php">Perfil</a>
-      <a href="lista_edicao_perfil_egresso.php">Egressos</a>
-      <a href="lista_vagas_empresa.php">Vagas</a>
+      <a href="/empresa/perfil">Perfil</a>
+      <a href="/empresa/egressos">Egressos</a>
+      <a href="/empresa/vagas">Vagas</a>
       <a href="../controller/logout.php">Log Off</a>
     </div>
   </aside>
@@ -77,8 +47,8 @@ try {
                 <td><?php echo htmlspecialchars($egresso->nomeusuario); ?></td>
                 <td><?= date("d/m/Y", strtotime($egresso->created_at)) ?></td>
                 <td class="buttons">
-                  <button onclick="editarEgresso()">Editar</button>
-                  <button onclick="removerEgresso()">Remover</button>
+                  <button onclick="editarEgresso(<?php print_r($egresso->idegresso); ?>)">Editar</button>
+                  <button onclick="removerEgresso(<?php print_r($egresso->idegresso); ?>)">Remover</button>
                 </td>
               </tr>
             <?php endforeach; ?>
@@ -93,14 +63,15 @@ try {
   </main>
 
   <script>
-    function editarEgresso() {
-      window.location.href = `empresa_editar_egresso.php`;
+    function editarEgresso(idEgresso) {
+      window.location.href = "/empresa/editaregresso/" + idEgresso;
+
     }
 
-    function removerEgresso() {
+    function removerEgresso(idEgresso) {
       if (confirm("Tem certeza que deseja remover este egresso?")) {
-        window.location.href = `../controller/crud_egresso.php?action=delete`;
-    }
+        window.location.href = "/empresa/removeregresso/" + idEgresso;
+      }
     }
   </script>
 </body>
