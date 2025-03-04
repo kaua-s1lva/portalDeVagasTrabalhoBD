@@ -42,6 +42,7 @@ $router->post('/aluno/candidatar', new CandidaturaController(), 'create');
 //ROTAS DE EGRESSO
 $router->get('/egresso', new EgressoController(), 'index');
 $router->post('/egresso/indicar', new EgressoController(), 'create');
+$router->get('/egresso/visualizar', new EgressoController(), 'show');
 
 // ROTAS DE EMPRESA
 $router->get('/empresa/vagas', new EmpresaController(), 'renderCreateVagas');

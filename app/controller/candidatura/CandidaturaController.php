@@ -21,9 +21,7 @@ class CandidaturaController extends ControllerComHtml implements Controller
 
       public function index(Request $request,Response $response) : Response
       {
-        if (!isset($_SESSION['usuario_id']) == true && !isset($_SESSION['usuario_tipo']) == 'aluno') {
-            header('/');
-        }
+        $this->verificaSessao();
     
         $vagaDAO = new VagaDAO();
         $dados = $vagaDAO->findAll();
@@ -33,10 +31,7 @@ class CandidaturaController extends ControllerComHtml implements Controller
       
       public function show(Request $request,Response $response) : Response
       {
-
-        if (!isset($_SESSION['usuario_id']) == true && !isset($_SESSION['usuario_tipo']) == 'aluno') {
-            header('Location: ../index.php');
-        }
+        $this->verificaSessao();
       
         $usuario_logado = SessaoUsuarioSingleton::getInstance()->getUsuario();
 
@@ -100,6 +95,7 @@ class CandidaturaController extends ControllerComHtml implements Controller
     /*
     public function create(Request $request,Response $response) : Response
     {
+        $this->verificaSessao();
 
         if ($_FILES['curriculo']['error'] === UPLOAD_ERR_OK) {
             // Caminho temporário e informações do arquivo
@@ -148,6 +144,8 @@ class CandidaturaController extends ControllerComHtml implements Controller
       
       public function update(Request $request,Response $response) : Response
       {
+        $this->verificaSessao();
+
           $id = $request->id;
           $body = $request->body;
       
@@ -162,6 +160,8 @@ class CandidaturaController extends ControllerComHtml implements Controller
       
       public function destroy(Request $request,Response $response) : Response
       {
+        $this->verificaSessao();
+
           $id = $request->id;
           
           $response->setBody([
@@ -171,25 +171,6 @@ class CandidaturaController extends ControllerComHtml implements Controller
           $response->setStatusCode(StatusCode::SUCCESS);
   
           return $response;
-      }
-
-      function verificarLogin($username, $password)
-      {
-          if (empty($username) || empty($password)) {
-              return "Preencha todos os campos.";
-          }
-      
-          // Criando o serviço de autenticação
-          $autenticacaoService = new AutenticacaoService();
-      
-          // Verifica se a autenticação foi bem-sucedida
-          $usuario = $autenticacaoService->autenticar($username, $password);
-      
-          if ($usuario) {
-              return true;
-          }
-      
-          return "Usuário não encontrado, e-mail ou senha inválidos.";
       }
 
       public function verificaSessao() {

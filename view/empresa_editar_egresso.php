@@ -15,14 +15,14 @@
 
 <body>
   <aside>
-    <div class="cad-egresso-title">
-      <h1>Edição de Egresso</h1>
-      <p>Insira seus dados para editar os dados do egresso na sua empresa.</p>
+    <div class="vagas-usu-img">
+      <img src="/assets/ufes-logo.png" alt="" />
     </div>
     <div class="links">
-      <img src="/assets/ufes-logo.png" alt="ufes-logo" />
-      <a href="/empresa/egressos">Voltar</a>
-      <a href="/controller/logout.php">Log Off</a>
+      <a href="/empresa/egressos"><b>Egressos</b></a>
+      <a href="/empresa/perfil">Perfil</a>
+      <a href="/empresa/vagas">Vagas</a>
+      <a href="/usuario/logout">Log Off</a>
     </div>
   </aside>
   <main>
