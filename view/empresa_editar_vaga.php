@@ -7,6 +7,7 @@
   <title>Controle de Vagas</title>
   <link rel="stylesheet" href="/styles/empresa_editar_vaga.css">
   <link rel="stylesheet" href="/styles/modalEditarVagasEmpresa.css">
+  <link rel="stylesheet" href="../styles/tableScroll.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&family=Roboto:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
@@ -77,37 +78,38 @@
       </section>
 
       <!-- Tabela de Candidatos -->
-      <table>
-        <thead>
-          <tr>
-            <th>Candidato</th>
-            <th>Indicado Por</th>
-            <th>Opções</th>
-          </tr>
-        </thead>
-        <tbody>
-          <?php if (!empty($candidatos)): ?>
-            <?php foreach ($candidatos as $candidato): ?>
-              <tr>
-                <td><?= htmlspecialchars($candidato['nome_candidato']) ?></td>
-                <td><?= htmlspecialchars($candidato['nome_egresso_indicador'] ?? 'N/A') ?></td>
-                <td class="buttons">
-                  <?php if (!empty($candidato['curriculo'])): ?>
-                    <a href="/empresa/visualizar/curriculo/<?= $candidato['id_candidato'] ?>" target="_blank">Ver Currículo</a>
-                  <?php else: ?>
-                    <button disabled>Currículo não disponível</button>
-                  <?php endif; ?>
-                </td>
-
-              </tr>
-            <?php endforeach; ?>
-          <?php else: ?>
+      <section class="table-container">
+        <table>
+          <thead>
             <tr>
-              <td colspan="3">Nenhum candidato cadastrado para esta vaga.</td>
+              <th>Candidato</th>
+              <th>Indicado Por</th>
+              <th>Opções</th>
             </tr>
-          <?php endif; ?>
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            <?php if (!empty($candidatos)): ?>
+              <?php foreach ($candidatos as $candidato): ?>
+                <tr>
+                  <td><?= htmlspecialchars($candidato['nome_candidato']) ?></td>
+                  <td><?= htmlspecialchars($candidato['nome_egresso_indicador'] ?? 'N/A') ?></td>
+                  <td class="buttons">
+                    <?php if (!empty($candidato['curriculo'])): ?>
+                      <a href="/empresa/visualizar/curriculo/<?= $candidato['id_candidato'] ?>" target="_blank">Ver Currículo</a>
+                    <?php else: ?>
+                      <button disabled>Currículo não disponível</button>
+                    <?php endif; ?>
+                  </td>
+                </tr>
+              <?php endforeach; ?>
+            <?php else: ?>
+              <tr>
+                <td colspan="3">Nenhum candidato cadastrado para esta vaga.</td>
+              </tr>
+            <?php endif; ?>
+          </tbody>
+        </table>
+      </section>
     </section>
   </main>
 
