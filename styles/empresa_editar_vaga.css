@@ -101,6 +101,15 @@ aside img {
   border-radius: 1rem;
 }
 
+.buttons a {
+  color: white;
+  background-color: #595959;
+  padding: 0.5rem 1rem;
+  text-decoration: none;
+  border-style: none;
+  border-radius: 1rem;
+}
+
 .filtro-vaga label {
   margin-right: 1rem;
 }

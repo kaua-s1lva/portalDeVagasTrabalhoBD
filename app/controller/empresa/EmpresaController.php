@@ -2,11 +2,13 @@
 
 namespace app\controller\empresa;
 
-use app\controller\ControllerComHtml;
+use app\controller\HtmlTemplateController;
+use app\dao\CandidaturaDAO;
 use app\dao\UsuarioDAO;
 use app\dao\EgressoDAO;
 use app\dao\EmpresaDAO;
 use app\dao\EtapaDAO;
+use app\dao\ICandidaturaDAO;
 use app\dao\VagaDAO;
 use app\model\Egresso;
 use app\model\Empresa;
@@ -22,10 +24,16 @@ use Exception;
 use PDO;
 use PDOException;
 
-class EmpresaController extends ControllerComHtml implements Controller
+// Viola o SRP por alguns motivos bons (tempo de projeto).
+
+class EmpresaController extends HtmlTemplateController implements Controller
 {
 
-    public function renderCreateVagas(Request $request, Response $response): Response
+    // ROTAS DE EMPRESA
+
+    // ROTAS DE VISUALIZAÇÃO
+
+    public function renderVagas(Request $request, Response $response): Response
     {
         $this->verificaSessao();
 
@@ -33,74 +41,227 @@ class EmpresaController extends ControllerComHtml implements Controller
 
         $empresa_id = $empresa->getIdUsuario();
 
-        try {
-            $conexao = ConexaoSingleton::getInstancia()->getConexao();
+        $vagaDAO = new VagaDAO();
 
-            // Consulta as vagas, status da vaga e o total de inscrições (COUNT) para cada vaga
-            $stmt = $conexao->prepare("
-            SELECT 
-                v.idvaga, 
-                v.cargo, 
-                e.nomeetapa AS nome_etapa,  -- Agora estamos pegando o status da tabela etapa
-                COUNT(c.idvaga) AS total_inscricoes
-            FROM vaga v
-            LEFT JOIN candidatura c ON c.idvaga = v.idvaga
-            LEFT JOIN etapa e ON e.idetapa = v.idetapa  -- Fazendo o JOIN correto com a tabela etapa
-            WHERE v.idempresa = ?
-            GROUP BY v.idvaga, e.idetapa
-        ");
-            $stmt->execute([$empresa_id]);
-
-            $vagas = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        } catch (PDOException $e) {
-            die("Erro ao conectar ao banco de dados: " . $e->getMessage());
-        }
+        $vagas = $vagaDAO->findAllFiltered($empresa_id);
 
         echo $this->renderizaHtml('lista_vagas_empresa.php', ['vagas' => $vagas]);
         return $response;
     }
+
+    public function renderPerfilEmpresa(Request $request, Response $response): Response
+    {
+        $this->verificaSessao();
+
+        $empresa = SessaoUsuarioSingleton::getInstance()->getUsuario();
+
+        echo $this->renderizaHtml('pag_crud_empresa.php', ['empresa' => $empresa]);
+        return $response;
+    }
+
+    public function renderEgressos(Request $request, Response $response): Response
+    {
+        $this->verificaSessao();
+
+        $usuario_logado = SessaoUsuarioSingleton::getInstance()->getUsuario();
+
+        $empresa_id = $usuario_logado->getIdUsuario();
+        $egressoDAO = new EgressoDAO();
+        try {
+            $egressos = $egressoDAO->findAllByIdEmpresa($empresa_id);
+        } catch (PDOException $e) {
+            die("Erro ao conectar ao banco de dados: " . $e->getMessage());
+        }
+
+        echo $this->renderizaHtml('lista_edicao_perfil_egresso.php', ['egressos' => $egressos]);
+        return $response;
+    }
+
+
+    // ROTAS DE PERFIL DE EMPRESA
+
+    public function atualizarEmpresa(Request $request, Response $response): Response
+    {
+        $this->verificaSessao();
+
+        // Instanciar o DAO para acessar o banco de dados
+        $empresaDAO = new EmpresaDAO();
+
+        $empresa = SessaoUsuarioSingleton::getInstance()->getUsuario();
+
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            if (isset($_POST['salvar'])) {
+                $razao_social = $_POST['razao_social'];
+                $email = $_POST['email'];
+                $senha = $_POST['senha'];
+                $cnpj = $_POST['cnpj'];
+
+                $empresaAtualizada = new Empresa($razao_social, $email, $senha, $cnpj);
+                $empresaAtualizada->setIdUsuario($empresa->getIdUsuario());
+                $empresaAtualizada->setIdEmpresa($empresa->getIdEmpresa());
+
+                if ($empresaDAO->update($empresaAtualizada)) {
+                    echo "<script>
+            alert('Dados da empresa atualizados com sucesso!');
+            window.location.href = '/empresa/perfil';
+        </script>";
+                    exit();
+                } else {
+                    echo "<script>alert('Erro ao atualizar os dados da empresa.');</script>";
+                }
+            } else {
+
+                // Excluir a empresa
+                if ($empresaDAO->delete($empresa->getIdEmpresa())) {
+
+                    echo "<script>
+                            alert('Empresa excluída com sucesso!');
+                          </script>";
+                    SessaoUsuarioSingleton::getInstance()->logout();
+                    exit;
+                } else {
+                    echo "<script>alert('Erro ao excluir a empresa.');</script>";
+                }
+            }
+        }
+        return $response;
+    }
+
+    // ROTAS DE CONTROLE DE EGRESSOS
+
+    public function renderCriarEgresso(Request $request, Response $response): Response
+    {
+        $this->verificaSessao();
+
+        echo $this->renderizaHtml('empresa_cadastro_egresso.php', []);
+        return $response;
+    }
+
+    public function criarEgresso(Request $request, Response $response): Response
+    {
+        $this->verificaSessao();
+
+        $usuario_logado = SessaoUsuarioSingleton::getInstance()->getUsuario();
+        $empresa_id = $usuario_logado->getIdUsuario();
+
+        $egressoDAO = new EgressoDAO();
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $nome = $_POST['username'];
+            $email = $_POST['email'];
+            $senha = $_POST['password'];
+            $cpf = $_POST['cpf'];
+
+            $egresso = $egressoDAO->findByEmail($email);
+
+            if (!$egresso) {
+                // Se não houver egresso cadastrado, é uma criação (inserção)
+                $egressoCriado = new Egresso($nome, $email, $senha, $cpf, $empresa_id);
+
+                if ($egressoDAO->insert($egressoCriado)) {
+                    echo "<script>
+                  alert('Egresso criado com sucesso!');
+                  window.location.href = '/empresa/egressos';
+              </script>";
+                    exit();
+                } else {
+                    echo "<script>alert('Erro ao criar o egresso.');</script>";
+                }
+            } else {
+                echo "<script>alert('Não é possível inserir um egresso já cadastrado.');</script>";
+            }
+        }
+        return $response;
+    }
+
+    public function renderEditarEgresso(Request $request, Response $response): Response
+    {
+        $this->verificaSessao();
+
+        $idEgresso = $request->id;
+        $egressoDAO = new EgressoDAO();
+
+        $egresso = $egressoDAO->findById($idEgresso);
+
+        echo $this->renderizaHtml('empresa_editar_egresso.php', ['egresso' => $egresso]);
+        return $response;
+    }
+
+    public function editarEgresso(Request $request, Response $response): Response
+    {
+        $this->verificaSessao();
+
+        $usuario_logado = SessaoUsuarioSingleton::getInstance()->getUsuario();
+
+        $empresa_id = $usuario_logado->getIdUsuario();
+
+        $egressoDAO = new EgressoDAO();
+
+        // Se a operação for de edição
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $nome = $_POST['username'];
+            $email = $_POST['email'];
+            $senha = $_POST['password'];
+            $cpf = $_POST['cpf'];
+
+            $egresso = $egressoDAO->findByEmail($email);
+
+            if ($egresso) {
+
+                $egressoAtualizado = new Egresso($nome, $email, $senha, $cpf, $empresa_id);
+                $egressoAtualizado->setIdUsuario($egresso->getIdUsuario());
+
+                if ($egressoDAO->update($egressoAtualizado)) {
+                    $idegresso = $egresso->getIdEgresso();
+                    echo "<script>
+                     alert('Dados do egresso atualizados com sucesso!');
+                     window.location.href = '/empresa/editaregresso/{$idegresso}';
+                 </script>";
+                    exit();
+                } else {
+                    echo "<script>alert('Erro ao atualizar os dados do egresso.');</script>";
+                }
+            }
+        }
+
+        return $response;
+    }
+
+    public function removerEgresso(Request $request, Response $response): Response
+    {
+        $this->verificaSessao();
+
+        $idEgresso = $request->id;
+        $egressoDAO = new EgressoDAO();
+
+        // Buscar o egresso pelo id da empresa
+        $egresso = $egressoDAO->findById($idEgresso);
+
+        try {
+            $egressoDAO->delete($egresso->getIdUsuario());
+            echo "<script>alert('Egresso excluído com sucesso!'); window.location.href = '/empresa/egressos';</script>";
+            exit();
+        } catch (PDOException $e) {
+            die("Erro ao remover egresso: " . $e->getMessage());
+        }
+
+        return $response;
+    }
+
+    // ROTAS DE CONTROLE DE VAGAS
 
     public function renderVaga(Request $request, Response $response): Response
     {
         $this->verificaSessao();
 
         $idVaga = $request->id;
-        $conexao = ConexaoSingleton::getInstancia()->getConexao();
-
+        $vagaDAO = new VagaDAO();
+        $candidaturaDAO = new CandidaturaDAO();
         try {
-            $stmtVaga = $conexao->prepare("
-            SELECT v.idVaga AS idvaga, v.cargo, e.nomeEtapa AS nome_etapa
-            FROM VAGA v
-            INNER JOIN ETAPA e ON v.idEtapa = e.idEtapa
-            WHERE v.idVaga = ?
-        ");
-            $stmtVaga->execute([$idVaga]);
-            $vaga = $stmtVaga->fetch(PDO::FETCH_ASSOC);
 
-            // Busca candidatos da vaga
-            $stmtCandidatos = $conexao->prepare("
-            SELECT 
-                u.idUsuario AS id_candidato,
-                u.nomeUsuario AS nome_candidato,
-                CASE WHEN i.idEgresso IS NOT NULL THEN 1 ELSE 0 END AS tem_indicacao,
-                eu.nomeUsuario AS nome_egresso_indicador,
-                s.nomeStatus AS status_candidatura,
-                c.curriculo AS curriculo
-            FROM CANDIDATURA c
-            INNER JOIN USUARIO u ON c.idAluno = u.idUsuario
-            LEFT JOIN INDICACAO i ON c.idAluno = i.idAluno AND c.idVaga = i.idVaga
-            LEFT JOIN USUARIO eu ON i.idEgresso = eu.idUsuario
-            LEFT JOIN STATUS s ON i.idStatus = s.idStatus
-            WHERE c.idVaga = ?
-        ");
-            $stmtCandidatos->execute([$idVaga]);
-            $candidatos = $stmtCandidatos->fetchAll(PDO::FETCH_ASSOC);
+            $vaga = $vagaDAO->findByIdFiltered($idVaga);
 
-            // Verifique se os candidatos existem
-            if (empty($candidatos)) {
-                echo "Nenhum candidato encontrado para esta vaga.";
-                exit;
-            }
+            $candidatos = $candidaturaDAO->findAllFiltered($idVaga);
 
             foreach ($candidatos as &$candidato) {
                 if (!empty($candidato['curriculo'])) {
@@ -131,31 +292,23 @@ class EmpresaController extends ControllerComHtml implements Controller
             return "Erro: ID do candidato não fornecido.";
         }
 
-        $conexao = ConexaoSingleton::getInstancia()->getConexao();
+        $candidaturaDAO = new CandidaturaDAO();
 
         try {
-            // Prepara a consulta para buscar o currículo (que está em formato BYTEA)
-            $stmt = $conexao->prepare("SELECT curriculo FROM CANDIDATURA WHERE idAluno = ?");
-            $stmt->execute([$idCandidato]);
 
-            // Recupera o conteúdo do currículo
-            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            $result = $candidaturaDAO->findCurriculoByIdAluno($idCandidato);
 
             if (!$result || empty($result['curriculo'])) {
                 http_response_code(404);  // Define o status HTTP 404
                 return "Erro: Currículo não encontrado para o candidato com ID: " . $idCandidato;
             }
 
-            // O conteúdo do currículo pode ser um recurso, então converta-o para string
             $curriculo = $result['curriculo'];
 
-            // Verifica se é um recurso
             if (is_resource($curriculo)) {
-                // Converte o recurso em string binária
                 $curriculo = stream_get_contents($curriculo);
             }
 
-            // Verificar se o conteúdo é um PDF válido (bytes PDF começam com %PDF)
             if (substr($curriculo, 0, 4) !== "%PDF") {
                 http_response_code(415);  // Tipo de mídia não suportado
                 return "Erro: O conteúdo do currículo não é um PDF válido.";
@@ -208,7 +361,6 @@ class EmpresaController extends ControllerComHtml implements Controller
         $etapaDAO = new EtapaDAO();
         $vagaDAO = new VagaDAO();
 
-
         $idVaga = $_POST['idvaga'];
         $cargo = $_POST['cargo'];
         $idEtapa = $_POST['etapaVaga'];
@@ -217,7 +369,8 @@ class EmpresaController extends ControllerComHtml implements Controller
         $etapa = $etapaDAO->findById($idEtapa);
         $etapa_id = $etapa->getIdEtapa();
 
-        $vagaAtualizada = new Vaga($idVaga, $etapa_id, $cargo, $empresa_id);
+        $vagaAtualizada = new Vaga($etapa_id, $cargo, $empresa_id);
+        $vagaAtualizada->setIdVaga($idVaga);
 
         if ($vagaDAO->update($vagaAtualizada)) {
             echo "<script>
@@ -239,11 +392,8 @@ class EmpresaController extends ControllerComHtml implements Controller
         $idVaga = $request->id;
         $vagaDAO = new VagaDAO();
 
-        // Buscar o egresso pelo id da empresa
-        $vaga = $vagaDAO->findById($idVaga);
-
         try {
-            $vagaDAO->delete($vaga->getIdVaga());
+            $vagaDAO->delete($idVaga);
             echo "<script>alert('Vaga excluída com sucesso!'); window.location.href = '/empresa/vagas';</script>";
             exit();
         } catch (PDOException $e) {
@@ -253,268 +403,12 @@ class EmpresaController extends ControllerComHtml implements Controller
         return $response;
     }
 
-    public function renderCreatePerfilEmpresa(Request $request, Response $response): Response
+    public function verificaSessao()
     {
-        $this->verificaSessao();
-
-        $empresa = SessaoUsuarioSingleton::getInstance()->getUsuario();
-
-        // Verifica se o usuário é uma empresa
-        if (SessaoUsuarioSingleton::getInstance()->getTipoUsuario() !== 'empresa') {
-            die("Acesso negado.");
-        }
-
-        echo $this->renderizaHtml('pag_crud_empresa.php', ['empresa' => $empresa]);
-        return $response;
-    }
-
-
-    public function renderCreateEgressos(Request $request, Response $response): Response
-    {
-        $this->verificaSessao();
-
-        $usuario_logado = SessaoUsuarioSingleton::getInstance()->getUsuario();
-
-        $empresa_id = $usuario_logado->getIdUsuario();
-        $egressoDAO = new EgressoDAO();
-        try {
-            $egressos = $egressoDAO->findAllByIdEmpresa($empresa_id);
-        } catch (PDOException $e) {
-            die("Erro ao conectar ao banco de dados: " . $e->getMessage());
-        }
-
-        echo $this->renderizaHtml('lista_edicao_perfil_egresso.php', ['egressos' => $egressos]);
-        return $response;
-    }
-
-    public function renderCreateCriarEgresso(Request $request, Response $response): Response
-    {
-        $this->verificaSessao();
-
-        echo $this->renderizaHtml('empresa_editar_egresso.php', []);
-        return $response;
-    }
-
-
-    public function renderCreateEditarEgresso(Request $request, Response $response): Response
-    {
-        $this->verificaSessao();
-
-        $idEgresso = $request->id;
-        $egressoDAO = new EgressoDAO();
-
-        // Buscar o egresso pelo id da empresa
-        $egresso = $egressoDAO->findById($idEgresso);
-
-        echo $this->renderizaHtml('empresa_editar_egresso.php', ['egresso' => $egresso]);
-        return $response;
-    }
-
-
-    public function editarEmpresa(Request $request, Response $response): Response
-    {
-        $this->verificaSessao();
-
-        session_start();
-        $empresa = SessaoUsuarioSingleton::getInstance()->getUsuario();
-        $empresa_id = $empresa->getIdUsuario();
-        $empresaDAO = new EmpresaDAO();
-        $razao_social = $_POST['razao_social'];
-        $email = $_POST['email'];
-        $senha = $_POST['senha'];
-        $cnpj = $_POST['cnpj'];
-
-        $empresaAtualizada = new Empresa($razao_social, $email, $senha, $cnpj);
-        $empresaAtualizada->setIdUsuario($empresa->getIdUsuario());
-        $empresaAtualizada->setIdEmpresa($empresa->getIdEmpresa());
-
-        if ($empresaDAO->update($empresaAtualizada)) {
-            echo "<script>
-            alert('Dados da empresa atualizados com sucesso!');
-            window.location.href = '/empresa/perfil';
-        </script>";
-            exit();
-        } else {
-            echo "<script>alert('Erro ao atualizar os dados da empresa.');</script>";
-        }
-
-        return $response;
-    }
-
-
-    public function excluirEmpresa(Request $request, Response $response): Response
-    {
-        $this->verificaSessao();
-
-        $empresa = SessaoUsuarioSingleton::getInstance()->getUsuario();
-        $empresaDAO = new EmpresaDAO();
-
-        // Excluir a empresa
-        if ($empresaDAO->delete($empresa->getIdEmpresa())) {
-            echo "<script>alert('Empresa excluída com sucesso!'); window.location.href = '/';</script>";
-            SessaoUsuarioSingleton::getInstance()->logout();
-        } else {
-            echo "<script>alert('Erro ao excluir a empresa.');</script>";
-        }
-
-        return $response;
-    }
-
-    public function criarEgresso(Request $request, Response $response): Response
-    {
-        $this->verificaSessao();
-
-        $usuario_logado = SessaoUsuarioSingleton::getInstance()->getUsuario();
-        $empresa_id = $usuario_logado->getIdUsuario();
-
-        $egressoDAO = new EgressoDAO();
-
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $nome = $_POST['username'];
-            $email = $_POST['email'];
-            $senha = $_POST['password'];
-            $cpf = $_POST['cpf'];
-
-            $egresso = $egressoDAO->findByEmail($email);
-
-            if (!$egresso) {
-                // Se não houver egresso cadastrado, é uma criação (inserção)
-                $egressoCriado = new Egresso($nome, $email, $senha, $cpf, $empresa_id);
-
-                if ($egressoDAO->insert($egressoCriado)) {
-                    echo "<script>
-                 alert('Egresso criado com sucesso!');
-                 window.location.href = '/empresa/egressos';
-             </script>";
-                    exit();
-                } else {
-                    echo "<script>alert('Erro ao criar o egresso.');</script>";
-                }
-            } else {
-                echo "<script>alert('Não é possível inserir um egresso já cadastrado.');</script>";
-            }
-        }
-        return $response;
-    }
-
-    public function editarEgresso(Request $request, Response $response): Response
-    {
-        $this->verificaSessao();
-
-        $usuario_logado = SessaoUsuarioSingleton::getInstance()->getUsuario();
-
-        $empresa_id = $usuario_logado->getIdUsuario();
-
-        $egressoDAO = new EgressoDAO();
-
-        // Se a operação for de edição
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $nome = $_POST['username'];
-            $email = $_POST['email'];
-            $senha = $_POST['password'];
-            $cpf = $_POST['cpf'];
-
-            $egresso = $egressoDAO->findByEmail($email);
-
-            if ($egresso) {
-
-                $egressoAtualizado = new Egresso($nome, $email, $senha, $cpf, $empresa_id);
-                $egressoAtualizado->setIdUsuario($egresso->getIdUsuario());
-
-                if ($egressoDAO->update($egressoAtualizado)) {
-                    $idegresso = $egresso->getIdEgresso();
-                    echo "<script>
-                    alert('Dados do egresso atualizados com sucesso!');
-                    window.location.href = '/empresa/editaregresso/{$idegresso}';
-                </script>";
-                    exit();
-                } else {
-                    echo "<script>alert('Erro ao atualizar os dados do egresso.');</script>";
-                }
-            }
-        }
-
-        return $response;
-    }
-
-
-    public function removerEgresso(Request $request, Response $response): Response
-    {
-        $this->verificaSessao();
-
-        $idEgresso = $request->id;
-        $egressoDAO = new EgressoDAO();
-
-        // Buscar o egresso pelo id da empresa
-        $egresso = $egressoDAO->findById($idEgresso);
-
-        try {
-            $egressoDAO->delete($egresso->getIdUsuario());
-            echo "<script>alert('Egresso excluído com sucesso!'); window.location.href = '/empresa/egressos';</script>";
-            exit();
-        } catch (PDOException $e) {
-            die("Erro ao remover egresso: " . $e->getMessage());
-        }
-
-        return $response;
-    }
-
-    public function atualizarEmpresa(Request $request, Response $response): Response
-    {
-        $this->verificaSessao();
-        
-        // Verificar se o usuário está logado como empresa
-        if (!isset($_SESSION['usuario_id']) || $_SESSION['usuario_tipo'] !== 'empresa') {
-            header('Location: ../index.php'); // Redireciona se não estiver logado
-            exit();
-        }
-
-        // Instanciar o DAO para acessar o banco de dados
-        $empresaDAO = new EmpresaDAO();
-
-        $empresa = SessaoUsuarioSingleton::getInstance()->getUsuario();
-
-        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            if (isset($_POST['salvar'])) {
-                $razao_social = $_POST['razao_social'];
-                $email = $_POST['email'];
-                $senha = $_POST['senha'];
-                $cnpj = $_POST['cnpj'];
-
-                $empresaAtualizada = new Empresa($razao_social, $email, $senha, $cnpj);
-                $empresaAtualizada->setIdUsuario($empresa->getIdUsuario());
-                $empresaAtualizada->setIdEmpresa($empresa->getIdEmpresa());
-
-                if ($empresaDAO->update($empresaAtualizada)) {
-                    echo "<script>
-            alert('Dados da empresa atualizados com sucesso!');
-            window.location.href = '/empresa/perfil';
-        </script>";
-                    exit();
-                } else {
-                    echo "<script>alert('Erro ao atualizar os dados da empresa.');</script>";
-                }
-            } else {
-
-                // Excluir a empresa
-                if ($empresaDAO->delete($empresa->getIdEmpresa())) {
-                    echo "<script>alert('Empresa excluída com sucesso!'); window.location.href = '/';</script>";
-                    SessaoUsuarioSingleton::getInstance()->logout();
-                } else {
-                    echo "<script>alert('Erro ao excluir a empresa.');</script>";
-                }
-            }
-        }
-        return $response;
-    }
-
-    public function verificaSessao() {
         if (SessaoUsuarioSingleton::getInstance()->getTipoUsuario() !== 'empresa') {
             die("Acesso negado.");
         }
     }
-
-
 
     public function index(Request $request, Response $response): Response
     {

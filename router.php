@@ -1,5 +1,7 @@
 <?php
+
 session_start();
+
 // Se for um arquivo existente (CSS, JS, imagens, etc.), deixa o PHP servir normalmente
 if (php_sapi_name() === 'cli-server') {
     $filePath = __DIR__ . '/' . parse_url($_SERVER["REQUEST_URI"], PHP_URL_PATH);
@@ -23,6 +25,7 @@ $request = new Request($_POST, isset($_GET['id']) ? (int)$_GET['id'] : null);
 $router = new Router();
 
 // Defina suas rotas
+
 $router->get('/', new UsuarioController(), 'renderHome');
 $router->get('/usuario/novo', new UsuarioController(), 'renderCreate');
 
@@ -32,6 +35,7 @@ $router->post('/usuario/login', new UsuarioController(), 'login');
 $router->get('/usuario/logout', new UsuarioController(), 'logout');
 
 //ROTAS DE ALUNO
+
 $router->get('/aluno', new AlunoController(), 'index');
 $router->get('/aluno/visualizar', new AlunoController(), 'show');
 $router->post('/aluno/editar', new AlunoController(), 'update');
@@ -40,21 +44,32 @@ $router->post('/aluno/excluir', new AlunoController(), 'destroy');
 $router->post('/aluno/candidatar', new CandidaturaController(), 'create');
 
 //ROTAS DE EGRESSO
+
 $router->get('/egresso', new EgressoController(), 'index');
 $router->post('/egresso/indicar', new EgressoController(), 'create');
 $router->get('/egresso/visualizar', new EgressoController(), 'show');
 
 // ROTAS DE EMPRESA
-$router->get('/empresa/vagas', new EmpresaController(), 'renderCreateVagas');
-$router->get('/empresa/perfil', new EmpresaController(), 'renderCreatePerfilEmpresa');
-$router->get('/empresa/egressos', new EmpresaController(), 'renderCreateEgressos');
+
+// ROTAS DE VISUALIZAÇÃO
+
+$router->get('/empresa/vagas', new EmpresaController(), 'renderVagas');
+$router->get('/empresa/perfil', new EmpresaController(), 'renderPerfilEmpresa');
+$router->get('/empresa/egressos', new EmpresaController(), 'renderEgressos');
+
+// ROTAS DE PERFIL DE EMPRESA
+
 $router->post('/empresa/atualizarempresa', new EmpresaController(), 'atualizarEmpresa');
-$router->post('/empresa/criaregresso', new EmpresaController(), 'criarEgresso');
-$router->get('/empresa/editaregresso/:id', new EmpresaController(), 'renderCreateEditarEgresso');
+
+// ROTAS DE CONTROLE DE EGRESSOS
+
+$router->get('/empresa/criaregresso', new EmpresaController(), 'renderCriarEgresso');
+$router->post('/empresa/salvaregresso', new EmpresaController(), 'criarEgresso');
+$router->get('/empresa/editaregresso/:id', new EmpresaController(), 'renderEditarEgresso');
 $router->post('/empresa/editaregresso', new EmpresaController(), 'editarEgresso');
 $router->get('/empresa/removeregresso/:id', new EmpresaController(), 'removerEgresso');
 
-// ROTAS DE CONTROLE DE VAGAS DA EMPRESA
+// ROTAS DE CONTROLE DE VAGAS
 
 $router->get('/empresa/rendervaga/:id', new EmpresaController(), 'renderVaga');
 $router->get('/empresa/visualizar/curriculo/:id', new EmpresaController(), 'visualizarCurriculo');

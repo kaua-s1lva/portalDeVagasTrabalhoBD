@@ -75,7 +75,7 @@
             <?php foreach ($vagas as $vaga) : ?>
               <tr>
                 <td><?php echo htmlspecialchars($vaga['cargo']); ?></td>
-                <td><?php echo ucfirst(htmlspecialchars($vaga['nome_etapa'])); ?></td>
+                <td><?php echo ucwords(htmlspecialchars($vaga['nome_etapa'])); ?></td>
                 <td><?php echo htmlspecialchars($vaga['total_inscricoes']); ?></td>
                 <td class="buttons">
                   <button onclick="visualizarVaga(<?php echo($vaga['idvaga']); ?>)">Visualizar vaga</button>

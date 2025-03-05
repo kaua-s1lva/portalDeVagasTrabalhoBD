@@ -2,7 +2,7 @@
 
 namespace app\controller;
 
-abstract class ControllerComHtml {
+abstract class HtmlTemplateController {
     public function renderizaHtml(String $caminhoTemplate, array $dados) : string 
     {
         extract($dados);

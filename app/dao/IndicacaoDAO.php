@@ -4,7 +4,7 @@ namespace app\dao;
 use app\singleton\ConexaoSingleton;
 use PDO;
 
-    class IndicacaoDAO implements IDAO
+    class IndicacaoDAO 
     {
         private $conexao;
 

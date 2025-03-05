@@ -21,7 +21,7 @@
       <div class="links">
         <img src="../assets/ufes-logo.png" alt="ufes-logo" />
         <a href="/empresa/egressos">Voltar</a>
-        <a href="../controller/logout.php">Log Off</a>
+        <a href="/usuario/logout">Log Off</a>
       </div>
     </aside>
     <main>
@@ -29,7 +29,7 @@
         <h1>Dados Pessoais</h1>
       </section>
       <section class="container">
-        <form id="loginForm" method="POST" action="/empresa/criaregresso">
+        <form id="loginForm" method="POST" action="/empresa/salvaregresso">
           <div class="crud-form-input">
             <div class="inplbl">
               <label for="username">Nome:</label>

@@ -7,7 +7,7 @@ use app\model\Etapa;
 use app\singleton\ConexaoSingleton;
 use PDO;
 
-class EtapaDAO implements IDAO
+class EtapaDAO implements IEtapaDAO
 {
     private $conexao;
 
@@ -16,9 +16,27 @@ class EtapaDAO implements IDAO
         $this->conexao = ConexaoSingleton::getInstancia()->getConexao();
     }
 
+     /**
+     * @Override
+     */
+
     public function insert($etapa) {}
+
+    /**
+     * @Override
+     */
+
     public function delete($idEtapa) {}
+
+    /**
+     * @Override
+     */
+
     public function update($etapa) {}
+
+      /**
+     * @Override
+     */
 
     public function findById($id)
     {
@@ -29,5 +47,9 @@ class EtapaDAO implements IDAO
         return $row ? new Etapa($row['idetapa'], $row['nomeetapa'], $row['descricaoetapa']) : null;
     }
 
+      /**
+     * @Override
+     */
+    
     public function findAll() {}
 }
