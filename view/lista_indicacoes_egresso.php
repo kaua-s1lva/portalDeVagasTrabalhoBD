@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="../styles/lista_indicacoes_egresso.css" />
     <link rel="stylesheet" href="../styles/modalIndicacaoEgresso.css">
+    <link rel="stylesheet" href="../styles/tableScroll.css">
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -49,24 +50,26 @@
         <h1>Vagas Disponíveis Para Indicação</h1>
       </section>
       <section class="container">
-        <table>
-          <thead>
-            <tr>
-              <th>Descrição</th>
-              <th>Opções</th>
-            </tr>
-          </thead>
-          <tbody>
-            <?php foreach($dados as $dado) { ?>
+        <div class="table-container">
+          <table>
+            <thead>
               <tr>
-                <td><?= $dado['vaga']['cargo'] ?></td>
-                <td class="buttons">
-                  <button data-id-vaga="<?= $dado['vaga']['idvaga'] ?>">Indicar vaga</button>
-                </td>
+                <th>Descrição</th>
+                <th>Opções</th>
               </tr>
-            <?php } ?>
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              <?php foreach($dados as $dado) { ?>
+                <tr>
+                  <td><?= $dado['vaga']['cargo'] ?></td>
+                  <td class="buttons">
+                    <button data-id-vaga="<?= $dado['vaga']['idvaga'] ?>">Indicar vaga</button>
+                  </td>
+                </tr>
+              <?php } ?>
+            </tbody>
+          </table>
+        </div>
       </section>
     </main>
     <script src="/js/openModalIndicacaoEgresso.js"></script>

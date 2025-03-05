@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="../styles/lista_vagas_aluno.css" />
     <link rel="stylesheet" href="../styles/modal.css" />
+    <link rel="stylesheet" href="../styles/tableScroll.css">
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -49,40 +50,41 @@
         <h1>Vagas disponíveis</h1>
       </section>
       <section class="container">
-        <table>
-          <thead>
-            <tr>
-              <th>Descrição</th>
-              <th>Contratante</th>
-              <th>Opções</th>
-            </tr>
-          </thead>
-          <tbody>
-          <?php
-            // Extraindo os IDs das vagas que o usuário já se candidatou
-            $appliedVagas = array_map(function($candidatura) {
-                return $candidatura->idvaga;
-            }, $candidaturas);
-            ?>
-
-            <?php foreach($dados as $dado) { ?>
+        <div class="table-container">
+          <table>
+            <thead>
               <tr>
-                <td><?= $dado['vaga']['cargo'] ?></td>
-                <td><?= $dado['usuario']['nomeusuario'] ?></td>
-                <td class="buttons">
-                  <?php if (in_array($dado['vaga']['idvaga'], $appliedVagas)) { ?>
-                      <span class="status-cand">Enviado</span>
-                      <button disabled data-id-vaga="<?= $dado['vaga']['idvaga'] ?>">Já se candidatou</button>
-                  <?php } else { ?>
-                      <span class="status-cand active">Não enviado</span>
-                      <button data-id-vaga="<?= $dado['vaga']['idvaga'] ?>">Candidatar-se</button>
-                  <?php } ?>
-                </td>
+                <th>Descrição</th>
+                <th>Contratante</th>
+                <th>Opções</th>
               </tr>
-            <?php } ?>
-
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+            <?php
+              // Extraindo os IDs das vagas que o usuário já se candidatou
+              $appliedVagas = array_map(function($candidatura) {
+                  return $candidatura->idvaga;
+              }, $candidaturas);
+              ?>
+  
+              <?php foreach($dados as $dado) { ?>
+                <tr>
+                  <td><?= $dado['vaga']['cargo'] ?></td>
+                  <td><?= $dado['usuario']['nomeusuario'] ?></td>
+                  <td class="buttons">
+                    <?php if (in_array($dado['vaga']['idvaga'], $appliedVagas)) { ?>
+                        <span class="status-cand">Enviado</span>
+                        <button disabled data-id-vaga="<?= $dado['vaga']['idvaga'] ?>">Já se candidatou</button>
+                    <?php } else { ?>
+                        <span class="status-cand active">Não enviado</span>
+                        <button data-id-vaga="<?= $dado['vaga']['idvaga'] ?>">Candidatar-se</button>
+                    <?php } ?>
+                  </td>
+                </tr>
+              <?php } ?>
+            </tbody>
+          </table>
+        </div>
       </section>
     </main>
     <script src="../js/openModalVagasAluno.js"></script>
