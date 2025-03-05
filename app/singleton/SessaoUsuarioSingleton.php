@@ -14,6 +14,7 @@ class SessaoUsuarioSingleton
     // Construtor privado para evitar instâncias externas
     private function __construct()
     {
+       
         if (isset($_SESSION['usuario_id'])) {
             // Verificar o tipo de usuário na sessão e buscar as informações no banco
             $this->loadUsuario($_SESSION['usuario_id'], $_SESSION['usuario_tipo']);

@@ -29,12 +29,12 @@
 
           <p>Etapa da vaga:</p>
           <select name="etapaVaga" id="etapaVaga">
-            <option value="1">Em Aberto</option>
-            <option value="2">Em Triagem</option>
-            <option value="3">Em Entrevista</option>
-            <option value="4">Concluído</option>
+            <?php var_dump($vaga['nome_etapa']); ?>
+            <option value="1" <?= isset($vaga['nome_etapa']) && $vaga['nome_etapa'] == "Em aberto" ? 'selected' : '' ?>>Em Aberto</option>
+            <option value="2" <?= isset($vaga['nome_etapa']) && $vaga['nome_etapa'] == "Em triagem" ? 'selected' : '' ?>>Em Triagem</option>
+            <option value="3" <?= isset($vaga['nome_etapa']) && $vaga['nome_etapa'] == "Em entrevista" ? 'selected' : '' ?>>Em Entrevista</option>
+            <option value="4" <?= isset($vaga['nome_etapa']) && $vaga['nome_etapa'] == "Concluído" ? 'selected' : '' ?>>Concluído</option>
           </select>
-
           <button type="submit" id="confirmar">Salvar Alterações</button>
         </div>
       </form>
@@ -72,7 +72,7 @@
         </div>
         <div>
           <label for="etapaFiltro">Etapa:</label>
-          <input type="text" id="etapaFiltro" value="<?= htmlspecialchars($vaga['nome_etapa'] ?? '') ?>" readonly>
+          <input type="text" id="etapaFiltro" value="<?= ucwords(htmlspecialchars($vaga['nome_etapa']) ?? '') ?>" readonly>
         </div>
       </section>
 

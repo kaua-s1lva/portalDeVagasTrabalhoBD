@@ -1,4 +1,5 @@
 <?php
+
 namespace app\dao;
 
 use app\model\Empresa;
@@ -6,6 +7,11 @@ use PDO;
 
 class EmpresaDAO extends UsuarioDAO
 {
+
+    /**
+     * @Override
+     */
+
     public function insert($empresa)
     {
         $idUsuario = parent::insert($empresa);
@@ -13,6 +19,10 @@ class EmpresaDAO extends UsuarioDAO
         $stmt->execute([$idUsuario, $empresa->getCnpj()]);
         return $stmt->rowCount() > 0;
     }
+
+    /**
+     * @Override
+     */
 
     public function delete($idUsuario)
     {
@@ -22,19 +32,25 @@ class EmpresaDAO extends UsuarioDAO
         return $stmt->rowCount() > 0;
     }
 
-    // Método para atualizar os dados da empresa
+    /**
+     * @Override
+     */
+
     public function update($empresa)
     {
-        // Atualizar dados da tabela 'usuario'
+
         $stmt = $this->conexao->prepare("UPDATE usuario SET nomeUsuario = ?, emailUsuario  = ?, senhaUsuario  = ?, updated_at = NOW() WHERE idUsuario = ?");
         $stmt->execute([$empresa->getNome(), $empresa->getEmail(), $empresa->getSenha(), $empresa->getIdUsuario()]);
 
-        // Atualizar dados da tabela 'empresa'
         $stmt = $this->conexao->prepare("UPDATE empresa SET cnpj = ? WHERE idEmpresa = ?");
         $stmt->execute([$empresa->getCnpj(), $empresa->getIdEmpresa()]);
 
         return $stmt->rowCount() > 0;
     }
+
+    /**
+     * @Override
+     */
 
     public function findById($id)
     {
@@ -58,6 +74,10 @@ class EmpresaDAO extends UsuarioDAO
 
         return null;
     }
+
+    /**
+     * @Override
+     */
 
     public function findByEmail($email)
     {
