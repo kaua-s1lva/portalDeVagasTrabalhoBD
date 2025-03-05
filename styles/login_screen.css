@@ -114,6 +114,11 @@ main {
   cursor: pointer;
 }
 
+.registration a:hover {
+  background-color: #144575;
+  border: 2px solid navy;
+}
+
 /* .login-section div button {
   background-color: transparent;
   color: #007bff;

@@ -110,6 +110,11 @@ aside img {
   border-radius: 1rem;
 }
 
+main button:hover, main a:hover {
+  background-color: #303030;
+  cursor: pointer;
+}
+
 .filtro-vaga label {
   margin-right: 1rem;
 }
@@ -125,4 +130,8 @@ aside img {
   display: flex;
   justify-content: space-between;
   margin-bottom: 1rem;
+}
+
+#confirmar:hover {
+  background-color: #303030;
 }
