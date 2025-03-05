@@ -79,3 +79,9 @@
   width: 50%;
   align-self: center;
 }
+
+#confirmar:hover {
+  background-color: #303030;
+  cursor: pointer;
+}
+

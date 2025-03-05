@@ -100,3 +100,8 @@ aside img {
   border-style: none;
   border-radius: 1rem;
 }
+
+main button:hover {
+  background-color: #303030;
+  cursor: pointer;
+}
