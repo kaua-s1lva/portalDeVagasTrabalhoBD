@@ -36,7 +36,7 @@
             </div>
             <div class="inplbl">
               <label for="email">E-mail:</label>
-              <input type="text" id="email" name="email" value="<?= $usuario_logado->getEmail() ?>" required />
+              <input type="text" id="email" name="email" value="<?= $usuario_logado->getEmail() ?>" required readonly />
             </div>
             <div class="inplbl">
               <label for="senha">Senha:</label>

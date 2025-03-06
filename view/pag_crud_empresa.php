@@ -39,7 +39,7 @@
           </div>
           <div class="inplbl">
             <label for="email">E-mail:</label>
-            <input type="email" id="email" name="email" value="<?php echo htmlspecialchars($empresa->getEmail()); ?>" required />
+            <input type="email" id="email" name="email" value="<?php echo htmlspecialchars($empresa->getEmail()); ?>" readonly required />
           </div>
           <div class="inplbl">
             <label for="senha">Senha:</label>

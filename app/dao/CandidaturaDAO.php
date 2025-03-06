@@ -75,10 +75,10 @@ class CandidaturaDAO implements ICandidaturaDAO
         return $stmt->fetchAll(PDO::FETCH_OBJ);
     }
 
-    public function findCurriculoByIdAluno($idCandidato)
+    public function findCurriculoByIdAlunoVaga($idCandidato, $idVaga)
     {
-        $stmt = $this->conexao->prepare("SELECT curriculo FROM CANDIDATURA WHERE idAluno = ?");
-        $stmt->execute([$idCandidato]);
+        $stmt = $this->conexao->prepare("SELECT curriculo FROM CANDIDATURA WHERE idAluno = ? AND idVaga = ?");
+        $stmt->execute([$idCandidato, $idVaga]);
 
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
         return $result;

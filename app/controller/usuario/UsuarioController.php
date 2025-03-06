@@ -166,7 +166,7 @@ class UsuarioController extends HtmlTemplateController implements Controller
             return true;
         }
 
-        return "Usuário não encontrado, e-mail ou senha inválidos.";
+        return "Usuário não encontrado ou e-mail/senha inválidos.";
     }
 
     public function verificaSessao() {}
