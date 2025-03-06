@@ -1,7 +1,8 @@
 <?php
+
 namespace app\dao;
 
-interface IVagaDAO 
+interface IVagaDAO
 {
     public function insert($vaga);
     public function update($vaga);
@@ -10,4 +11,3 @@ interface IVagaDAO
     public function findAll();
     public function findAllByIdEmpresa($id);
 }
-?>

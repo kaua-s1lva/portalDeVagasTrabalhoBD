@@ -75,7 +75,7 @@ class AlunoDAO extends UsuarioDAO
 
     /**
      * @Override
-    */
+     */
 
     public function findByEmail($email)
     {

@@ -1,7 +1,8 @@
 <?php
+
 namespace app\dao;
 
-interface ICandidaturaDAO 
+interface ICandidaturaDAO
 {
     public function insert($candidatura);
     public function update($candidatura);
@@ -10,4 +11,3 @@ interface ICandidaturaDAO
     public function findAll();
     public function findByIdAluno($idAluno);
 }
-?>

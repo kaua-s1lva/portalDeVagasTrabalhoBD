@@ -1,7 +1,8 @@
 <?php
+
 namespace app\dao;
 
-interface IEtapaDAO 
+interface IEtapaDAO
 {
     public function insert($etapa);
     public function update($etapa);
@@ -9,4 +10,3 @@ interface IEtapaDAO
     public function findById($id);
     public function findAll();
 }
-?>

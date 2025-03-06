@@ -16,7 +16,7 @@ class EtapaDAO implements IEtapaDAO
         $this->conexao = ConexaoSingleton::getInstancia()->getConexao();
     }
 
-     /**
+    /**
      * @Override
      */
 
@@ -34,7 +34,7 @@ class EtapaDAO implements IEtapaDAO
 
     public function update($etapa) {}
 
-      /**
+    /**
      * @Override
      */
 
@@ -47,9 +47,9 @@ class EtapaDAO implements IEtapaDAO
         return $row ? new Etapa($row['idetapa'], $row['nomeetapa'], $row['descricaoetapa']) : null;
     }
 
-      /**
+    /**
      * @Override
      */
-    
+
     public function findAll() {}
 }

@@ -1,7 +1,8 @@
 <?php
+
 namespace app\dao;
 
-interface IIndicacaoDAO 
+interface IIndicacaoDAO
 {
     public function insert($indicacao);
     public function update($indicacao);
@@ -9,4 +10,3 @@ interface IIndicacaoDAO
     public function findById($id);
     public function findAll();
 }
-?>

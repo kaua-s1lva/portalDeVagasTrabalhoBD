@@ -63,8 +63,8 @@ class CandidaturaDAO implements ICandidaturaDAO
         $stmt->execute([$idVaga, $idAluno]);
         return $stmt->fetch(PDO::FETCH_OBJ);
     }
-    
-     /**
+
+    /**
      * @Override
      */
 
@@ -116,5 +116,4 @@ class CandidaturaDAO implements ICandidaturaDAO
         $candidatos = $stmtCandidatos->fetchAll(PDO::FETCH_ASSOC);
         return $candidatos;
     }
-
 }
