@@ -38,7 +38,7 @@
           </div>
           <div class="inplbl">
             <label for="password">E-mail:</label>
-            <input type="text" id="email" name="email" value="<?php echo htmlspecialchars($egresso->getEmail()); ?>" required />
+            <input type="text" id="email" name="email" value="<?php echo htmlspecialchars($egresso->getEmail()); ?>" readonly required />
           </div>
           <div class="inplbl">
             <label for="username">Senha:</label>

@@ -125,9 +125,11 @@ class AlunoController extends HtmlTemplateController implements Controller
 
     $dao->delete($usuario_logado->getIdUsuario());
 
-    $instancia->logout();
-
-    header("Location: /");
+    echo "<script>
+    alert('Aluno excluído com sucesso!');
+    window.location.href = '/usuario/logout'; // Redireciona para a página inicial ou outra página desejada
+  </script>";
+    exit;
 
     return $response;
   }

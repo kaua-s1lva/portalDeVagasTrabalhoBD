@@ -95,7 +95,11 @@
                   <td><?= htmlspecialchars($candidato['nome_egresso_indicador'] ?? 'N/A') ?></td>
                   <td class="buttons">
                     <?php if (!empty($candidato['curriculo'])): ?>
-                      <a href="/empresa/visualizar/curriculo/<?= $candidato['id_candidato'] ?>" target="_blank">Ver Currículo</a>
+                      <form action="/empresa/visualizar/curriculo" method="POST" target="_blank">
+                        <input type="hidden" name="id_candidato" value="<?= $candidato['id_candidato']; ?>">
+                        <input type="hidden" name="id_vaga" value="<?= $vaga['idvaga']; ?>">
+                        <button type="submit">Ver Currículo</button>
+                      </form>
                     <?php else: ?>
                       <button disabled>Currículo não disponível</button>
                     <?php endif; ?>

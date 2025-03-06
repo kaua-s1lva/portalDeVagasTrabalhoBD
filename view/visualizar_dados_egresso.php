@@ -36,7 +36,7 @@
                 type="text"
                 id="username"
                 name="username"
-                value="Gabriel Tetzner Menegueti"
+                 value="<?= $usuario_logado->getNome() ?>"
                 readonly
               />
             </div>
@@ -46,7 +46,7 @@
                 type="email"
                 id="email"
                 name="email"
-                value="tetzner@email.com"
+                 value="<?= $usuario_logado->getEmail() ?>"
                 readonly
               />
             </div>
@@ -56,7 +56,7 @@
                 type="text"
                 id="password"
                 name="password"
-                value="123456"
+                value="<?= $usuario_logado->getSenha() ?>"
                 readonly
               />
             </div>
@@ -66,7 +66,7 @@
                 type="text"
                 id="cpf"
                 name="cpf"
-                value="123.456.789-00"
+                value="<?= $usuario_logado->getCPF() ?>"
                 readonly
               />
             </div>

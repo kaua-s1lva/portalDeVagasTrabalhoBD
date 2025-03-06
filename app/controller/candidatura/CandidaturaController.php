@@ -41,7 +41,6 @@ class CandidaturaController extends HtmlTemplateController implements Controller
     return $response;
   }
 
-
   public function create(Request $request, Response $response): Response
   {
     if ($_FILES['curriculo']['error'] === UPLOAD_ERR_OK) {
@@ -92,56 +91,6 @@ class CandidaturaController extends HtmlTemplateController implements Controller
 
     return $response;
   }
-
-  /*
-    public function create(Request $request,Response $response) : Response
-    {
-        $this->verificaSessao();
-
-        if ($_FILES['curriculo']['error'] === UPLOAD_ERR_OK) {
-            // Caminho temporário e informações do arquivo
-            $fileTmpPath = $_FILES['curriculo']['tmp_name'];
-            $fileName    = $_FILES['curriculo']['name'];
-    
-            $idvaga         = isset($_POST['idvaga']) ? $_POST['idvaga'] : '';
-            
-            // Verifica a extensão do arquivo
-            $fileExtension = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
-            if ($fileExtension !== 'pdf') {
-                echo "<script>
-                        alert('Apenas arquivos PDF são permitidos.');
-                        window.history.back();
-                      </script>";
-                exit;
-            }
-            
-            // Lê o conteúdo do arquivo
-            $fileContent = file_get_contents($fileTmpPath);
-            if ($fileContent === false) {
-                echo "<script>
-                        alert('Erro ao ler o arquivo.');
-                        window.history.back();
-                      </script>";
-                exit;
-            }
-    
-            $idusuario = SessaoUsuarioSingleton::getInstance()->getUsuario()->getIdUsuario();
-    
-            $dao = new CandidaturaDAO();
-            $dao->insert(new Candidatura($idvaga, $idusuario, $fileContent, 1));
-
-            header("Location: /aluno");
-            
-            
-        } else {
-            echo "<script>
-                    alert('Erro no upload do arquivo.');
-                    window.history.back();
-                  </script>";
-        }
-        
-        return $response;
-    }*/
 
   public function update(Request $request, Response $response): Response
   {

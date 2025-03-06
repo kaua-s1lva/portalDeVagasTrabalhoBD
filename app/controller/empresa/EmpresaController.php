@@ -13,15 +13,11 @@ use app\dao\VagaDAO;
 use app\model\Egresso;
 use app\model\Empresa;
 use app\model\Vaga;
-use app\service\AutenticacaoService;
-use app\singleton\ConexaoSingleton;
 use app\singleton\SessaoUsuarioSingleton;
 use AwesomePackages\AwesomeRoutes\Core\Controller;
 use AwesomePackages\AwesomeRoutes\Core\Request;
 use AwesomePackages\AwesomeRoutes\Core\Response;
-use AwesomePackages\AwesomeRoutes\Enum\StatusCode;
 use Exception;
-use PDO;
 use PDOException;
 
 // Viola o SRP por alguns motivos bons (tempo de projeto).
@@ -115,9 +111,9 @@ class EmpresaController extends HtmlTemplateController implements Controller
                 if ($empresaDAO->delete($empresa->getIdEmpresa())) {
 
                     echo "<script>
-                            alert('Empresa excluída com sucesso!');
-                          </script>";
-                    SessaoUsuarioSingleton::getInstance()->logout();
+                    alert('Empresa excluída com sucesso!');
+                    window.location.href = '/usuario/logout'; // Redireciona para a página inicial ou outra página desejada
+                  </script>";
                     exit;
                 } else {
                     echo "<script>alert('Erro ao excluir a empresa.');</script>";
@@ -265,7 +261,7 @@ class EmpresaController extends HtmlTemplateController implements Controller
 
             foreach ($candidatos as &$candidato) {
                 if (!empty($candidato['curriculo'])) {
-                    $candidato['curriculo_link'] = '/empresa/visualizar/curriculo/' . $candidato['id_candidato'];
+                    $candidato['curriculo_link'] = '/empresa/visualizar/curriculo';
                 } else {
                     $candidato['curriculo_link'] = null;
                 }
@@ -283,24 +279,28 @@ class EmpresaController extends HtmlTemplateController implements Controller
 
     public function visualizarCurriculo(Request $request, Response $response)
     {
-        // Captura o parâmetro 'id' da query string
-        $idCandidato = $request->id;
 
-        // Verificação de erro caso o 'id' não seja fornecido
-        if (!$idCandidato) {
-            http_response_code(400);  // Define o status HTTP 400
-            return "Erro: ID do candidato não fornecido.";
+        $idAluno = $_POST['id_candidato'];
+        $idVaga = $_POST['id_vaga'];
+
+        if (!$idAluno || !$idVaga) {
+            http_response_code(400);
+            echo "Erro: ID do candidato não fornecido.";
+            exit();
         }
 
         $candidaturaDAO = new CandidaturaDAO();
 
         try {
 
-            $result = $candidaturaDAO->findCurriculoByIdAluno($idCandidato);
+            $result = $candidaturaDAO->findCurriculoByIdAlunoVaga($idAluno, $idVaga);
 
             if (!$result || empty($result['curriculo'])) {
                 http_response_code(404);  // Define o status HTTP 404
-                return "Erro: Currículo não encontrado para o candidato com ID: " . $idCandidato;
+                echo "<script>
+                    alert('Erro: Currículo não encontrado para o candidato com ID:  . $idAluno');
+                  </script>";
+                exit();
             }
 
             $curriculo = $result['curriculo'];
@@ -311,19 +311,21 @@ class EmpresaController extends HtmlTemplateController implements Controller
 
             if (substr($curriculo, 0, 4) !== "%PDF") {
                 http_response_code(415);  // Tipo de mídia não suportado
-                return "Erro: O conteúdo do currículo não é um PDF válido.";
+                echo "<script>
+                alert('Erro: O conteúdo do currículo não é um PDF válido.');
+              </script>";
+                exit();
             }
 
-            // Configura os cabeçalhos para que o navegador saiba que é um PDF
             header('Content-Type: application/pdf');
-            header('Content-Disposition: inline; filename="curriculo_' . $idCandidato . '.pdf"');
+            header('Content-Disposition: inline; filename="curriculo_' . $idAluno . '.pdf"');
             header('Content-Length: ' . strlen($curriculo));
 
             // Exibe o conteúdo binário do currículo (em formato PDF)
             echo $curriculo;
         } catch (Exception $e) {
             http_response_code(500);  // Define o status HTTP 500
-            return "Erro interno: " . $e->getMessage();
+            echo "Erro interno: " . $e->getMessage();
         }
         return $response;
     }
